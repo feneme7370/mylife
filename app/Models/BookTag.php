@@ -9,6 +9,7 @@ class BookTag extends Model
     protected $fillable = [
         'name',
         'slug',
+        'uuid',
         'user_id',
     ];
 

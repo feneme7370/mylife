@@ -1,10 +1,27 @@
 <div class="w-full">
 
+        {{-- breadcrum, title y button --}}
+        <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Libros"
+        link_2="{{ route('book_dashboard') }}" title_3="Colecciones" link_3="{{ route('book_collection_list') }}" />
+
+    <x-pages.menus.title-and-btn>
+
+        @slot('title')
+        <x-pages.titles.title-pages title="Colecciones" />
+        @endslot
+
+        @slot('button')
+        <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
+            Volver
+        </a>
+        @endslot
+    </x-pages.menus.title-and-btn>
+    {{-- end breadcrum, title y button --}}
+
     <div class="sm:m-3 p-4 bg-gray-50 border border-purple-200 rounded-lg shadow-sm sm:p-8  ">
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-1">
-                <x-pages.buttons.create-text wire:click="createActionModal" wire:loading.attr="disabled" />
-                <h5 class="text-xl font-bold leading-none text-gray-900 ">Colecciones</h5>
+                <h5 class="text-xl font-bold leading-none text-gray-900 ">Listado</h5>
             </div>
             @if (session('status'))
                 <div class="alert alert-success text-sm font-bold leading-none text-red-900 ">
@@ -12,10 +29,7 @@
                 </div>
             @endif</h5>
             <div>
-                
-                <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
-                    Volver
-                </a>
+                <x-pages.buttons.create-text class="text-sm font-medium text-gray-700 hover:text-gray-500 hover:underline " wire:click="createActionModal" wire:loading.attr="disabled" />
             </div>
        </div>
     
@@ -28,12 +42,12 @@
                     <div class="flex items-center">
                         <div class="flex-1 min-w-0 ms-4">
                             <p class="text-sm font-medium text-gray-900 truncate ">
-                                {{ $item->name }}
+                                <a class="hover:underline" href="{{ route('book_library', ['c' => $item->uuid]) }}">{{ $item->name }}</a>
                             </p>
                         </div>
     
-                        <x-pages.buttons.edit-text wire:click="editActionModal({{$item->id}})" wire:loading.attr="disabled" />
-                        <x-pages.buttons.delete-text wire:click="deleteActionModal({{$item->id}})"
+                        <x-pages.buttons.edit-text wire:click="editActionModal('{{$item->uuid}}')" wire:loading.attr="disabled" />
+                        <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')"
                         wire:loading.attr="disabled" />
                     </div>
                 </li>

@@ -36,8 +36,6 @@ return new class extends Migration
 
             $table->string('status')->nullable(); // 1 sin leer - 2 leido - 3 leyendo
 
-            $table->foreignId('book_author_id')->constrained()->onDelete('cascade');
-            $table->foreignId('book_collection_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();

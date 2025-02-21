@@ -15,15 +15,13 @@ class BookAuthor extends Model
         'description', 
         'country',
         
+        'uuid',
         'user_id',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
     public function books()
     {
-        return $this->hasMany(Book::class, 'book_author_id', 'id');
+        return $this->belongsToMany(Book::class, 'book_book_author')
+                    ->withTimestamps();
     }
 }

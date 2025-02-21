@@ -12,7 +12,7 @@
         <x-pages.menus.title-and-btn>
 
         @slot('title')
-            <x-pages.titles.title-pages title="Bienvenido"/>
+            <x-pages.titles.title-pages title="Libros"/>
         @endslot
 
         @slot('button')
@@ -20,16 +20,6 @@
         @endslot
         </x-pages.menus.title-and-btn>
     {{-- end breadcrum, title y button --}}
-
-
-    
-    {{-- portada y logo --}}
-        <div class="grid grid-cols-2 gap-3 mb-2">
-
-
-
-        </div>
-    {{-- portada y logo --}}
     
     {{-- logo de carga --}}
         <x-pages.spinners.loading-spinner wire:loading.delay />
@@ -48,7 +38,6 @@
         <div class="sm:m-3 p-4 bg-gray-50 border border-purple-200 rounded-lg shadow-sm sm:p-8 ">
     
             <div class="py-2">
-                <p class="mb-4 text-xl md:text-2xl font-bold text-gray-900">Libros</p>
 
                 <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_list') }}">Lista de libros</a></p>
 

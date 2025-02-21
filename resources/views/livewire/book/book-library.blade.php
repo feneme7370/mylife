@@ -23,29 +23,45 @@
     
         <div class="flex items-center justify-center sm:justify-start gap-1 sm:gap-3 flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white p-3">
             <div>
-                <select id="collection_selected" wire:model.live="collection_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5      ">
-                  <option selected value="">Coleccion</option>
-                    @foreach($collections as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                <select id="collection_selected" wire:model.live="collection_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
+                    <option selected value="">Colecciones</option>
+                    @foreach($book_collections as $item)
+                        <option value="{{ $item->uuid }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <select id="author_selected" wire:model.live="author_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
+                    <option selected value="">Autores</option>
+                    @foreach($book_authors as $item)
+                        <option value="{{ $item->uuid }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <select id="tag_selected" wire:model.live="tag_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
+                    <option selected value="">Etiquetas</option>
+                    @foreach($book_tags as $item)
+                        <option value="{{ $item->uuid }}">{{ $item->name }}</option>
                     @endforeach
                 </select>
             </div>
             
             <div class="flex gap-1 justify-between items-center">
                 <div class="flex items-center">
-                    <input id="default-radio-1" wire:model.live='statusRead' type="radio" value="" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                    <input id="default-radio-1" wire:model.live='status_read' type="radio" value="" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                     <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 ">Todos</label>
                 </div>
                 <div class="flex items-center">
-                    <input checked id="default-radio-2" wire:model.live='statusRead' type="radio" value="2" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                    <input checked id="default-radio-2" wire:model.live='status_read' type="radio" value="2" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                     <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Leido</label>
                 </div>
                 <div class="flex items-center">
-                    <input id="default-radio-3" wire:model.live='statusRead' type="radio" value="3" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                    <input id="default-radio-3" wire:model.live='status_read' type="radio" value="3" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                     <label for="default-radio-3" class="ms-2 text-sm font-medium text-gray-900 ">Leyendo</label>
                 </div>
                 <div class="flex items-center">
-                    <input checked id="default-radio-4" wire:model.live='statusRead' type="radio" value="1" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                    <input checked id="default-radio-4" wire:model.live='status_read' type="radio" value="1" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                     <label for="default-radio-4" class="ms-2 text-sm font-medium text-gray-900 ">Quiero leer</label>
                 </div>
             </div>

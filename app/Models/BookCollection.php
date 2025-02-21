@@ -11,15 +11,13 @@ class BookCollection extends Model
         'slug',
         'description',
         
+        'uuid',
         'user_id',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
     public function books()
     {
-        return $this->hasMany(Book::class, 'book_collection_id', 'id');
+        return $this->belongsToMany(Book::class, 'book_book_collection')
+                    ->withTimestamps();
     }
 }

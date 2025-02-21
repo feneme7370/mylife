@@ -35,6 +35,8 @@ class BookTagList extends Component
     public
     $name,
     $slug,
+
+    $uuid,
     
     $user_id;
 
@@ -46,6 +48,7 @@ class BookTagList extends Component
             'name' => ['required', 'string', Rule::unique('book_tags', 'name')->ignore($this->book_tag->id ?? 0)],
             'slug' => ['required', 'string', Rule::unique('book_tags', 'slug')->ignore($this->book_tag->id ?? 0)],
 
+            'uuid' => ['required', 'string'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
@@ -56,18 +59,20 @@ class BookTagList extends Component
         'name' => 'nombre',
         'slug' => 'nombre url',
 
+        'uuid' => 'uuid',
         'user_id' => 'usuario',
     ];
 
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
-        $this->reset(['name', 'slug', 'user_id']);
+        $this->reset(['name', 'slug', 'uuid', 'user_id']);
     }
     // cargar datos a editar
     public function preloadEditModal($item){
         $this->name = $item['name'];
         $this->slug = $item['slug'];
+        $this->uuid = $item['uuid'];
         $this->user_id = $item['user_id'];
     }
 
@@ -80,11 +85,11 @@ class BookTagList extends Component
     }
 
     // mostrar modal para confirmar editar
-    public function editActionModal(BookTag $book_tag) {
+    public function editActionModal($uuid) {
         $this->resetProperties();
         $this->resetErrorBag();
 
-        $this->book_tag = $book_tag;
+        $this->book_tag = BookTag::where('uuid', $uuid)->first();
 
         $this->preloadEditModal($this->book_tag);
 
@@ -92,11 +97,11 @@ class BookTagList extends Component
     }
 
     // mostrar modal para confirmar editar
-    public function deleteActionModal(BookTag $book_tag) {
+    public function deleteActionModal($uuid) {
         $this->resetProperties();
         $this->resetErrorBag();
 
-        $this->book_tag = $book_tag;
+        $this->book_tag = BookTag::where('uuid', $uuid)->first();
 
         $this->showDeleteModal = true;
     }
@@ -135,6 +140,7 @@ class BookTagList extends Component
     public function saveTagCreate(){
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
+        $this->uuid = \Illuminate\Support\Str::random(20);
 
         // validar form
         $validatedData = $this->validate();

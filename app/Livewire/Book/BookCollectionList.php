@@ -38,6 +38,7 @@ class BookCollectionList extends Component
     $slug,
     $description,
     
+    $uuid,
     $user_id;
 
     ///////////////////////////// MODULO VALIDACION /////////////////////////////
@@ -50,6 +51,7 @@ class BookCollectionList extends Component
 
             'description' => ['nullable', 'string'],
 
+            'uuid' => ['required', 'string'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
@@ -62,19 +64,21 @@ class BookCollectionList extends Component
 
         'description' => 'descripcion',
 
+        'uuid' => 'uuid',
         'user_id' => 'usuario',
     ];
 
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
-        $this->reset(['name', 'slug', 'description', 'user_id']);
+        $this->reset(['name', 'slug', 'description', 'uuid', 'user_id']);
     }
     // cargar datos a editar
     public function preloadEditModal($item){
         $this->name = $item['name'];
         $this->slug = $item['slug'];
         $this->description = $item['description'];
+        $this->uuid = $item['uuid'];
         $this->user_id = $item['user_id'];
     }
 
@@ -87,11 +91,11 @@ class BookCollectionList extends Component
     }
 
     // mostrar modal para confirmar editar
-    public function editActionModal(BookCollection $book_collection) {
+    public function editActionModal( $uuid) {
         $this->resetProperties();
         $this->resetErrorBag();
 
-        $this->book_collection = $book_collection;
+        $this->book_collection = BookCollection::where('uuid', $uuid)->first();
 
         $this->preloadEditModal($this->book_collection);
 
@@ -99,11 +103,11 @@ class BookCollectionList extends Component
     }
 
     // mostrar modal para confirmar editar
-    public function deleteActionModal(BookCollection $book_collection) {
+    public function deleteActionModal($uuid) {
         $this->resetProperties();
         $this->resetErrorBag();
 
-        $this->book_collection = $book_collection;
+        $this->book_collection = BookCollection::where('uuid', $uuid)->first();
 
         $this->showDeleteModal = true;
     }
@@ -142,6 +146,7 @@ class BookCollectionList extends Component
     public function saveCollectionCreate(){
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
+        $this->uuid = \Illuminate\Support\Str::random(20);
 
         // validar form
         $validatedData = $this->validate();

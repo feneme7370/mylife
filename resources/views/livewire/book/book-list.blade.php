@@ -1,6 +1,22 @@
 <div class="w-full ">
 
+        {{-- breadcrum, title y button --}}
+        <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Libros"
+        link_2="{{ route('book_dashboard') }}" title_3="Listado de libros" link_3="{{ route('book_list') }}" />
 
+    <x-pages.menus.title-and-btn>
+
+        @slot('title')
+        <x-pages.titles.title-pages title="Listado de libros" />
+        @endslot
+
+        @slot('button')
+        <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
+            Volver
+        </a>
+        @endslot
+    </x-pages.menus.title-and-btn>
+    {{-- end breadcrum, title y button --}}
 
 <div class="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
     <div class="flex items-center justify-center md:justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white p-3">
@@ -14,10 +30,7 @@
             <input type="text" wire:model.live='search' class="block p-2 ps-10 text-sm text-gray-900 border border-purple-300 rounded-lg w-80 bg-purple-50 focus:ring-purple-500 focus:border-purple-500      " placeholder="Buscar libro">
         </div>
         <div>
-            <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('book_create') }}">Crear</a><span class="text-xl font-medium text-gray-600 hover:underline "> | </span>
-            <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
-                Volver
-            </a>
+            <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('book_create') }}">Crear</a>
         </div>
     </div>
 
@@ -33,19 +46,19 @@
         
         <div class="flex gap-1 justify-between items-center">
             <div class="flex items-center">
-                <input id="default-radio-1" wire:model.live='statusRead' type="radio" value="" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                <input id="default-radio-1" wire:model.live='status_read' type="radio" value="" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                 <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 ">Todos</label>
             </div>
             <div class="flex items-center">
-                <input checked id="default-radio-2" wire:model.live='statusRead' type="radio" value="2" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                <input checked id="default-radio-2" wire:model.live='status_read' type="radio" value="2" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                 <label for="default-radio-2" class="ms-2 text-sm font-medium text-gray-900 ">Leido</label>
             </div>
             <div class="flex items-center">
-                <input id="default-radio-3" wire:model.live='statusRead' type="radio" value="3" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                <input id="default-radio-3" wire:model.live='status_read' type="radio" value="3" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                 <label for="default-radio-3" class="ms-2 text-sm font-medium text-gray-900 ">Leyendo</label>
             </div>
             <div class="flex items-center">
-                <input checked id="default-radio-4" wire:model.live='statusRead' type="radio" value="1" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
+                <input checked id="default-radio-4" wire:model.live='status_read' type="radio" value="1" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                 <label for="default-radio-4" class="ms-2 text-sm font-medium text-gray-900 ">Quiero leer</label>
             </div>
         </div>
@@ -65,6 +78,9 @@
                     Datos
                 </th>
                 <th class="px-6 py-3">
+                    Coleccion
+                </th>
+                <th class="px-6 py-3">
                     Estado
                 </th>
                 <th class="px-6 py-3">
@@ -80,7 +96,12 @@
                     <img class="h-20 rounded-sm object-cover" src="{{ $item->cover_image_url }}" alt="Portada">
                     <div class="ps-3 w-44">
                         <div class="text-sm md:text-base font-semibold hover:underline"><a href="{{ route('book_view', ['uuid' => $item->uuid]) }}">{{ $item->title }}</a></div>
-                        <div class="text-sm md:font-normal text-gray-500">{{ $item->book_collection->name }}</div>
+
+                        <div class="">
+                            @foreach ($item->book_authors as $author_item)
+                                <a href="{{ route('book_library', ['a' => $author_item->uuid]) }}" class="text-xs hover:underline md:font-normal text-gray-500">{{ $author_item->name }}</a>
+                            @endforeach
+                        </div>
                     </div>  
                 </th>
                 <td class="px-6 py-4">
@@ -91,11 +112,21 @@
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center">
-                        <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> {{ $statusBook[$item->status] ?? 'Desconocido' }}
+                        @foreach ($item->book_collections as $collection_item)<a href="{{ route('book_library', ['c' => $collection_item->uuid]) }}" class="hover:underline text-sm md:font-normal text-gray-500">{{ $collection_item->name }}</a>@endforeach
+                    </div>
+                </td>
+
+                <td class="px-6 py-4">
+                    <div class=" flex items-center justify-center gap-1">
+                        <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span><span>{{ $status_book[$item->status] ?? 'Desconocido' }}</span>
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="{{ route('book_edit', ['id' => $item->id]) }}" class="font-medium text-gray-600  hover:underline">Editar</a>
+                    <div class="flex items-center justify-center gap-1">
+                        <a href="{{ route('book_edit', ['id' => $item->id]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
+                        <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')"
+                        wire:loading.attr="disabled" />
+                    </div>
                 </td>
             </tr>
             @endforeach
@@ -108,5 +139,27 @@
         {{-- end Paginacion --}}
 </div>
 
-
+    {{-- modal action --}}
+    <x-pages.modals.jetstream.dialog-modal wire:model="showDeleteModal">
+        <x-slot name="title">
+            {{ __('Formulario') }}
+        </x-slot> 
+    
+        <x-slot name="content">
+            <form wire:submit="deleteBook" class="sm:m-3 p-4 bg-purple-50 border border-purple-200 rounded-lg shadow-sm sm:p-8  text-center">
+                
+                <p class="mb-5">Desea borrar el libro?</p>
+        
+    
+            </form>
+        </x-slot>
+    
+        <x-slot name="footer">
+            <x-pages.buttons.primary-btn 
+            title="Borrar" 
+            wire:click="deleteBook" 
+        ></x-pages.buttons.primary-btn>
+        </x-slot>
+      </x-pages.modals.jetstream.dialog-modal>
+    {{-- end modal action --}}
 </div>

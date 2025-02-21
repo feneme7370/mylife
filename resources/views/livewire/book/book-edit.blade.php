@@ -15,25 +15,54 @@
         </div>
 
 
-        <div class="col-span-6">
-            <x-pages.forms.label-form for="book_author_id" value="{{ __('Autor') }}" />
-            <x-pages.forms.select-form wire:model="book_author_id" id="book_author_id" value_placeholder="- Autores -">
-              @foreach ($authors as $item)
+
+        {{-- <div class="my-3 flex flex-wrap gap-1 col-span-12">
+            @foreach ($book_authors as $item)
+            
+            <x-pages.forms.label-form for="{{ 'selected_book_authors['. $item->id .']' }}" value="{{ $item->name }}">
+                <x-pages.forms.checkbox-form 
+                    type="checkbox" 
+                    id="{{ 'selected_book_authors['. $item->id .']' }}" 
+                    wire:model="selected_book_authors" 
+                    value="{{ $item->id }}"  />
+            </x-pages.forms.label-form>
+
+            @endforeach
+
+        </div> --}}
+
+        <div class="col-span-12 sm:col-span-6">
+            <x-pages.forms.label-form for="selected_book_authors" value="{{ __('Autores') }}" />
+            <x-pages.forms.select-form multiple wire:model="selected_book_authors" id="selected_book_authors">
+              @foreach ($book_authors as $item)
                   <option value="{{$item->id}}">{{$item->name}}</option>
               @endforeach
             </x-pages.forms.select-form>
-            <x-pages.forms.input-error for="book_author_id" />
+            <x-pages.forms.input-error for="selected_book_authors" />
         </div>
+        {{-- <div class="my-3 flex flex-wrap gap-1 col-span-12">
+            @foreach ($book_collections as $item)
+            
+            <x-pages.forms.label-form for="{{ 'selected_book_collections['. $item->id .']' }}" value="{{ $item->name }}">
+                <x-pages.forms.checkbox-form 
+                    type="checkbox" 
+                    id="{{ 'selected_book_collections['. $item->id .']' }}" 
+                    wire:model="selected_book_collections" 
+                    value="{{ $item->id }}"  />
+            </x-pages.forms.label-form>
 
-        <div class="col-span-6">
-            <x-pages.forms.label-form for="book_collection_id" value="{{ __('Coleccion') }}" />
-            <x-pages.forms.select-form wire:model="book_collection_id" id="book_collection_id" value_placeholder="- Colecciones -">
-              @foreach ($collections as $item)
+            @endforeach
+
+        </div> --}}
+        <div class="col-span-12 sm:col-span-6">
+            <x-pages.forms.label-form for="selected_book_collections" value="{{ __('Coleccion') }}" />
+            <x-pages.forms.select-form multiple wire:model="selected_book_collections" id="selected_book_collections">
+              @foreach ($book_collections as $item)
                   <option value="{{$item->id}}">{{$item->name}}</option>
               @endforeach
             </x-pages.forms.select-form>
             <x-pages.forms.input-error for="book_collection_id" />
-          </div>
+        </div>
 
         <div class="sm:col-span-3 col-span-6">
             <x-pages.forms.label-form for="release_date" value="{{ __('Publicacion') }}" />
@@ -84,7 +113,7 @@
             <x-pages.forms.label-form for="status" value="{{ __('Estado') }}" />
             <x-pages.forms.select-form wire:model="status" id="status" value_placeholder="- Estados -">
                 <option selected>Estados</option>
-              @foreach ($statusBook as $key => $value)
+              @foreach ($status_book as $key => $value)
                   <option value="{{ $key }}">{{ $value }}</option>
               @endforeach
             </x-pages.forms.select-form>

@@ -24,19 +24,36 @@
 
         <h5 class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">{{ $book->title }}</h5>
         
-        <p class="mb-4 text-base sm:text-base text-gray-800">{{ \Carbon\Carbon::parse($book->release_date)->year }} - {{ $book->book_author->name }}</p>
+        <p class="mb-4 text-base sm:text-base text-gray-800">{{ \Carbon\Carbon::parse($book->release_date)->year }} - 
+            
+            @foreach ($book->book_authors as $item)
+                <a href="{{ route('book_library', ['a' => $item->uuid]) }}">{{ $item->name }}</a>
+            @endforeach
+
+        </p>
 
 
         <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{{ $book->synopsis }}</p>
 
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950"> Datos</p>
 
-        @if ($book->number_collection)
-            <p class="mb-4 text-sm sm:text-base text-gray-800">Collecion: {{ $book->book_collection->name }} {{ '['.$book->number_collection.']' }}</p>
-        @endif
-        <p class="mb-4 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Paginas:</span> {{ $book->pages }}</p>
-        <p class="mb-4 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Valoracion:</span> {{ $valoration_stars[$book->rating] ?? 'Desconocido' }}</p>
-        <p class="mb-4 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Estado:</span> {{ $statusBook[$book->status] ?? 'Desconocido' }}</p>
+        @foreach ($book->book_collections as $item)
+            <a href="{{ route('book_library', ['c' => $item->uuid]) }}">Collecion: {{ $item->name }}{{ '['.$book->number_collection.']' }}</a>
+        @endforeach
+
+        {{-- @if ($book->number_collection)
+            <p class="mb-2 text-sm sm:text-base text-gray-800">Collecion: <a href="{{ route('book_library', ['c' => $book->book_collection_id]) }}">{{ $book->book_collection->name }}</a> {{ '['.$book->number_collection.']' }}</p>
+        @endif --}}
+
+        <div class="mb-2">
+            @foreach ($book->book_tags as $item)
+            <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('book_library', ['t' => $item->uuid]) }}">{{ $item->name }}</a>
+            @endforeach
+        </div>
+
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Paginas:</span> {{ $book->pages }}</p>
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Valoracion:</span> {{ $valoration_stars[$book->rating] ?? 'Desconocido' }}</p>
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Estado:</span> {{ $status_book[$book->status] ?? 'Desconocido' }}</p>
 
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">Descripcion personal</p>
         <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{{ $book->personal_description }}</p>

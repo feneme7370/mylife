@@ -15,11 +15,13 @@ class BookCreate extends Component
     public
     $title,
     $slug,
-    $book_author_id,
+    // $book_author_id,
     $synopsis ,
     $release_date,
+    $start_date,
+    $end_date,
 
-    $book_collection_id,
+    // $book_collection_id,
     $number_collection,
 
     $pages,
@@ -36,6 +38,8 @@ class BookCreate extends Component
 
     // propiedades para editar
     public $selected_book_tags = [];
+    public $selected_book_authors = [];
+    public $selected_book_collections = [];
 
     ///////////////////////////// MODULO VALIDACION /////////////////////////////
 
@@ -44,11 +48,13 @@ class BookCreate extends Component
         return [
             'title' => ['required'],
             'slug' => ['required'],
-            'book_author_id' => ['nullable', 'numeric', 'min:0'],
+            // 'book_author_id' => ['nullable', 'numeric', 'min:0'],
             'synopsis' => ['nullable'],
             'release_date' => ['nullable'],
+            'start_date' => ['nullable'],
+            'end_date' => ['nullable'],
     
-            'book_collection_id' => ['required', 'numeric', 'min:0'],
+            // 'book_collection_id' => ['required', 'numeric', 'min:0'],
             'number_collection' => ['nullable', 'numeric'],
     
             'pages'  => ['nullable', 'numeric'],
@@ -70,11 +76,13 @@ class BookCreate extends Component
     protected $validationAttributes = [
         'title' => 'titulo',
         'slug' => 'slug',
-        'book_author_id' => 'autor',
+        // 'book_author_id' => 'autor',
         'synopsis' => 'sinopsis',
         'release_date' => 'fecha de publicacion',
+        'start_date' => 'fecha de comienzo',
+        'end_date' => 'fecha de finalizacion',
 
-        'book_collection_id' => 'collecion',
+        // 'book_collection_id' => 'collecion',
         'number_collection' => 'numero de collecion',
 
         'pages'  => 'paginas',
@@ -93,31 +101,33 @@ class BookCreate extends Component
     public function saveBook(){
         $this->user_id = Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->title);
-        $this->uuid = \Illuminate\Support\Str::random(16);
+        $this->uuid = \Illuminate\Support\Str::random(20);
         
         // validar form
         $validatedData = $this->validate();
         // dd($validatedData);
         $book = Book::create($validatedData);
         $book->book_tags()->sync($this->selected_book_tags);
+        $book->book_authors()->sync($this->selected_book_authors);
+        $book->book_collections()->sync($this->selected_book_collections);
 
         return redirect()->route('book_list')->with('message', 'Creado exitosamente');
     }
 
     public function render()
     {
-        $authors = BookAuthor::where('user_id', Auth::user()->id)->get();
-        $collections = BookCollection::where('user_id', Auth::user()->id)->get();
+        $book_authors = BookAuthor::where('user_id', Auth::user()->id)->get();
+        $book_collections = BookCollection::where('user_id', Auth::user()->id)->get();
         $book_tags = BookTag::where('user_id', Auth::user()->id)->get();
 
-        $statusBook = [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
+        $status_book = [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
         $valoration_stars = [1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
 
         return view('livewire.book.book-create',compact(
-            'authors',
-            'collections',
+            'book_authors',
+            'book_collections',
             'book_tags',
-            'statusBook',
+            'status_book',
             'valoration_stars',
         ));
     }

@@ -39,6 +39,7 @@ class BookAuthorList extends Component
     $description,
     $country,
     
+    $uuid,
     $user_id;
 
     ///////////////////////////// MODULO VALIDACION /////////////////////////////
@@ -51,6 +52,7 @@ class BookAuthorList extends Component
             'birthdate' => ['nullable', 'date'],
             'description' => ['nullable', 'string'],
             'country' => ['nullable', 'string'],
+            'uuid' => ['required', 'string'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
@@ -63,6 +65,7 @@ class BookAuthorList extends Component
         'birthdate' => 'fecha de nacimiento',
         'description' => 'descripcion',
         'country' => 'pais',
+        'uuid' => 'uuid',
 
         'user_id' => 'usuario',
     ];
@@ -70,7 +73,7 @@ class BookAuthorList extends Component
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
-        $this->reset(['name', 'slug', 'birthdate', 'description', 'country', 'user_id']);
+        $this->reset(['name', 'slug', 'birthdate', 'description', 'country', 'uuid', 'user_id']);
     }
     // cargar datos a editar
     public function preloadEditModal($item){
@@ -79,6 +82,7 @@ class BookAuthorList extends Component
         $this->birthdate = $item['birthdate'];
         $this->description = $item['description'];
         $this->country = $item['country'];
+        $this->uuid = $item['uuid'];
         $this->user_id = $item['user_id'];
     }
 
@@ -91,11 +95,12 @@ class BookAuthorList extends Component
     }
 
     // mostrar modal para confirmar editar
-    public function editActionModal(BookAuthor $book_author) {
+    public function editActionModal($uuid) {
+
         $this->resetProperties();
         $this->resetErrorBag();
-
-        $this->book_author = $book_author;
+        
+        $this->book_author = BookAuthor::where('uuid', $uuid)->first();
 
         $this->preloadEditModal($this->book_author);
 
@@ -103,11 +108,11 @@ class BookAuthorList extends Component
     }
 
     // mostrar modal para confirmar editar
-    public function deleteActionModal(BookAuthor $book_author) {
+    public function deleteActionModal($uuid) {
         $this->resetProperties();
         $this->resetErrorBag();
 
-        $this->book_author = $book_author;
+        $this->book_author = BookAuthor::where('uuid', $uuid)->first();
 
         $this->showDeleteModal = true;
     }
@@ -120,7 +125,7 @@ class BookAuthorList extends Component
             $this->resetProperties();
             $this->resetErrorBag();
         }else{
-            session()->flash('status', 'Contiene elementos.');
+            session()->flash('status', 'Contiene libros asociados.');
         }
         $this->showDeleteModal = false;
 
@@ -129,6 +134,7 @@ class BookAuthorList extends Component
     // guardar
     public function saveAuthorEdit(){
         $this->slug = \Illuminate\Support\Str::slug($this->name);
+        
 
         // validar datos
         $validatedData = $this->validate();
@@ -145,6 +151,7 @@ class BookAuthorList extends Component
     public function saveAuthorCreate(){
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
+        $this->uuid = \Illuminate\Support\Str::random(20);
 
         // validar form
         $validatedData = $this->validate();

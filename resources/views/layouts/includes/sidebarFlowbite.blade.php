@@ -97,7 +97,7 @@
 
             <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('book_dashboard') }}"
                 :active="request()->routeIs('book_dashboard')" title="Libros">
-                <x-sistem.icons.for-icons-app icon="dashboard" />
+                <x-sistem.icons.for-icons-app icon="book" />
             </x-sistem.navlinks.navlink-sidebar-flowbite>
 
             <li class="border-t border-purple-300"></li>
