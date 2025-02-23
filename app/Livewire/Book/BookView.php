@@ -19,8 +19,9 @@ class BookView extends Component
 
     public function render()
     {
-        $status_book = [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
-        $valoration_stars = [1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+        $type_content = Book::typeContent();
+        $status_book = Book::statusBook();
+        $valoration_stars = Book::valorationStars();
 
 
         return view('livewire.book.book-view', compact(

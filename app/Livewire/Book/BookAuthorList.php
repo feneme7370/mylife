@@ -38,6 +38,7 @@ class BookAuthorList extends Component
     $birthdate,
     $description,
     $country,
+    $cover_image_url,
     
     $uuid,
     $user_id;
@@ -51,6 +52,7 @@ class BookAuthorList extends Component
             'slug' => ['required', 'string', Rule::unique('book_authors', 'slug')->ignore($this->book_author->id ?? 0)],
             'birthdate' => ['nullable', 'date'],
             'description' => ['nullable', 'string'],
+            'cover_image_url' => ['nullable', 'string'],
             'country' => ['nullable', 'string'],
             'uuid' => ['required', 'string'],
             'user_id' => ['required', 'numeric', 'min:0'],
@@ -64,6 +66,7 @@ class BookAuthorList extends Component
         'slug' => 'nombre url',
         'birthdate' => 'fecha de nacimiento',
         'description' => 'descripcion',
+        'cover_image_url' => 'imagen web',
         'country' => 'pais',
         'uuid' => 'uuid',
 
@@ -73,7 +76,7 @@ class BookAuthorList extends Component
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
-        $this->reset(['name', 'slug', 'birthdate', 'description', 'country', 'uuid', 'user_id']);
+        $this->reset(['name', 'slug', 'birthdate', 'description', 'cover_image_url', 'country', 'uuid', 'user_id']);
     }
     // cargar datos a editar
     public function preloadEditModal($item){
@@ -81,6 +84,7 @@ class BookAuthorList extends Component
         $this->slug = $item['slug'];
         $this->birthdate = $item['birthdate'];
         $this->description = $item['description'];
+        $this->cover_image_url = $item['cover_image_url'];
         $this->country = $item['country'];
         $this->uuid = $item['uuid'];
         $this->user_id = $item['user_id'];
@@ -151,7 +155,7 @@ class BookAuthorList extends Component
     public function saveAuthorCreate(){
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
-        $this->uuid = \Illuminate\Support\Str::random(20);
+        $this->uuid = \Illuminate\Support\Str::random(24);
 
         // validar form
         $validatedData = $this->validate();

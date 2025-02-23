@@ -48,7 +48,7 @@ class BookLibrary extends Component
 
     public function render()
     {
-        $status_book = [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
+        $status_book = Book::statusBook();
         $book_collections = BookCollection::where('user_id', Auth::user()->id)->get();
         $book_authors = BookAuthor::where('user_id', Auth::user()->id)->get();
         $book_tags = BookTag::where('user_id', Auth::user()->id)->get();

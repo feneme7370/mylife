@@ -25,6 +25,8 @@ return new class extends Migration
             
             $table->integer('number_collection')->nullable();
 
+            $table->integer('media_type')->nullable(); // 1 libro - 2 manga
+
             $table->integer('pages')->nullable();
             $table->integer('rating')->nullable();
             $table->text('personal_description')->nullable();

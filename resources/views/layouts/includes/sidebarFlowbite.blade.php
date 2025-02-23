@@ -100,6 +100,16 @@
                 <x-sistem.icons.for-icons-app icon="book" />
             </x-sistem.navlinks.navlink-sidebar-flowbite>
 
+            <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('media_dashboard') }}"
+                :active="request()->routeIs('media_dashboard')" title="Peliculas y Series">
+                <x-sistem.icons.for-icons-app icon="media" />
+            </x-sistem.navlinks.navlink-sidebar-flowbite>
+
+            <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('extra_dashboard') }}"
+                :active="request()->routeIs('extra_dashboard')" title="Extras">
+                <x-sistem.icons.for-icons-app icon="extra" />
+            </x-sistem.navlinks.navlink-sidebar-flowbite>
+
             <li class="border-t border-purple-300"></li>
               
 

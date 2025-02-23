@@ -20,7 +20,7 @@ class BookList extends Component
     public function updatingCollectionSelected() {$this->resetPage(pageName: 'p_book');}
 
     // propiedades de busqueda
-    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 10, $status_read = "", $collection_selected;
+    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 10, $status_read = "", $collection_selected, $media_type_selected;
 
     public $book;
 
@@ -77,7 +77,8 @@ class BookList extends Component
 
     public function render()
     {
-        $status_book = [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
+        $type_content = Book::typeContent();
+        $status_book = Book::statusBook();
         $collections = BookCollection::where('user_id', Auth::user()->id)->get();
         
         $books = Book::with(['user'])
@@ -93,6 +94,11 @@ class BookList extends Component
                 // });
             });
         })
+        ->when( $this->media_type_selected, function($query) {
+            return $query->where(function( $query) {
+                $query->where('media_type', 'like', '%'.$this->media_type_selected . '%');
+            });
+        })
         ->when($this->status_read, function( $query) {
             return $query->where('status', $this->status_read);
         })
@@ -106,6 +112,7 @@ class BookList extends Component
             'books',
             'status_book',
             'collections',
+            'type_content',
         ));
     }
 }

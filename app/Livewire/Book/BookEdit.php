@@ -23,7 +23,7 @@ class BookEdit extends Component
     $start_date,
     $end_date,
 
-    // $book_collection_id,
+    $media_type,
     $number_collection,
 
     $pages,
@@ -55,6 +55,7 @@ class BookEdit extends Component
             'release_date' => ['nullable'],
             'start_date' => ['nullable'],
             'end_date' => ['nullable'],
+            'media_type' => ['nullable', 'numeric'],
     
             // 'book_collection_id' => ['required', 'numeric', 'min:0'],
             'number_collection' => ['nullable', 'numeric'],
@@ -83,6 +84,7 @@ class BookEdit extends Component
         'release_date' => 'fecha de publicacion',
         'start_date' => 'fecha de comienzo',
         'end_date' => 'fecha de finalizacion',
+        'media_type' => 'tipo de contenido',
 
         // 'book_collection_id' => 'collecion',
         'number_collection' => 'numero de collecion',
@@ -100,9 +102,9 @@ class BookEdit extends Component
         'user_id' => 'usuario',
     ];
     
-    public function mount($id){
+    public function mount($uuid){
 
-        $book = Book::find($id);
+        $book = Book::where('uuid', $uuid)->first();
         $this->book = $book;
 
         $this->title = $book['title'];
@@ -113,6 +115,7 @@ class BookEdit extends Component
         $this->end_date = $book['end_date'];
 
         // $this->book_collection_id = $book['book_collection_id'];
+        $this->media_type = $book['media_type'];
         $this->number_collection = $book['number_collection'];
 
         $this->pages = $book['pages'];
@@ -130,13 +133,32 @@ class BookEdit extends Component
         $this->selected_book_collections = $book->book_collections->pluck('id')->toArray();
     }
 
+    public function updated($propertyName)
+    {
+        $this->updateStatus();
+    }
+
+    public function updateStatus()
+    {
+        if (empty($this->start_date) && empty($this->end_date)) {
+            $this->status = 1;
+        } elseif (!empty($this->start_date) && empty($this->end_date)) {
+            $this->status = 3;
+        } elseif (!empty($this->start_date) && !empty($this->end_date)) {
+            $this->status = 2;
+        } elseif (empty($this->start_date) && !empty($this->end_date)) {
+            $this->status = 2;
+        }
+    }     
+
 
     public function saveBook(){
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->title);
-
+        
         // validar form
         $validatedData = $this->validate();
+        dd($this->personal_description);
         
         $this->book->update($validatedData);
         $this->book->book_tags()->sync($this->selected_book_tags);
@@ -147,11 +169,13 @@ class BookEdit extends Component
     }
     public function render()
     {
-        $book_authors = BookAuthor::where('user_id', Auth::user()->id)->get();
-        $book_collections = BookCollection::where('user_id', Auth::user()->id)->get();
-        $status_book = [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
-        $book_tags = BookTag::where('user_id', Auth::user()->id)->get();
-        $valoration_stars = [1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+        $book_authors = BookAuthor::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+        $book_collections = BookCollection::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+        $book_tags = BookTag::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+
+        $type_content = Book::typeContent();
+        $status_book = Book::statusBook();
+        $valoration_stars = Book::valorationStars();
 
         return view('livewire.book.book-edit', compact(
             'book_authors',
@@ -159,6 +183,7 @@ class BookEdit extends Component
             'book_tags',
             'status_book',
             'valoration_stars',
+            'type_content',
         ));
     }
 }

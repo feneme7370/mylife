@@ -43,12 +43,12 @@
     <div class="w-full ">
 
 
-        <div class="sm:m-3 p-4 bg-purple-100 border border-purple-200 rounded-lg shadow-sm sm:p-8 ">
+        <div class="sm:m-3 p-4 bg-gray-100 border border-gray-200 rounded-lg shadow-sm sm:p-8 ">
     
             <div class="py-2">
-                <p class="mb-4 text-xl md:text-2xl font-bold text-purple-900">Tablero Personal</p>
-
-                <p><a class="mb-4 text-sm md:text-base font-bold text-purple-800" href="{{ route('book_dashboard') }}">Lista de libros</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_dashboard') }}">Lista de Libros</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('media_dashboard') }}">Lista de Peliculas y Series</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('extra_dashboard') }}">Extras</a></p>
 
             </div>
 

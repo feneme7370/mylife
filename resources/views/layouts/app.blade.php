@@ -19,6 +19,7 @@
 
         <link rel="stylesheet" href="{{asset('lib/lightbox/css/lightbox.min.css')}}">
         <link rel="stylesheet" href="{{asset('lib/toastr/toastr.min.css')}}">
+
     </head>
     <body class="f-serif antialiased transition-all duration-300 ease-in-out bg-purple-50" id="body">
 
@@ -34,6 +35,11 @@
         <!-- libs -->
         <script src="{{asset('lib/jquery/jquery.min.js')}}"  ></script>
         <script src="{{asset('lib/flowbite/flowbite.min.js')}}"  ></script>
+        
+
+        {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}
+
+
         <script src="{{asset('lib/lightbox/js/lightbox.min.js')}}"  ></script>
         <script src="{{asset('lib/sweetalert2/sweetalert2.all.min.js')}}"  ></script>
         <script src="{{asset('lib/toastr/toastr.min.js')}}"  ></script>

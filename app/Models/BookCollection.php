@@ -10,7 +10,7 @@ class BookCollection extends Model
         'name',
         'slug',
         'description',
-        
+        'cover_image_url',
         'uuid',
         'user_id',
     ];
@@ -19,5 +19,9 @@ class BookCollection extends Model
     {
         return $this->belongsToMany(Book::class, 'book_book_collection')
                     ->withTimestamps();
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

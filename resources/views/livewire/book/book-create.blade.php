@@ -1,5 +1,6 @@
 <div class="w-full">
     <form wire:submit.prevent="saveBook" class="grid grid-cols-12 gap-1 sm:m-3 p-4 bg-white border border-purple-200 rounded-lg shadow-sm sm:p-8  ">
+
         <div class="col-span-12">
             <x-pages.forms.label-form for="title" value="{{ __('Titulo') }}" />
             <x-pages.forms.input-form id="title" type="text" placeholder="{{ __('Titulo') }}" wire:model="title"
@@ -97,29 +98,42 @@
 
         <div class="sm:col-span-3 col-span-6">
             <x-pages.forms.label-form for="start_date" value="{{ __('Comenzado') }}" />
-            <x-pages.forms.input-form id="start_date" type="date" placeholder="{{ __('Comenzado') }}" wire:model="start_date"
+            <x-pages.forms.input-form id="start_date" type="date" placeholder="{{ __('Comenzado') }}" wire:model.live="start_date"
                   />
             <x-pages.forms.input-error for="start_date" />
         </div>
 
         <div class="sm:col-span-3 col-span-6">
             <x-pages.forms.label-form for="end_date" value="{{ __('Finalizado') }}" />
-            <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Finalizado') }}" wire:model="end_date"
+            <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Finalizado') }}" wire:model.live="end_date"
                   />
+                  <div class="col-span-12 sm:col-span-6 flex items-center justify-start">
+                    <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span>
+                    <span>{{ $status ? $status_book[$status] : 'Estado' }}</span>
+                </div>
             <x-pages.forms.input-error for="end_date" />
         </div>
 
-        <div class="col-span-12 sm:col-span-6">
+        
+        {{-- <div class="col-span-12 sm:col-span-6 flex items-center justify-start">
             <x-pages.forms.label-form for="status" value="{{ __('Estado') }}" />
             <x-pages.forms.select-form wire:model="status" id="status" value_placeholder="- Estados -">
-                <option selected>Estados</option>
               @foreach ($status_book as $key => $value)
                   <option value="{{ $key }}">{{ $value }}</option>
               @endforeach
             </x-pages.forms.select-form>
-            <x-pages.forms.input-error for="status" />
+            <x-pages.forms.input-error for="status" /> 
+          </div>--}}
+          <div class="col-span-12 sm:col-span-6">
+            <x-pages.forms.label-form for="media_type" value="{{ __('Tipo de contenido') }}" />
+            <x-pages.forms.select-form wire:model="media_type" id="media_type" value_placeholder="- Tipo -">
+              @foreach ($type_content as $key => $value)
+                  <option value="{{ $key }}">{{ $value }}</option>
+              @endforeach
+            </x-pages.forms.select-form>
+            <x-pages.forms.input-error for="media_type" /> 
           </div>
-
+          
         <div class="col-span-12">
             <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL de portada') }}" />
             <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL de portada') }}" wire:model="cover_image_url"
@@ -144,17 +158,22 @@
 
         <div class="col-span-12">
             <x-pages.forms.label-form for="personal_description" value="{{ __('Descripcion personal') }}" />
-            <x-pages.forms.textarea-form id="personal_description" rows="15" placeholder="{{ __('Descripcion personal') }}"
-                wire:model="personal_description" />
+            <x-pages.forms.textarea-form id="personal_description" name="personal_description" rows="15" placeholder="{{ __('Descripcion personal') }}"
+                wire:model.live="personal_description" />
             <x-pages.forms.input-error for="personal_description" />
         </div>
 
         <x-pages.forms.validation-errors class="mb-4 col-span-12" />
 
+
+        
         <x-pages.buttons.primary-btn 
         class="col-span-4"
         title="Guardar" 
         wire:click="saveBook" 
-    ></x-pages.buttons.primary-btn>
+        ></x-pages.buttons.primary-btn>
+
     </form>
+
+
 </div>

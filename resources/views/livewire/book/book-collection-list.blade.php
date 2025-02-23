@@ -77,6 +77,13 @@
                     <x-pages.forms.input-error for="name" />
                   </div>
             
+                  <div class="col-span-12">
+                    <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL del tag') }}" />
+                    <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL del tag') }}" wire:model="cover_image_url"
+                          />
+                    <x-pages.forms.input-error for="cover_image_url" />
+                </div>
+        
                   <div>
                     <x-pages.forms.label-form for="description" value="{{ __('Descripcion') }}" />
                     <x-pages.forms.textarea-form id="description"
@@ -112,6 +119,13 @@
             <x-pages.forms.input-error for="name" />
           </div>
     
+          <div class="col-span-12">
+            <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL del tag') }}" />
+            <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL del tag') }}" wire:model="cover_image_url"
+                  />
+            <x-pages.forms.input-error for="cover_image_url" />
+        </div>
+
           <div>
             <x-pages.forms.label-form for="description" value="{{ __('Descripcion') }}" />
             <x-pages.forms.textarea-form id="description"

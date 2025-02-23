@@ -13,13 +13,12 @@ class Book extends Model
     protected $fillable = [
         'title',
         'slug',
-        // 'book_author_id',
         'synopsis',
         'release_date',
         'start_date',
         'end_date',
 
-        // 'book_collection_id',
+        'media_type',
         'number_collection',
 
         'pages',
@@ -54,5 +53,19 @@ class Book extends Model
     {
         return $this->belongsToMany(BookCollection::class, 'book_book_collection')
                     ->withTimestamps();
+    }
+
+
+    public static function valorationStars()
+    {
+        return [1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+    }
+    public static function typeContent()
+    {
+        return [1 => 'Libro', 2 => 'Manga'];
+    }
+    public static function statusBook()
+    {
+        return [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
     }
 }

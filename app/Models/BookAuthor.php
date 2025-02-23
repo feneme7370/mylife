@@ -14,7 +14,7 @@ class BookAuthor extends Model
         'birthdate', 
         'description', 
         'country',
-        
+        'cover_image_url',
         'uuid',
         'user_id',
     ];
@@ -23,5 +23,9 @@ class BookAuthor extends Model
     {
         return $this->belongsToMany(Book::class, 'book_book_author')
                     ->withTimestamps();
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

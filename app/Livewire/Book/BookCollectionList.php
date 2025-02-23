@@ -37,6 +37,7 @@ class BookCollectionList extends Component
     $name,
     $slug,
     $description,
+    $cover_image_url,
     
     $uuid,
     $user_id;
@@ -50,6 +51,7 @@ class BookCollectionList extends Component
             'slug' => ['required', 'string', Rule::unique('book_collections', 'slug')->ignore($this->book_collection->id ?? 0)],
 
             'description' => ['nullable', 'string'],
+            'cover_image_url' => ['nullable', 'string'],
 
             'uuid' => ['required', 'string'],
             'user_id' => ['required', 'numeric', 'min:0'],
@@ -63,6 +65,7 @@ class BookCollectionList extends Component
         'slug' => 'nombre url',
 
         'description' => 'descripcion',
+        'cover_image_url' => 'imagen web',
 
         'uuid' => 'uuid',
         'user_id' => 'usuario',
@@ -71,13 +74,14 @@ class BookCollectionList extends Component
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
-        $this->reset(['name', 'slug', 'description', 'uuid', 'user_id']);
+        $this->reset(['name', 'slug', 'description', 'cover_image_url', 'uuid', 'user_id']);
     }
     // cargar datos a editar
     public function preloadEditModal($item){
         $this->name = $item['name'];
         $this->slug = $item['slug'];
         $this->description = $item['description'];
+        $this->cover_image_url = $item['cover_image_url'];
         $this->uuid = $item['uuid'];
         $this->user_id = $item['user_id'];
     }
@@ -146,7 +150,7 @@ class BookCollectionList extends Component
     public function saveCollectionCreate(){
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
-        $this->uuid = \Illuminate\Support\Str::random(20);
+        $this->uuid = \Illuminate\Support\Str::random(24);
 
         // validar form
         $validatedData = $this->validate();

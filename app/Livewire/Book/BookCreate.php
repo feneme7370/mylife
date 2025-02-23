@@ -21,7 +21,7 @@ class BookCreate extends Component
     $start_date,
     $end_date,
 
-    // $book_collection_id,
+    $media_type,
     $number_collection,
 
     $pages,
@@ -53,6 +53,7 @@ class BookCreate extends Component
             'release_date' => ['nullable'],
             'start_date' => ['nullable'],
             'end_date' => ['nullable'],
+            'media_type' => ['nullable', 'numeric'],
     
             // 'book_collection_id' => ['required', 'numeric', 'min:0'],
             'number_collection' => ['nullable', 'numeric'],
@@ -81,6 +82,7 @@ class BookCreate extends Component
         'release_date' => 'fecha de publicacion',
         'start_date' => 'fecha de comienzo',
         'end_date' => 'fecha de finalizacion',
+        'media_type' => 'tipo de contenido',
 
         // 'book_collection_id' => 'collecion',
         'number_collection' => 'numero de collecion',
@@ -98,10 +100,28 @@ class BookCreate extends Component
         'user_id' => 'usuario',
     ];
 
+    public function updated($propertyName)
+    {
+        $this->updateStatus();
+    }
+
+    public function updateStatus()
+    {
+        if (empty($this->start_date) && empty($this->end_date)) {
+            $this->status = 1;
+        } elseif (!empty($this->start_date) && empty($this->end_date)) {
+            $this->status = 3;
+        } elseif (!empty($this->start_date) && !empty($this->end_date)) {
+            $this->status = 2;
+        } elseif (empty($this->start_date) && !empty($this->end_date)) {
+            $this->status = 2;
+        }
+    }       
+
     public function saveBook(){
         $this->user_id = Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->title);
-        $this->uuid = \Illuminate\Support\Str::random(20);
+        $this->uuid = \Illuminate\Support\Str::random(24);
         
         // validar form
         $validatedData = $this->validate();
@@ -116,12 +136,13 @@ class BookCreate extends Component
 
     public function render()
     {
-        $book_authors = BookAuthor::where('user_id', Auth::user()->id)->get();
-        $book_collections = BookCollection::where('user_id', Auth::user()->id)->get();
-        $book_tags = BookTag::where('user_id', Auth::user()->id)->get();
+        $book_authors = BookAuthor::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+        $book_collections = BookCollection::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+        $book_tags = BookTag::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
 
-        $status_book = [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
-        $valoration_stars = [1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+        $type_content = Book::typeContent();
+        $status_book = Book::statusBook();
+        $valoration_stars = Book::valorationStars();
 
         return view('livewire.book.book-create',compact(
             'book_authors',
@@ -129,6 +150,7 @@ class BookCreate extends Component
             'book_tags',
             'status_book',
             'valoration_stars',
+            'type_content',
         ));
     }
 }

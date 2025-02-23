@@ -39,15 +39,15 @@
     
             <div class="py-2">
 
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_list') }}">Lista de libros</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_list') }}">◉ <span class="hover:underline">Lista de libros</span></a></p>
 
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_library') }}">Biblioteca</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_library') }}">◉ <span class="hover:underline">Biblioteca</span></a></p>
 
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_author_list') }}">Autores</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_author_list') }}">◉ <span class="hover:underline">Autores</span></a></p>
 
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_collection_list') }}">Colecciones</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_collection_list') }}">◉ <span class="hover:underline">Colecciones</span></a></p>
 
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_tag_list') }}">Etiquetas</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_tag_list') }}">◉ <span class="hover:underline">Etiquetas</span></a></p>
             </div>
 
 

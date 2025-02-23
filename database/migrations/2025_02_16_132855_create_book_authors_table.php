@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('birthdate')->nullable();
             $table->string('description')->nullable();
             $table->string('country')->nullable();
+
+            $table->string('cover_image_url')->nullable();
             
             $table->string('uuid')->unique();
 

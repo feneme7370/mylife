@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@plugin "flowbite-typography";
+
+
+@import "flowbite/src/themes/default";
+
+
+
+@plugin "flowbite/plugin";
+
+
+
+@source "../node_modules/flowbite";
+
+
+
 [x-cloak] {
     display: none;
 }

@@ -43,6 +43,15 @@
                 @endforeach
             </select>
         </div>
+
+        <div>
+            <select id="media_type_selected" wire:model.live="media_type_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
+              <option selected value="">Tipo</option>
+                @foreach($type_content as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                @endforeach
+            </select>
+        </div>
         
         <div class="flex gap-1 justify-between items-center">
             <div class="flex items-center">
@@ -123,7 +132,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center justify-center gap-1">
-                        <a href="{{ route('book_edit', ['id' => $item->id]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
+                        <a href="{{ route('book_edit', ['uuid' => $item->uuid]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
                         <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')"
                         wire:loading.attr="disabled" />
                     </div>
