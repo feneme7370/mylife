@@ -6,6 +6,7 @@ use App\Models\Media;
 use Livewire\Component;
 use App\Models\MediaTag;
 use App\Models\MediaActor;
+use App\Models\MediaSeason;
 use App\Models\MediaDirector;
 use App\Models\MediaCollection;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,9 @@ class MediaEdit extends Component
     $uuid,
     $user_id;
 
+    // propiedad de url
+    public $type;
+
     // propiedades para editar
     public $selected_media_tags = [];
     public $selected_media_actors = [];
@@ -60,7 +64,7 @@ class MediaEdit extends Component
     
             
             'number_collection' => ['nullable', 'numeric'],
-            'media_type' => ['nullable', 'numeric'],
+            'media_type' => ['nullable', 'numeric', 'min:1', 'max:2'],
     
             'duration'  => ['nullable', 'numeric'],
             'rating' => ['nullable', 'numeric', 'min:1', 'max:5'],
@@ -102,6 +106,21 @@ class MediaEdit extends Component
         'user_id' => 'usuario',
     ];
     
+    public $seasons = [];
+    public function addSeason()
+    {
+        $this->seasons[] = ['id' => null, 'title' => '', 'episodes_count' => 0, 'description' => ''];
+    }
+    public function removeSeason($index)
+    {
+        if (!empty($this->seasons[$index]['id'])) {
+            MediaSeason::find($this->seasons[$index]['id'])->delete();
+        }
+        
+        unset($this->seasons[$index]);
+        $this->seasons = array_values($this->seasons); // Reindexar array
+    }
+
     public function mount($uuid){
 
         $media = Media::where('uuid', $uuid)->first();
@@ -131,6 +150,17 @@ class MediaEdit extends Component
         $this->selected_media_actors = $media->media_actors->pluck('id')->toArray();
         $this->selected_media_directors = $media->media_directors->pluck('id')->toArray();
         $this->selected_media_collections = $media->media_collections->pluck('id')->toArray();
+
+        if ($this->media_type == 2) {
+            $this->seasons = $media->seasons->map(function ($season) {
+                return [
+                    'id' => $season->id,
+                    'title' => $season->title,
+                    'episodes_count' => $season->episodes_count,
+                    'description' => $season->description,
+                ];
+            })->toArray();
+        }
     }
 
     public function updated($propertyName)
@@ -156,6 +186,8 @@ class MediaEdit extends Component
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->title);
         
+        $this->media_type = $this->type;
+
         // validar form
         $validatedData = $this->validate();
         
@@ -164,6 +196,26 @@ class MediaEdit extends Component
         $this->media->media_actors()->sync($this->selected_media_actors);
         $this->media->media_directors()->sync($this->selected_media_directors);
         $this->media->media_collections()->sync($this->selected_media_collections);
+
+        if ($this->media_type == 2) {
+            foreach ($this->seasons as $season) {
+                if ($season['id']) {
+                    MediaSeason::find($season['id'])->update([
+                        'title' => $season['title'],
+                        'episodes_count' => $season['episodes_count'],
+                        'description' => $season['description'],
+                    ]);
+                } else {
+                    MediaSeason::create([
+                        'media_id' => $this->media->id,
+                        'title' => $season['title'],
+                        'episodes_count' => $season['episodes_count'],
+                        'description' => $season['description'],
+                    ]);
+                }
+            }
+            
+        }
 
         return redirect()->route('media_list')->with('message', 'Editado exitosamente');
     }

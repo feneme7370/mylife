@@ -158,7 +158,6 @@ class BookEdit extends Component
         
         // validar form
         $validatedData = $this->validate();
-        dd($this->personal_description);
         
         $this->book->update($validatedData);
         $this->book->book_tags()->sync($this->selected_book_tags);

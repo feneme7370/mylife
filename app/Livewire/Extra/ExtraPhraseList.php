@@ -45,7 +45,7 @@ class ExtraPhraseList extends Component
     // reglas de validacion
     public function rules(){
         return [
-            'name' => ['required', 'string', Rule::unique('extra_phrases', 'name')->ignore($this->extra_phrase->id ?? 0)],
+            'name' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             
             'uuid' => ['required', 'string'],

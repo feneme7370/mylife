@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\MediaSeason;
 use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model
@@ -56,6 +57,10 @@ class Media extends Model
         return $this->belongsToMany(MediaCollection::class, 'media_media_collection')
                     ->withTimestamps();
     }
+    public function seasons()
+    {
+        return $this->hasMany(MediaSeason::class);
+    }
 
 
 
@@ -66,7 +71,7 @@ class Media extends Model
     }
     public static function typeContent()
     {
-        return [1 => 'Pelicula', 2 => 'Serie', 3 => 'Anime'];
+        return [1 => 'Pelicula', 2 => 'Serie'];
     }
     public static function statusMedia()
     {

@@ -14,10 +14,14 @@
                 <input type="text" wire:model.live='search' class="block p-2 ps-10 text-sm text-gray-900 border border-purple-300 rounded-lg w-full sm:w-80 bg-purple-50 focus:ring-purple-500 focus:border-purple-500      " placeholder="Buscar libro">
             </div>
             <div>
-                <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('media_create') }}">Crear</a><span class="text-xl font-medium text-gray-600 hover:underline "> | </span>
-                <a href="{{ route('media_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
+                <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('media_create', ['type' => 1]) }}">Crear Peli</a>
+                <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('media_create', ['type' => 2]) }}">Crear Serie</a>
+                {{-- <span class="text-xl font-medium text-gray-600 hover:underline"> --}}
+                    <span class="text-xl font-medium text-gray-600 hover:underline "> | </span>
+                
+                    <a href="{{ route('media_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
                     Volver
-                </a>
+                    </a>
             </div>
         </div>
     

@@ -54,8 +54,8 @@ Route::middleware([
 
     // media
     Route::get('/media_dashboard', MediaDashboard::class)->name('media_dashboard');
-    Route::get('/media_create', MediaCreate::class)->name('media_create');
-    Route::get('/media_edit/{uuid}', MediaEdit::class)->name('media_edit');
+    Route::get('/media_create/{type}', MediaCreate::class)->name('media_create');
+    Route::get('/media_edit/{type}/{uuid}', MediaEdit::class)->name('media_edit');
     Route::get('/media_library', MediaLibrary::class)->name('media_library');
     Route::get('/media_list', MediaList::class)->name('media_list');
     Route::get('/media_view/{uuid}', MediaView::class)->name('media_view');

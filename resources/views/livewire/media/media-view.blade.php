@@ -58,6 +58,12 @@
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Valoracion:</span> {{ $valoration_stars[$media->rating] ?? 'Desconocido' }}</p>
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Estado:</span> {{ $status_media[$media->status] ?? 'Desconocido' }}</p>
 
+        @foreach ($media->seasons as $season_item)
+        <div class="px-3 border-l-4 border-purple-800">
+            <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Temporada:</span> {{ $season_item->title }} ({{ $season_item->episodes_count }} cap.)</p>
+            <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Descripcion:</span> {{ $season_item->description }}</p>
+        </div>
+        @endforeach
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">Descripcion personal</p>
         <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{{ $media->personal_description }}</p>
 

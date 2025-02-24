@@ -30,7 +30,8 @@
         <input type="text" wire:model.live='search' class="block p-2 ps-10 text-sm text-gray-900 border border-purple-300 rounded-lg w-80 bg-purple-50 focus:ring-purple-500 focus:border-purple-500      " placeholder="Buscar libro">
     </div>
     <div>
-        <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('media_create') }}">Crear</a>
+        <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('media_create', ['type' => 1]) }}">Crear Peli</a>
+        <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('media_create', ['type' => 2]) }}">Crear Serie</a>
     </div>
 </div>
 
@@ -131,7 +132,7 @@
             </td>
             <td class="px-6 py-4">
                 <div class="flex items-center justify-center gap-1">
-                    <a href="{{ route('media_edit', ['uuid' => $item->uuid]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
+                    <a href="{{ route('media_edit', ['type' => $item->media_type, 'uuid' => $item->uuid]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
                     <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')"
                     wire:loading.attr="disabled" />
                 </div>

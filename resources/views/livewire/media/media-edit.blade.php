@@ -1,5 +1,24 @@
 <div class="w-full">
 
+    {{-- breadcrum, title y button --}}
+    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Peliculas y Series"
+    link_2="{{ route('media_dashboard') }}" title_3="Crear {{ $type_content[$type] }}" link_3="{{ route('media_list') }}" />
+
+<x-pages.menus.title-and-btn>
+
+    @slot('title')
+    <x-pages.titles.title-pages title="Crear {{ $type_content[$type] }}" />
+    @endslot
+
+    @slot('button')
+    <a href="{{ route('media_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
+        Volver
+    </a>
+    @endslot
+</x-pages.menus.title-and-btn>
+{{-- end breadcrum, title y button --}}
+
+
     <form wire:submit.prevent="saveMedia" class="grid grid-cols-12 gap-1 sm:m-3 p-4 bg-white border border-purple-200 rounded-lg shadow-sm sm:p-8  ">
         <div class="col-span-12">
             <x-pages.forms.label-form for="title" value="{{ __('Titulo') }}" />
@@ -76,26 +95,40 @@
             <x-pages.forms.input-error for="rating" />
           </div>
 
-        <div class="sm:col-span-3 col-span-6">
-            <x-pages.forms.label-form for="start_date" value="{{ __('Comenzado') }}" />
-            <x-pages.forms.input-form id="start_date" type="date" placeholder="{{ __('Comenzado') }}" wire:model.live="start_date"
-                  />
-            <x-pages.forms.input-error for="start_date" />
-        </div>
+        @if ($type == 1)
+            <div class="sm:col-span-3 col-span-6">
+                <x-pages.forms.label-form for="end_date" value="{{ __('Visto') }}" />
+                <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Visto') }}" wire:model="end_date"
+                    />
+                    {{-- <div class="col-span-12 sm:col-span-6 flex items-center justify-start">
+                        <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span>
+                        <span>{{ $status ? $status_media[$status] : 'Estado' }}</span>
+                    </div> --}}
+                <x-pages.forms.input-error for="end_date" />
+            </div>
+        @endif
+        @if ($type == 2)
+            <div class="sm:col-span-3 col-span-6">
+                <x-pages.forms.label-form for="start_date" value="{{ __('Comenzado') }}" />
+                <x-pages.forms.input-form id="start_date" type="date" placeholder="{{ __('Comenzado') }}" wire:model.live="start_date"
+                    />
+                <x-pages.forms.input-error for="start_date" />
+            </div>
 
-        <div class="sm:col-span-3 col-span-6">
-            <x-pages.forms.label-form for="end_date" value="{{ __('Finalizado') }}" />
-            <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Finalizado') }}" wire:model.live="end_date"
-                  />
-                  <div class="col-span-12 sm:col-span-6 flex items-center justify-start">
-                    <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span>
-                    <span>{{ $status ? $status_media[$status] : 'Estado' }}</span>
-                </div>
-            <x-pages.forms.input-error for="end_date" />
-        </div>
+            <div class="sm:col-span-3 col-span-6">
+                <x-pages.forms.label-form for="end_date" value="{{ __('Finalizado') }}" />
+                <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Finalizado') }}" wire:model.live="end_date"
+                    />
+                    <div class="col-span-12 sm:col-span-6 flex items-center justify-start">
+                        <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span>
+                        <span>{{ $status ? $status_media[$status] : 'Estado' }}</span>
+                    </div>
+                <x-pages.forms.input-error for="end_date" />
+            </div>
+        @endif
 
         
-        <div class="col-span-12 sm:col-span-6">
+        {{-- <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="media_type" value="{{ __('Tipo de contenido') }}" />
             <x-pages.forms.select-form wire:model="media_type" id="media_type" value_placeholder="- Tipo -">
               @foreach ($type_content as $key => $value)
@@ -103,16 +136,15 @@
               @endforeach
             </x-pages.forms.select-form>
             <x-pages.forms.input-error for="media_type" /> 
-          </div>
+          </div> --}}
 
         <div class="col-span-12">
             <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL de portada') }}" />
-            <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL de portada') }}" wire:model="cover_image_url"
-                  />
+            <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL de portada') }}" wire:model="cover_image_url"/>
             <x-pages.forms.input-error for="cover_image_url" />
         </div>
 
-        <div class="my-3 flex flex-wrap gap-1 col-span-12">
+        <div class="mt-3 flex flex-wrap gap-1 col-span-12">
             @foreach ($media_tags as $item)
             
             <x-pages.forms.label-form for="{{ 'selected_media_tags['. $item->id .']' }}" value="{{ $item->name }}">
@@ -127,6 +159,33 @@
 
         </div>
 
+        @if ($type == 2)
+        <div class="col-span-12">
+            <x-pages.forms.label-form class="col-span-12" value="{{ __('Temporadas') }}" />
+        
+            <x-pages.buttons.primary-btn class="col-span-4" title="Agregar temporada" wire:click="addSeason">
+            </x-pages.buttons.primary-btn>
+        
+            @foreach($seasons as $index => $season)
+            <div class="grid bg-gray-100 rounded-lg my-1 py-1">
+                <x-pages.forms.label-form class="col-span-12" value="{{ __('Temporada') }}" />
+        
+                <x-pages.forms.input-form class="col-span-9" type="string" placeholder="{{ __('Nombre de la temporada') }}"
+                    wire:model="seasons.{{ $index }}.title" />
+                <x-pages.forms.input-form class="col-span-3" type="number" placeholder="{{ __('Cantidad de capitulos') }}"
+                    wire:model="seasons.{{ $index }}.episodes_count" />
+                <x-pages.forms.textarea-form class="col-span-12" rows="3" placeholder="{{ __('Descripcion de la temporada') }}"
+                    wire:model="seasons.{{ $index }}.description" />
+        
+                <x-pages.buttons.normal-btn class="col-span-4" title="Borrar temporada" wire:click="removeSeason({{ $index }})">
+                </x-pages.buttons.normal-btn>
+            </div>
+            @endforeach
+        
+        </div>
+        
+        @endif
+
         <div class="col-span-12">
             <x-pages.forms.label-form for="personal_description" value="{{ __('Descripcion personal') }}" />
             <x-pages.forms.textarea-form id="personal_description" rows="15" placeholder="{{ __('Descripcion personal') }}"
@@ -134,6 +193,7 @@
             <x-pages.forms.input-error for="personal_description" />
         </div>
 
+        
         <x-pages.forms.validation-errors class="mb-4 col-span-12" />
 
         <x-pages.buttons.primary-btn 
@@ -142,12 +202,6 @@
             wire:click="saveMedia" 
         ></x-pages.buttons.primary-btn>
 
-        <div class="col-span-12">
-
-
-        </div>
-
-    
     </form>
 
     

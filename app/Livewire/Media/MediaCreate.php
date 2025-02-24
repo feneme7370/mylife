@@ -8,6 +8,7 @@ use App\Models\MediaTag;
 use App\Models\MediaActor;
 use App\Models\MediaDirector;
 use App\Models\MediaCollection;
+use App\Models\MediaSeason;
 use Illuminate\Support\Facades\Auth;
 
 class MediaCreate extends Component
@@ -37,6 +38,9 @@ class MediaCreate extends Component
     $uuid,
     $user_id;
 
+    // propiedad de url
+    public $type;
+
     // propiedades para editar
     public $selected_media_tags = [];
     public $selected_media_actors = [];
@@ -58,7 +62,7 @@ class MediaCreate extends Component
     
             
             'number_collection' => ['nullable', 'numeric'],
-            'media_type' => ['nullable', 'numeric'],
+            'media_type' => ['nullable', 'numeric', 'min:1', 'max:2'],
     
             'duration'  => ['nullable', 'numeric'],
             'rating' => ['nullable', 'numeric', 'min:1', 'max:5'],
@@ -100,6 +104,17 @@ class MediaCreate extends Component
         'user_id' => 'usuario',
     ];
 
+    public $seasons = [];
+    public function addSeason()
+    {
+        $this->seasons[] = ['title' => '', 'episodes_count' => 0, 'description' => ''];
+    }
+    public function removeSeason($index)
+    {
+        unset($this->seasons[$index]);
+        $this->seasons = array_values($this->seasons); // Reindexar array
+    }
+
     public function updated($propertyName)
     {
         $this->updateStatus();
@@ -123,6 +138,8 @@ class MediaCreate extends Component
         $this->slug = \Illuminate\Support\Str::slug($this->title);
         $this->uuid = \Illuminate\Support\Str::random(24);
         
+        $this->media_type = $this->type;
+
         // validar form
         $validatedData = $this->validate();
         // dd($validatedData);
@@ -131,6 +148,18 @@ class MediaCreate extends Component
         $media->media_actors()->sync($this->selected_media_actors);
         $media->media_directors()->sync($this->selected_media_directors);
         $media->media_collections()->sync($this->selected_media_collections);
+
+        if ($this->media_type == 2) {
+            foreach ($this->seasons as $season) {
+                MediaSeason::create([
+                    'media_id' => $media->id,
+                    'title' => $season['title'],
+                    'episodes_count' => $season['episodes_count'],
+                    'description' => $season['description'],
+                ]);
+            }
+        }
+
 
         return redirect()->route('media_list')->with('message', 'Creado exitosamente');
     }
