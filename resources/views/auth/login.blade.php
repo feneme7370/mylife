@@ -8,7 +8,7 @@
               <img
                 aria-hidden="true"
                 class="object-cover w-full h-full"
-                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1335891621i/6596839.jpg"
+                src="https://www.kiwihopp.com/wp-content/uploads/2020/04/libros-sobre-nueva-zelanda-descargar.jpg"
                 alt="imagen login"
               />
             </div>

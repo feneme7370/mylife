@@ -57,6 +57,11 @@ class Media extends Model
         return $this->belongsToMany(MediaCollection::class, 'media_media_collection')
                     ->withTimestamps();
     }
+    public function media_genres()
+    {
+        return $this->belongsToMany(MediaGenre::class, 'media_media_genre')
+                    ->withTimestamps();
+    }
     public function seasons()
     {
         return $this->hasMany(MediaSeason::class);

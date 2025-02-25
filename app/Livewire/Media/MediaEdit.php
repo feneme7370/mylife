@@ -9,6 +9,7 @@ use App\Models\MediaActor;
 use App\Models\MediaSeason;
 use App\Models\MediaDirector;
 use App\Models\MediaCollection;
+use App\Models\MediaGenre;
 use Illuminate\Support\Facades\Auth;
 
 class MediaEdit extends Component
@@ -44,6 +45,7 @@ class MediaEdit extends Component
     public $type;
 
     // propiedades para editar
+    public $selected_media_genres = [];
     public $selected_media_tags = [];
     public $selected_media_actors = [];
     public $selected_media_directors = [];
@@ -146,6 +148,7 @@ class MediaEdit extends Component
         $this->uuid = $media['uuid'];
         $this->status = $media['status'];
 
+        $this->selected_media_genres = $media->media_genres->pluck('id')->toArray();
         $this->selected_media_tags = $media->media_tags->pluck('id')->toArray();
         $this->selected_media_actors = $media->media_actors->pluck('id')->toArray();
         $this->selected_media_directors = $media->media_directors->pluck('id')->toArray();
@@ -192,6 +195,7 @@ class MediaEdit extends Component
         $validatedData = $this->validate();
         
         $this->media->update($validatedData);
+        $this->media->media_genres()->sync($this->selected_media_genres);
         $this->media->media_tags()->sync($this->selected_media_tags);
         $this->media->media_actors()->sync($this->selected_media_actors);
         $this->media->media_directors()->sync($this->selected_media_directors);
@@ -225,6 +229,7 @@ class MediaEdit extends Component
         $media_directors = MediaDirector::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
         $media_collections = MediaCollection::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
         $media_tags = MediaTag::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+        $media_genres = MediaGenre::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
         
         $type_content = Media::typeContent();
         $status_media = Media::statusMedia();
@@ -235,6 +240,7 @@ class MediaEdit extends Component
             'media_directors',
             'media_collections',
             'media_tags',
+            'media_genres',
             'status_media',
             'valoration_stars',
             'type_content',

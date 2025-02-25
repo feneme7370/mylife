@@ -1,17 +1,17 @@
 <div class="w-full">
 
     {{-- breadcrum, title y button --}}
-    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Libros"
-        link_2="{{ route('book_dashboard') }}" title_3="Etiquetas" link_3="{{ route('book_tag_list') }}" />
+    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Peliculas y Series"
+        link_2="{{ route('media_dashboard') }}" title_3="Genero" link_3="{{ route('media_genre_list') }}" />
 
     <x-pages.menus.title-and-btn>
 
         @slot('title')
-        <x-pages.titles.title-pages title="Etiquetas" />
+        <x-pages.titles.title-pages title="Genero" />
         @endslot
 
         @slot('button')
-        <a href="{{ route('book_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
+        <a href="{{ route('media_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
             Volver
         </a>
         @endslot
@@ -35,14 +35,14 @@
 
         <div class="flow-root">
             <ul role="list" class="divide-y divide-purple-200 ">
-                @foreach ($tags as $item)
+                @foreach ($genres as $item)
 
 
                 <li class="py-1 sm:py-2">
                     <div class="flex items-center">
                         <div class="flex-1 min-w-0 ms-4">
                             <p class="text-sm font-medium text-gray-900 truncate ">
-                                <a class="hover:underline" href="{{ route('book_library', ['t' => $item->uuid]) }}">{{
+                                <a class="hover:underline" href="{{ route('media_library', ['g' => $item->uuid]) }}">{{
                                     $item->name }}</a>
                             </p>
                         </div>
@@ -59,7 +59,7 @@
         </div>
 
         {{-- Paginacion --}}
-        <div class="mt-2">{{ $tags->onEachSide(1)->links() }}</div>
+        <div class="mt-2">{{ $genres->onEachSide(1)->links() }}</div>
         {{-- end Paginacion --}}
     </div>
 
@@ -70,7 +70,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <form wire:submit="saveTagCreate"
+            <form wire:submit="saveGenreCreate"
                 class="sm:m-3 p-4 bg-white border border-purple-200 rounded-lg shadow-sm sm:p-8  ">
 
                 <div>
@@ -81,8 +81,8 @@
                 </div>
 
                 <div class="col-span-12">
-                    <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL del tag') }}" />
-                    <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL del tag') }}" wire:model="cover_image_url"
+                    <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL del genre') }}" />
+                    <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL del genre') }}" wire:model="cover_image_url"
                           />
                     <x-pages.forms.input-error for="cover_image_url" />
                 </div>
@@ -100,7 +100,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-pages.buttons.primary-btn title="Guardar" wire:click="saveTagCreate"></x-pages.buttons.primary-btn>
+            <x-pages.buttons.primary-btn title="Guardar" wire:click="saveGenreCreate"></x-pages.buttons.primary-btn>
         </x-slot>
     </x-pages.modals.jetstream.dialog-modal>
     {{-- end modal action create --}}
@@ -111,7 +111,7 @@
         </x-slot>
 
         <x-slot name="content">
-            <form wire:submit="saveTagEdit"
+            <form wire:submit="saveGenreEdit"
                 class="sm:m-3 p-4 bg-white border border-purple-200 rounded-lg shadow-sm sm:p-8  ">
                 <div>
                     <x-pages.forms.label-form for="name" value="{{ __('Nombre') }}" />
@@ -121,8 +121,8 @@
                 </div>
 
                 <div class="col-span-12">
-                    <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL del tag') }}" />
-                    <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL del tag') }}" wire:model="cover_image_url"
+                    <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL del genre') }}" />
+                    <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL del genre') }}" wire:model="cover_image_url"
                           />
                     <x-pages.forms.input-error for="cover_image_url" />
                 </div>
@@ -141,7 +141,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-pages.buttons.primary-btn title="Guardar" wire:click="saveTagEdit"></x-pages.buttons.primary-btn>
+            <x-pages.buttons.primary-btn title="Guardar" wire:click="saveGenreEdit"></x-pages.buttons.primary-btn>
         </x-slot>
     </x-pages.modals.jetstream.dialog-modal>
     {{-- end modal action edit --}}
@@ -152,17 +152,17 @@
         </x-slot>
 
         <x-slot name="content">
-            <form wire:submit="deleteTag"
+            <form wire:submit="deleteGenre"
                 class="sm:m-3 p-4 bg-purple-50 border border-purple-200 rounded-lg shadow-sm sm:p-8  text-center">
 
-                <p class="mb-5">Desea borrar la coleccion?</p>
+                <p class="mb-5">Desea borrar el genero?</p>
 
 
             </form>
         </x-slot>
 
         <x-slot name="footer">
-            <x-pages.buttons.primary-btn title="Borrar" wire:click="deleteTag"></x-pages.buttons.primary-btn>
+            <x-pages.buttons.primary-btn title="Borrar" wire:click="deleteGenre"></x-pages.buttons.primary-btn>
         </x-slot>
     </x-pages.modals.jetstream.dialog-modal>
     {{-- end modal action --}}

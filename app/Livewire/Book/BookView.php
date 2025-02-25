@@ -3,10 +3,7 @@
 namespace App\Livewire\Book;
 
 use App\Models\Book;
-use App\Models\BookTag;
 use Livewire\Component;
-use Livewire\WithPagination;
-use Illuminate\Support\Facades\Auth;
 
 class BookView extends Component
 {

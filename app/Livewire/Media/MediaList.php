@@ -78,6 +78,7 @@ class MediaList extends Component
     {
         $type_content = Media::typeContent();
         $status_media = Media::statusMedia();
+        $valoration_stars = Media::valorationStars();
         
         $collections = MediaCollection::where('user_id', \Illuminate\Support\Facades\Auth::user()->id)->get();
         
@@ -118,6 +119,7 @@ class MediaList extends Component
             'status_media',
             'collections',
             'type_content',
+            'valoration_stars',
         ));
     }
 }

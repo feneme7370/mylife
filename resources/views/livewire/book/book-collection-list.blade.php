@@ -11,7 +11,7 @@
         @endslot
 
         @slot('button')
-        <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
+        <a href="{{ route('book_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
             Volver
         </a>
         @endslot

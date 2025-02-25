@@ -14,7 +14,7 @@
             @endif</h5>
             <div>
                 
-                <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
+                <a href="{{ route('book_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
                     Volver
                 </a>
             </div>
@@ -44,6 +44,12 @@
         {{-- @if ($book->number_collection)
             <p class="mb-2 text-sm sm:text-base text-gray-800">Collecion: <a href="{{ route('book_library', ['c' => $book->book_collection_id]) }}">{{ $book->book_collection->name }}</a> {{ '['.$book->number_collection.']' }}</p>
         @endif --}}
+
+        <div class="mb-2">
+            @foreach ($book->book_genres as $item)
+            <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('book_library', ['g' => $item->uuid]) }}">{{ $item->name }}</a>
+            @endforeach
+        </div>
 
         <div class="mb-2">
             @foreach ($book->book_tags as $item)

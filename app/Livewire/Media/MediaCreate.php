@@ -8,6 +8,7 @@ use App\Models\MediaTag;
 use App\Models\MediaActor;
 use App\Models\MediaDirector;
 use App\Models\MediaCollection;
+use App\Models\MediaGenre;
 use App\Models\MediaSeason;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,6 +43,7 @@ class MediaCreate extends Component
     public $type;
 
     // propiedades para editar
+    public $selected_media_genres = [];
     public $selected_media_tags = [];
     public $selected_media_actors = [];
     public $selected_media_directors = [];
@@ -144,6 +146,7 @@ class MediaCreate extends Component
         $validatedData = $this->validate();
         // dd($validatedData);
         $media = Media::create($validatedData);
+        $media->media_genres()->sync($this->selected_media_genres);
         $media->media_tags()->sync($this->selected_media_tags);
         $media->media_actors()->sync($this->selected_media_actors);
         $media->media_directors()->sync($this->selected_media_directors);
@@ -170,6 +173,7 @@ class MediaCreate extends Component
         $media_directors = MediaDirector::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
         $media_collections = MediaCollection::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
         $media_tags = MediaTag::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+        $media_genres = MediaGenre::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
 
         $type_content = Media::typeContent();
         $status_media = Media::statusMedia();
@@ -180,6 +184,7 @@ class MediaCreate extends Component
             'media_directors',
             'media_collections',
             'media_tags',
+            'media_genres',
             'status_media',
             'valoration_stars',
             'type_content',

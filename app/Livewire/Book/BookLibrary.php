@@ -7,6 +7,7 @@ use App\Models\BookAuthor;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\BookCollection;
+use App\Models\BookGenre;
 use App\Models\BookTag;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,9 +23,10 @@ class BookLibrary extends Component
     public function updatingCollectionSelected() {$this->resetPage(pageName: 'p_book');}
     public function updatingAuthorSelected() {$this->resetPage(pageName: 'p_book');}
     public function updatingTagSelected() {$this->resetPage(pageName: 'p_book');}
+    public function updatingGenreSelected() {$this->resetPage(pageName: 'p_book');}
 
     // propiedades de busqueda
-    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 30, $status_read = "", $collection_selected, $author_selected, $tag_selected;
+    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 30, $status_read = "", $collection_selected, $author_selected, $tag_selected, $genre_selected;
 
     // mostrar variables en queryString
     protected function queryString(){
@@ -34,6 +36,7 @@ class BookLibrary extends Component
         'collection_selected' => [ 'as' => 'c' ],
         'author_selected' => [ 'as' => 'a' ],
         'tag_selected' => [ 'as' => 't' ],
+        'genre_selected' => [ 'as' => 'g' ],
         ];
     }
 
@@ -52,6 +55,7 @@ class BookLibrary extends Component
         $book_collections = BookCollection::where('user_id', Auth::user()->id)->get();
         $book_authors = BookAuthor::where('user_id', Auth::user()->id)->get();
         $book_tags = BookTag::where('user_id', Auth::user()->id)->get();
+        $book_genres = BookGenre::where('user_id', Auth::user()->id)->get();
 
         $books = Book::with(['user'])
         ->where('user_id', \Illuminate\Support\Facades\Auth::user()->id)
@@ -76,6 +80,11 @@ class BookLibrary extends Component
                 $q->where('book_authors.uuid', $this->author_selected);
             });
         })
+        ->when($this->genre_selected, function ($query) {
+            $query->whereHas('book_genres', function ($q) {
+                $q->where('book_genres.uuid', $this->genre_selected);
+            });
+        })
         ->when($this->collection_selected, function ($query) {
             $query->whereHas('book_collections', function ($q) {
                 $q->where('book_collections.uuid', $this->collection_selected);
@@ -90,6 +99,7 @@ class BookLibrary extends Component
             'book_collections',
             'book_authors',
             'book_tags',
+            'book_genres',
         ));
     }
 }

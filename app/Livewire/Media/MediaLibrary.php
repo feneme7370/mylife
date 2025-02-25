@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\MediaCollection;
 use App\Models\MediaDirector;
+use App\Models\MediaGenre;
 use App\Models\MediaTag;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,9 +25,10 @@ class MediaLibrary extends Component
     public function updatingActorSelected() {$this->resetPage(pageName: 'p_media');}
     public function updatingDirectorSelected() {$this->resetPage(pageName: 'p_media');}
     public function updatingTagSelected() {$this->resetPage(pageName: 'p_media');}
+    public function updatingGenreSelected() {$this->resetPage(pageName: 'p_media');}
 
     // propiedades de busqueda
-    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 30, $status_read = "", $collection_selected, $actor_selected, $director_selected, $tag_selected;
+    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 30, $status_read = "", $collection_selected, $actor_selected, $director_selected, $tag_selected, $genre_selected;
 
     // mostrar variables en queryString
     protected function queryString(){
@@ -37,6 +39,7 @@ class MediaLibrary extends Component
         'actor_selected' => [ 'as' => 'a' ],
         'director_selected' => [ 'as' => 'd' ],
         'tag_selected' => [ 'as' => 't' ],
+        'genre_selected' => [ 'as' => 'g' ],
         ];
     }
 
@@ -57,6 +60,7 @@ class MediaLibrary extends Component
         $media_actors = MediaActor::where('user_id', Auth::user()->id)->get();
         $media_directors = MediaDirector::where('user_id', Auth::user()->id)->get();
         $media_tags = MediaTag::where('user_id', Auth::user()->id)->get();
+        $media_genres = MediaGenre::where('user_id', Auth::user()->id)->get();
 
         $medias = Media::with(['user'])
         ->where('user_id', \Illuminate\Support\Facades\Auth::user()->id)
@@ -74,6 +78,11 @@ class MediaLibrary extends Component
         ->when($this->tag_selected, function ($query) {
             $query->whereHas('media_tags', function ($q) {
                 $q->where('media_tags.uuid', $this->tag_selected);
+            });
+        })
+        ->when($this->genre_selected, function ($query) {
+            $query->whereHas('media_genres', function ($q) {
+                $q->where('genres.uuid', $this->genre_selected);
             });
         })
         ->when($this->actor_selected, function ($query) {
@@ -101,6 +110,7 @@ class MediaLibrary extends Component
             'media_actors',
             'media_directors',
             'media_tags',
+            'media_genres',
         ));
     }
 }

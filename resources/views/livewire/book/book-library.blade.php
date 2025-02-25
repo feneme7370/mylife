@@ -15,7 +15,7 @@
             </div>
             <div>
                 <a class="text-sm font-medium text-gray-600 hover:underline " href="{{ route('book_create') }}">Crear</a><span class="text-xl font-medium text-gray-600 hover:underline "> | </span>
-                <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
+                <a href="{{ route('book_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
                     Volver
                 </a>
             </div>
@@ -43,6 +43,14 @@
                     <option selected value="">Etiquetas</option>
                     @foreach($book_tags as $item)
                         <option value="{{ $item->uuid }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <select id="genre_selected" wire:model.live="genre_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
+                    <option selected value="">Genero</option>
+                    @foreach($book_genres as $genre_item)
+                        <option value="{{ $genre_item->uuid }}">{{ $genre_item->name }}</option>
                     @endforeach
                 </select>
             </div>

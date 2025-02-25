@@ -29,32 +29,40 @@
             <div>
                 <select id="collection_selected" wire:model.live="collection_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
                     <option selected value="">Colecciones</option>
-                    @foreach($media_collections as $item)
-                        <option value="{{ $item->uuid }}">{{ $item->name }}</option>
+                    @foreach($media_collections as $collection_item)
+                        <option value="{{ $collection_item->uuid }}">{{ $collection_item->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
                 <select id="actor_selected" wire:model.live="actor_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
-                    <option selected value="">Autores</option>
-                    @foreach($media_actors as $item)
-                        <option value="{{ $item->uuid }}">{{ $item->name }}</option>
+                    <option selected value="">Actores</option>
+                    @foreach($media_actors as $actor_item)
+                        <option value="{{ $actor_item->uuid }}">{{ $actor_item->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
                 <select id="director_selected" wire:model.live="director_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
                     <option selected value="">Autores</option>
-                    @foreach($media_directors as $item)
-                        <option value="{{ $item->uuid }}">{{ $item->name }}</option>
+                    @foreach($media_directors as $director_item)
+                        <option value="{{ $director_item->uuid }}">{{ $director_item->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
                 <select id="tag_selected" wire:model.live="tag_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
                     <option selected value="">Etiquetas</option>
-                    @foreach($media_tags as $item)
-                        <option value="{{ $item->uuid }}">{{ $item->name }}</option>
+                    @foreach($media_tags as $tag_item)
+                        <option value="{{ $tag_item->uuid }}">{{ $tag_item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <select id="genre_selected" wire:model.live="genre_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
+                    <option selected value="">Generos</option>
+                    @foreach($media_genres as $genre_item)
+                        <option value="{{ $genre_item->uuid }}">{{ $genre_item->name }}</option>
                     @endforeach
                 </select>
             </div>

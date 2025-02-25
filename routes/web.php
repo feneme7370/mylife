@@ -5,6 +5,7 @@ use App\Livewire\Book\BookCollectionList;
 use App\Livewire\Book\BookCreate;
 use App\Livewire\Book\BookDashboard;
 use App\Livewire\Book\BookEdit;
+use App\Livewire\Book\BookGenreList;
 use App\Livewire\Book\BookLibrary;
 use App\Livewire\Book\BookList;
 use App\Livewire\Book\BookTagList;
@@ -18,6 +19,7 @@ use App\Livewire\Media\MediaCreate;
 use App\Livewire\Media\MediaDashboard;
 use App\Livewire\Media\MediaDirectorList;
 use App\Livewire\Media\MediaEdit;
+use App\Livewire\Media\MediaGenreList;
 use App\Livewire\Media\MediaLibrary;
 use App\Livewire\Media\MediaList;
 use App\Livewire\Media\MediaTagList;
@@ -48,6 +50,7 @@ Route::middleware([
     Route::get('/book_list', BookList::class)->name('book_list');
     Route::get('/book_view/{uuid}', BookView::class)->name('book_view');
 
+    Route::get('/book_genre_list', BookGenreList::class)->name('book_genre_list');
     Route::get('/book_author_list', BookAuthorList::class)->name('book_author_list');
     Route::get('/book_collection_list', BookCollectionList::class)->name('book_collection_list');
     Route::get('/book_tag_list', BookTagList::class)->name('book_tag_list');
@@ -60,6 +63,7 @@ Route::middleware([
     Route::get('/media_list', MediaList::class)->name('media_list');
     Route::get('/media_view/{uuid}', MediaView::class)->name('media_view');
 
+    Route::get('/media_genre_list', MediaGenreList::class)->name('media_genre_list');
     Route::get('/media_actor_list', MediaActorList::class)->name('media_actor_list');
     Route::get('/media_director_list', MediaDirectorList::class)->name('media_director_list');
     Route::get('/media_collection_list', MediaCollectionList::class)->name('media_collection_list');

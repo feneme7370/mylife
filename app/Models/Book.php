@@ -54,6 +54,11 @@ class Book extends Model
         return $this->belongsToMany(BookCollection::class, 'book_book_collection')
                     ->withTimestamps();
     }
+    public function book_genres()
+    {
+        return $this->belongsToMany(BookGenre::class, 'book_book_genre')
+                    ->withTimestamps();
+    }
 
 
     public static function valorationStars()

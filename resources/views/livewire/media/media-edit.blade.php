@@ -2,12 +2,12 @@
 
     {{-- breadcrum, title y button --}}
     <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Peliculas y Series"
-    link_2="{{ route('media_dashboard') }}" title_3="Crear {{ $type_content[$type] }}" link_3="{{ route('media_list') }}" />
+    link_2="{{ route('media_dashboard') }}" title_3="Editar {{ $type_content[$type] }}" link_3="{{ route('media_list') }}" />
 
 <x-pages.menus.title-and-btn>
 
     @slot('title')
-    <x-pages.titles.title-pages title="Crear {{ $type_content[$type] }}" />
+    <x-pages.titles.title-pages title="Editar {{ $type_content[$type] }}" />
     @endslot
 
     @slot('button')
@@ -34,7 +34,7 @@
             <x-pages.forms.input-error for="synopsis" />
         </div>
 
-        <div class="col-span-6">
+        <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_media_actors" value="{{ __('Actores') }}" />
             <x-pages.forms.select-form multiple wire:model="selected_media_actors" id="selected_media_actors">
               @foreach ($media_actors as $item)
@@ -44,7 +44,7 @@
             <x-pages.forms.input-error for="selected_media_actors" />
         </div>
 
-        <div class="col-span-6">
+        <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_media_directors" value="{{ __('Directores') }}" />
             <x-pages.forms.select-form multiple wire:model="selected_media_directors" id="selected_media_directors">
               @foreach ($media_directors as $item)
@@ -54,7 +54,7 @@
             <x-pages.forms.input-error for="selected_media_directors" />
         </div>
 
-        <div class="col-span-6">
+        <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_media_collections" value="{{ __('Coleccion') }}" />
             <x-pages.forms.select-form multiple wire:model="selected_media_collections" id="selected_media_collections">
               @foreach ($media_collections as $item)
@@ -64,28 +64,14 @@
             <x-pages.forms.input-error for="media_collection_id" />
         </div>
 
-        <div class="sm:col-span-3 col-span-6">
+        <div class="col-span-6 sm:col-span-3">
             <x-pages.forms.label-form for="release_date" value="{{ __('Lanzamiento') }}" />
             <x-pages.forms.input-form id="release_date" type="date" placeholder="{{ __('Lanzamiento') }}" wire:model="release_date"
                   />
             <x-pages.forms.input-error for="release_date" />
         </div>
 
-        <div class="sm:col-span-3 col-span-6">
-            <x-pages.forms.label-form for="number_collection" value="{{ __('Orden') }}" />
-            <x-pages.forms.input-form id="number_collection" type="text" placeholder="{{ __('Orden') }}" wire:model="number_collection"
-                  />
-            <x-pages.forms.input-error for="number_collection" />
-        </div>
-
-        <div class="sm:col-span-3 col-span-6">
-            <x-pages.forms.label-form for="duration" value="{{ __('Duracion') }}" />
-            <x-pages.forms.input-form id="duration" type="text" placeholder="{{ __('Duracion') }}" wire:model="duration"
-                  />
-            <x-pages.forms.input-error for="duration" />
-        </div>
-
-        <div class="sm:col-span-3 col-span-6">
+        <div class="col-span-6 sm:col-span-3 ">
             <x-pages.forms.label-form for="rating" value="{{ __('Valoracion') }}" />
             <x-pages.forms.select-form wire:model="rating" id="rating" value_placeholder="- Valoraciones -">
               @foreach ($valoration_stars as $key => $value)
@@ -96,7 +82,29 @@
           </div>
 
         @if ($type == 1)
-            <div class="sm:col-span-3 col-span-6">
+            
+        <div class="sm:col-span-3 col-span-6">
+            <x-pages.forms.label-form for="number_collection" value="{{ __('Orden') }}" />
+            <x-pages.forms.input-form id="number_collection" type="text" placeholder="{{ __('Orden') }}" wire:model="number_collection"
+            />
+            <x-pages.forms.input-error for="number_collection" />
+        </div>
+        @endif
+
+        @if ($type == 1)
+            
+        <div class="sm:col-span-3 col-span-6">
+            <x-pages.forms.label-form for="duration" value="{{ __('Duracion') }}" />
+            <x-pages.forms.input-form id="duration" type="text" placeholder="{{ __('Duracion') }}" wire:model="duration"
+            />
+            <x-pages.forms.input-error for="duration" />
+        </div>
+        @endif
+
+
+
+        @if ($type == 1)
+            <div class="sm:col-span-6 col-span-12">
                 <x-pages.forms.label-form for="end_date" value="{{ __('Visto') }}" />
                 <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Visto') }}" wire:model="end_date"
                     />
@@ -127,41 +135,51 @@
             </div>
         @endif
 
-        
-        {{-- <div class="col-span-12 sm:col-span-6">
-            <x-pages.forms.label-form for="media_type" value="{{ __('Tipo de contenido') }}" />
-            <x-pages.forms.select-form wire:model="media_type" id="media_type" value_placeholder="- Tipo -">
-              @foreach ($type_content as $key => $value)
-                  <option value="{{ $key }}">{{ $value }}</option>
-              @endforeach
-            </x-pages.forms.select-form>
-            <x-pages.forms.input-error for="media_type" /> 
-          </div> --}}
-
         <div class="col-span-12">
             <x-pages.forms.label-form for="cover_image_url" value="{{ __('URL de portada') }}" />
             <x-pages.forms.input-form id="cover_image_url" type="text" placeholder="{{ __('URL de portada') }}" wire:model="cover_image_url"/>
             <x-pages.forms.input-error for="cover_image_url" />
         </div>
 
-        <div class="mt-3 flex flex-wrap gap-1 col-span-12">
-            @foreach ($media_tags as $item)
-            
-            <x-pages.forms.label-form for="{{ 'selected_media_tags['. $item->id .']' }}" value="{{ $item->name }}">
-                <x-pages.forms.checkbox-form 
-                    type="checkbox" 
-                    id="{{ 'selected_media_tags['. $item->id .']' }}" 
-                    wire:model="selected_media_tags" 
-                    value="{{ $item->id }}"  />
-            </x-pages.forms.label-form>
+        <div class="col-span-12 my-1">
+            <x-pages.forms.label-form class="col-span-12 mb-3" value="{{ __('Generos') }}" />
+            <div class="my-3 flex flex-wrap gap-1">
+                @foreach ($media_genres as $item)
+                
+                <x-pages.forms.label-form for="{{ 'selected_media_genres['. $item->id .']' }}" value="{{ $item->name }}">
+                    <x-pages.forms.checkbox-form 
+                        type="checkbox" 
+                        id="{{ 'selected_media_genres['. $item->id .']' }}" 
+                        wire:model="selected_media_genres" 
+                        value="{{ $item->id }}"  />
+                </x-pages.forms.label-form>
+    
+                @endforeach
+    
+            </div>
+        </div>
 
-            @endforeach
-
+        <div class="col-span-12 my-1">
+            <x-pages.forms.label-form class="col-span-12 mb-3" value="{{ __('Etiquetas') }}" />
+            <div class="mt-3 flex flex-wrap gap-1">
+                @foreach ($media_tags as $item)
+                
+                <x-pages.forms.label-form for="{{ 'selected_media_tags['. $item->id .']' }}" value="{{ $item->name }}">
+                    <x-pages.forms.checkbox-form 
+                        type="checkbox" 
+                        id="{{ 'selected_media_tags['. $item->id .']' }}" 
+                        wire:model="selected_media_tags" 
+                        value="{{ $item->id }}"  />
+                </x-pages.forms.label-form>
+    
+                @endforeach
+    
+            </div>
         </div>
 
         @if ($type == 2)
-        <div class="col-span-12">
-            <x-pages.forms.label-form class="col-span-12" value="{{ __('Temporadas') }}" />
+        <div class="col-span-12 my-1">
+            <x-pages.forms.label-form class="col-span-12 mb-3" value="{{ __('Temporadas') }}" />
         
             <x-pages.buttons.primary-btn class="col-span-4" title="Agregar temporada" wire:click="addSeason">
             </x-pages.buttons.primary-btn>
@@ -177,7 +195,8 @@
                 <x-pages.forms.textarea-form class="col-span-12" rows="3" placeholder="{{ __('Descripcion de la temporada') }}"
                     wire:model="seasons.{{ $index }}.description" />
         
-                <x-pages.buttons.normal-btn class="col-span-4" title="Borrar temporada" wire:click="removeSeason({{ $index }})">
+                <span class="col-span-9"></span>
+                <x-pages.buttons.normal-btn class="col-span-3" title="Borrar temp." wire:click="removeSeason({{ $index }})">
                 </x-pages.buttons.normal-btn>
             </div>
             @endforeach

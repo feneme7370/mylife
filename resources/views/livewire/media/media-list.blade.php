@@ -84,10 +84,13 @@
                 Datos
             </th>
             <th class="px-6 py-3">
-                Datos
+                Coleccion
             </th>
             <th class="px-6 py-3">
-                Coleccion
+                Genero
+            </th>
+            <th class="px-6 py-3">
+                Etiquetas
             </th>
             <th class="px-6 py-3">
                 Estado
@@ -114,20 +117,57 @@
                 </div>  
             </th>
             <td class="px-6 py-4">
-                <span>Pag: {{ $item->pages }}</span>
-            </td>
-            <td class="px-6 py-4">
-                <span>Año: {{ \Carbon\Carbon::parse($item->release_date)->year }}</span>
-            </td>
-            <td class="px-6 py-4">
-                <div class="flex items-center">
-                    @foreach ($item->media_collections as $collection_item)<a href="{{ route('media_library', ['c' => $collection_item->uuid]) }}" class="hover:underline text-sm md:font-normal text-gray-500">{{ $collection_item->name }}</a>@endforeach
+                <div class="flex flex-col gap-1">
+                    <span>{{ $item->media_type == null ? '' : $type_content[$item->media_type] }} ({{ \Carbon\Carbon::parse($item->release_date)->year }})</span>
+                    <span>{{ $valoration_stars[$item->rating] ?? 'Sin valorar' }}</span>
                 </div>
             </td>
 
             <td class="px-6 py-4">
+                <div class="flex flex-col justify-center items-center">
+                    @if ($item->media_collections->isEmpty())
+                        <span>Sin coleccion</span>
+                    @endif
+                    @foreach ($item->media_collections as $collection_item)<a href="{{ route('media_library', ['c' => $collection_item->uuid]) }}" class="hover:underline text-sm md:font-normal text-gray-500">{{ $collection_item->name }}</a>
+                    @endforeach
+
+                    @if (!$item->seasons->isEmpty())
+                    <div class="flex flex-col justify-center items-center mt-1">
+                        <span>Temporadas: {{ $item->seasons->count() }}</span>
+                        <span>Capitulos: {{ $item->seasons->sum('episodes_count') }}</span>
+                    </div>
+                    @endif
+
+                </div>
+            </td>
+
+            <td class="px-6 py-4">
+                <div class="flex flex-wrap justify-center gap-1 w-40">
+                    @if ($item->media_genres->isEmpty())
+                        <span>Sin genero</span>
+                    @endif
+                    @foreach ($item->media_genres as $genre_item)
+                        <span><a href="{{ route('media_library', ['g' => $genre_item->uuid]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">{{ $genre_item->name }}</a>
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+
+            <td class="px-6 py-4">
+                <div class="flex flex-wrap justify-center gap-1 w-40">
+                    @if ($item->media_tags->isEmpty())
+                        <span>Sin etiquetas</span>
+                    @endif
+                    @foreach ($item->media_tags as $tag_item)
+                        <span><a href="{{ route('media_library', ['t' => $tag_item->uuid]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">{{ $tag_item->name }}</a>
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+            <td class="px-6 py-4">
                 <div class=" flex items-center justify-center gap-1">
-                    <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span><span>{{ $status_media[$item->status] ?? 'Desconocido' }}</span>
+                    <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span>
+                    <span>{{ $status_media[$item->status] ?? 'Desconocido' }}</span>
                 </div>
             </td>
             <td class="px-6 py-4">

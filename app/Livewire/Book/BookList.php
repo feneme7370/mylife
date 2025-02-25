@@ -79,6 +79,7 @@ class BookList extends Component
     {
         $type_content = Book::typeContent();
         $status_book = Book::statusBook();
+        $valoration_stars = Book::valorationStars();
         $collections = BookCollection::where('user_id', Auth::user()->id)->get();
         
         $books = Book::with(['user'])
@@ -113,6 +114,7 @@ class BookList extends Component
             'status_book',
             'collections',
             'type_content',
+            'valoration_stars',
         ));
     }
 }

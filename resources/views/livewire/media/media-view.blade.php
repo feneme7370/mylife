@@ -49,12 +49,21 @@
         @endforeach
 
         <div class="mb-2">
+            @foreach ($media->media_genres as $item)
+            <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('media_library', ['g' => $item->uuid]) }}">{{ $item->name }}</a>
+            @endforeach
+        </div>
+
+        <div class="mb-2">
             @foreach ($media->media_tags as $item)
             <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('media_library', ['t' => $item->uuid]) }}">{{ $item->name }}</a>
             @endforeach
         </div>
 
+        @if ($media->media_type == 1)
+            
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Duracion:</span> {{ $duration_hs->format('%h h %i min') }}</p>
+        @endif
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Valoracion:</span> {{ $valoration_stars[$media->rating] ?? 'Desconocido' }}</p>
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Estado:</span> {{ $status_media[$media->status] ?? 'Desconocido' }}</p>
 

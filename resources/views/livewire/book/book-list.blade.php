@@ -11,7 +11,7 @@
         @endslot
 
         @slot('button')
-        <a href="{{ url()->previous() }}" class="text-sm font-medium text-gray-600 hover:underline ">
+        <a href="{{ route('book_dashboard') }}" class="text-sm font-medium text-gray-600 hover:underline ">
             Volver
         </a>
         @endslot
@@ -84,10 +84,13 @@
                     Datos
                 </th>
                 <th class="px-6 py-3">
-                    Datos
+                    Coleccion
                 </th>
                 <th class="px-6 py-3">
-                    Coleccion
+                    Genero
+                </th>
+                <th class="px-6 py-3">
+                    Etiquetas
                 </th>
                 <th class="px-6 py-3">
                     Estado
@@ -113,15 +116,47 @@
                         </div>
                     </div>  
                 </th>
+
                 <td class="px-6 py-4">
-                    <span>Pag: {{ $item->pages }}</span>
+                    <div class="flex flex-col gap-1">
+                        <span>{{ $item->media_type == null ? '' : $type_content[$item->media_type] }} ({{ \Carbon\Carbon::parse($item->release_date)->year }})</span>
+                        <span>{{ $valoration_stars[$item->rating] ?? 'Sin valorar' }}</span>
+                    </div>
                 </td>
                 <td class="px-6 py-4">
-                    <span>Año: {{ \Carbon\Carbon::parse($item->release_date)->year }}</span>
+                    <div class="flex flex-col justify-center items-center">
+
+                        @if ($item->book_collections->isEmpty())
+                            <span>Sin coleccion</span>
+                        @endif
+                        @foreach ($item->book_collections as $collection_item)<a href="{{ route('book_library', ['c' => $collection_item->uuid]) }}" class="hover:underline text-sm md:font-normal text-gray-500">{{ $collection_item->name }}</a>
+                        @endforeach
+    
+                        <div class="flex flex-col justify-center items-center mt-1">
+                            <span>Pag: {{ $item->pages }}</span>
+                        </div>
+                    </div>
                 </td>
+                    <td class="px-6 py-4">
+                        <div class="flex flex-wrap justify-center gap-1 w-40">
+                            @if ($item->book_genres->isEmpty())
+                                <span>Sin genero</span>
+                            @endif
+                            @foreach ($item->book_genres as $genre_item)
+                                <span><a href="{{ route('book_library', ['g' => $genre_item->uuid]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">{{ $genre_item->name }}</a>
+                                </span>
+                            @endforeach
+                        </div>
+                    </td>
                 <td class="px-6 py-4">
-                    <div class="flex items-center">
-                        @foreach ($item->book_collections as $collection_item)<a href="{{ route('book_library', ['c' => $collection_item->uuid]) }}" class="hover:underline text-sm md:font-normal text-gray-500">{{ $collection_item->name }}</a>@endforeach
+                    <div class="flex flex-wrap justify-center gap-1 w-40">
+                        @if ($item->book_tags->isEmpty())
+                            <span>Sin etiquetas</span>
+                        @endif
+                        @foreach ($item->book_tags as $tag_item)
+                            <span><a href="{{ route('book_library', ['t' => $tag_item->uuid]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">{{ $tag_item->name }}</a>
+                            </span>
+                        @endforeach
                     </div>
                 </td>
 

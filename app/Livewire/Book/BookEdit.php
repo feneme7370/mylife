@@ -6,6 +6,7 @@ use App\Models\Book;
 use Livewire\Component;
 use App\Models\BookAuthor;
 use App\Models\BookCollection;
+use App\Models\BookGenre;
 use App\Models\BookTag;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +18,7 @@ class BookEdit extends Component
 
     $title,
     $slug,
-    // $book_author_id,
+
     $synopsis ,
     $release_date,
     $start_date,
@@ -39,6 +40,7 @@ class BookEdit extends Component
     $user_id;
 
     // propiedades para editar
+    public $selected_book_genres = [];
     public $selected_book_tags = [];
     public $selected_book_authors = [];
     public $selected_book_collections = [];
@@ -50,21 +52,19 @@ class BookEdit extends Component
         return [
             'title' => ['required'],
             'slug' => ['required'],
-            // 'book_author_id' => ['nullable', 'numeric', 'min:0'],
+            
             'synopsis' => ['nullable'],
             'release_date' => ['nullable'],
             'start_date' => ['nullable'],
             'end_date' => ['nullable'],
             'media_type' => ['nullable', 'numeric'],
     
-            // 'book_collection_id' => ['required', 'numeric', 'min:0'],
             'number_collection' => ['nullable', 'numeric'],
     
             'pages'  => ['nullable', 'numeric'],
             'rating' => ['nullable', 'numeric', 'min:1', 'max:5'],
             'personal_description' => ['nullable', 'string'],
-    
-            // 'cover_image'  => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
+
             'cover_image'  => ['nullable', 'string'],
             'cover_image_url'  => ['nullable', 'string'],
     
@@ -79,14 +79,13 @@ class BookEdit extends Component
     protected $validationAttributes = [
         'title' => 'titulo',
         'slug' => 'slug',
-        // 'book_author_id' => 'autor',
+        
         'synopsis' => 'sinopsis',
         'release_date' => 'fecha de publicacion',
         'start_date' => 'fecha de comienzo',
         'end_date' => 'fecha de finalizacion',
         'media_type' => 'tipo de contenido',
 
-        // 'book_collection_id' => 'collecion',
         'number_collection' => 'numero de collecion',
 
         'pages'  => 'paginas',
@@ -108,13 +107,12 @@ class BookEdit extends Component
         $this->book = $book;
 
         $this->title = $book['title'];
-        // $this->book_author_id = $book['book_author_id'];
+        
         $this->synopsis = $book['synopsis'] ;
         $this->release_date = $book['release_date'];
         $this->start_date = $book['start_date'];
         $this->end_date = $book['end_date'];
 
-        // $this->book_collection_id = $book['book_collection_id'];
         $this->media_type = $book['media_type'];
         $this->number_collection = $book['number_collection'];
 
@@ -128,6 +126,7 @@ class BookEdit extends Component
         $this->uuid = $book['uuid'];
         $this->status = $book['status'];
 
+        $this->selected_book_genres = $book->book_genres->pluck('id')->toArray();
         $this->selected_book_tags = $book->book_tags->pluck('id')->toArray();
         $this->selected_book_authors = $book->book_authors->pluck('id')->toArray();
         $this->selected_book_collections = $book->book_collections->pluck('id')->toArray();
@@ -160,6 +159,7 @@ class BookEdit extends Component
         $validatedData = $this->validate();
         
         $this->book->update($validatedData);
+        $this->book->book_genres()->sync($this->selected_book_genres);
         $this->book->book_tags()->sync($this->selected_book_tags);
         $this->book->book_authors()->sync($this->selected_book_authors);
         $this->book->book_collections()->sync($this->selected_book_collections);
@@ -171,6 +171,7 @@ class BookEdit extends Component
         $book_authors = BookAuthor::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
         $book_collections = BookCollection::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
         $book_tags = BookTag::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
+        $book_genres = BookGenre::where('user_id', Auth::user()->id)->orderBy('name', 'ASC')->get();
 
         $type_content = Book::typeContent();
         $status_book = Book::statusBook();
@@ -180,6 +181,7 @@ class BookEdit extends Component
             'book_authors',
             'book_collections',
             'book_tags',
+            'book_genres',
             'status_book',
             'valoration_stars',
             'type_content',
