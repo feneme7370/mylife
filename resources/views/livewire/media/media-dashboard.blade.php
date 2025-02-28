@@ -1,6 +1,6 @@
 
 <div>
-
+    
     {{-- breadcrum, title y button --}}
         <x-pages.breadcrums.breadcrum 
         title_1="Inicio"

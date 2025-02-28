@@ -17,26 +17,24 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
 
-            $table->longText('synopsis')->nullable();
+            $table->text('synopsis')->nullable();
             $table->date('release_date')->nullable();
 
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             
             $table->integer('number_collection')->nullable();
-
             $table->integer('media_type')->nullable(); // 1 libro - 2 manga
 
             $table->integer('pages')->nullable();
             $table->integer('rating')->nullable();
-            $table->text('personal_description')->nullable();
+            $table->longText('personal_description')->nullable();
 
             $table->string('cover_image')->nullable();
-            $table->string('cover_image_url')->nullable();
+            $table->text('cover_image_url')->nullable();
             
+            $table->integer('status')->nullable(); // 1 sin leer - 2 leido - 3 leyendo
             $table->string('uuid')->unique();
-
-            $table->string('status')->nullable(); // 1 sin leer - 2 leido - 3 leyendo
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 

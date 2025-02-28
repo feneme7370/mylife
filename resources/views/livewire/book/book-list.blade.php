@@ -179,7 +179,7 @@
     </table>
 
         {{-- Paginacion --}}
-        <div class="mt-2">{{ $books->onEachSide(1)->links() }}</div>
+        <div class="mt-2 py-1 px-3">{{ $books->onEachSide(1)->links() }}</div>
         {{-- end Paginacion --}}
 </div>
 

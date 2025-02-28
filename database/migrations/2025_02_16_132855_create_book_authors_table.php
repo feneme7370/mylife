@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
 
-            $table->string('birthdate')->nullable();
-            $table->string('description')->nullable();
+            $table->date('birthdate')->nullable();
+            $table->longText('description')->nullable();
             $table->string('country')->nullable();
 
             $table->string('cover_image_url')->nullable();

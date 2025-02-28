@@ -24,48 +24,63 @@
 
         <h5 class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">{{ $media->title }}</h5>
         
-        <p class="mb-4 text-base sm:text-base text-gray-800">{{ \Carbon\Carbon::parse($media->release_date)->year }} - 
-            
-            @foreach ($media->media_directors as $item)
-                <a href="{{ route('media_library', ['d' => $item->uuid]) }}">{{ $item->name }}</a>
-            @endforeach
 
+        <p class="mt-1 mb-3 text-base sm:text-lg text-gray-800"><span class="text-gray-950 font-bold">{{ \Carbon\Carbon::parse($media->release_date)->year }}</span>
+                @foreach ($media->media_directors as $item)
+                - <a class="italic hover:underline" href="{{ route('media_library', ['d' => $item->uuid]) }}">{{ $item->name }}</a>
+                @endforeach
         </p>
 
         <p class="mb-4 text-base sm:text-base text-gray-800">
-            
             @foreach ($media->media_actors as $item)
                 <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('media_library', ['a' => $item->uuid]) }}">{{ $item->name }}</a>
             @endforeach
-
         </p>
 
         <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{{ $media->synopsis }}</p>
 
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950"> Datos</p>
 
-        @foreach ($media->media_collections as $item)
-            <a href="{{ route('media_library', ['c' => $item->uuid]) }}">Coleccion: {{ $item->name }}{{ '['.$media->number_collection.']' }}</a>
-        @endforeach
+        @if (!$media->media_collections->isEmpty())
+        <p class="mt-1 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Coleccion:</span></p>
+        <div class="mb-2">
+            @foreach ($media->media_collections as $item)
+                <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('media_library', ['c' => $item->uuid]) }}">{{ $item->name }}</a>
+            @endforeach
+        </div>
+        @endif
 
+        @if (!$media->media_genres->isEmpty())
+        <p class="mt-1 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Generos:</span></p>
         <div class="mb-2">
             @foreach ($media->media_genres as $item)
             <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('media_library', ['g' => $item->uuid]) }}">{{ $item->name }}</a>
             @endforeach
         </div>
+        @endif
 
+        @if (!$media->media_tags->isEmpty())
+        <p class="mt-1 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Etiquetas:</span></p>
         <div class="mb-2">
             @foreach ($media->media_tags as $item)
             <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('media_library', ['t' => $item->uuid]) }}">{{ $item->name }}</a>
             @endforeach
         </div>
-
-        @if ($media->media_type == 1)
             
+        @endif
+
+        @if ($media->number_collection)
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Volumen:</span> {{$media->number_collection}}</p>
+        @endif
+        @if ($media->media_type == 1 && !$duration_hs)
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Duracion:</span> {{ $duration_hs->format('%h h %i min') }}</p>
         @endif
+        @if ($media->rating)
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Valoracion:</span> {{ $valoration_stars[$media->rating] ?? 'Desconocido' }}</p>
+        @endif
+        @if ($media->status)
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Estado:</span> {{ $status_media[$media->status] ?? 'Desconocido' }}</p>
+        @endif
 
         @foreach ($media->seasons as $season_item)
         <div class="px-3 border-l-4 border-purple-800">
@@ -73,8 +88,11 @@
             <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Descripcion:</span> {{ $season_item->description }}</p>
         </div>
         @endforeach
+
+        @if ($media->personal_description)
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">Descripcion personal</p>
-        <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{{ $media->personal_description }}</p>
+        <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{!! $media->personal_description !!}</p>
+        @endif
 
         </div>
         

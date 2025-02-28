@@ -5,3 +5,58 @@
 [x-cloak] {
     display: none;
 }
+
+/* select2 -------------------------------------------------------------- */
+/* input */
+.select2-container .select2-selection {
+    @apply w-full block bg-gray-50 border border-gray-300 rounded-lg text-gray-900 p-1.5 mt-1 h-auto text-sm !important;
+}
+
+.select2-container--default .select2-selection--single {
+    @apply border-gray-300 focus:ring focus:ring-purple-500 focus:border-purple-500 text-sm !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    @apply border-gray-300 focus:ring focus:ring-purple-500 focus:border-purple-500 text-sm !important;
+}
+
+/* listado */
+.select2-container .select2-dropdown {
+    @apply bg-gray-50 border border-gray-300 rounded-lg shadow-lg text-sm !important;
+}
+
+.select2-container--default .select2-results__option--highlighted {
+    @apply bg-gray-300 text-gray-900 text-sm !important;
+}
+
+
+/* quill -------------------------------------------------------------- */
+/* Editor */
+.ql-editor {
+    @apply text-gray-900 bg-gray-50 border border-gray-300 p-3 !important;
+}
+
+/* Placeholder */
+.ql-editor.ql-blank::before {
+    @apply text-gray-400 italic !important;
+}
+
+/* Barra de herramientas */
+.ql-toolbar {
+    @apply bg-gray-200 border border-gray-300 rounded-t-lg p-2 !important;
+}
+
+/* Botones activos */
+.ql-toolbar .ql-active {
+    @apply bg-gray-100 rounded-lg mx-1 !important;
+}
+
+/* Negrita personalizada */
+.ql-editor strong {
+    @apply font-bold !important;
+}
+
+/* Cursiva personalizada */
+.ql-editor em {
+    @apply italic !important;
+}

@@ -184,7 +184,7 @@
 </table>
 
     {{-- Paginacion --}}
-    <div class="mt-2">{{ $medias->onEachSide(1)->links() }}</div>
+    <div class="mt-2 py-1 px-3">{{ $medias->onEachSide(1)->links() }}</div>
     {{-- end Paginacion --}}
 </div>
 

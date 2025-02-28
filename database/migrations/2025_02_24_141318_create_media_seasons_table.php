@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->integer('episodes_count');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
 
             $table->foreignId('media_id')->constrained()->onDelete('cascade');
             $table->timestamps();

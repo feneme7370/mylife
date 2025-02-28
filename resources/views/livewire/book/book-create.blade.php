@@ -37,21 +37,21 @@
 
         <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_book_authors" value="{{ __('Autores') }}" />
-            <x-pages.forms.select-form multiple wire:model="selected_book_authors" id="selected_book_authors">
+            <x-pages.forms.select2-form multiple wire:model="selected_book_authors" id="selected_book_authors">
               @foreach ($book_authors as $item)
                   <option value="{{$item->id}}">{{$item->name}}</option>
               @endforeach
-            </x-pages.forms.select-form>
+            </x-pages.forms.select2-form>
             <x-pages.forms.input-error for="selected_book_authors" />
         </div>
 
         <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_book_collections" value="{{ __('Coleccion') }}" />
-            <x-pages.forms.select-form multiple wire:model="selected_book_collections" id="selected_book_collections">
+            <x-pages.forms.select2-form multiple wire:model="selected_book_collections" id="selected_book_collections">
               @foreach ($book_collections as $item)
                   <option value="{{$item->id}}">{{$item->name}}</option>
               @endforeach
-            </x-pages.forms.select-form>
+            </x-pages.forms.select2-form>
             <x-pages.forms.input-error for="book_collection_id" />
         </div>
 
@@ -78,11 +78,11 @@
 
         <div class="sm:col-span-3 col-span-6">
             <x-pages.forms.label-form for="rating" value="{{ __('Valoracion') }}" />
-            <x-pages.forms.select-form wire:model="rating" id="rating" value_placeholder="- Valoraciones -">
+            <x-pages.forms.select2-form wire:model="rating" id="rating" value_placeholder="- Valoraciones -">
               @foreach ($valoration_stars as $key => $value)
                   <option value="{{ $key }}">{{ $value }}</option>
               @endforeach
-            </x-pages.forms.select-form>
+            </x-pages.forms.select2-form>
             <x-pages.forms.input-error for="rating" />
           </div>
 
@@ -106,11 +106,11 @@
 
           <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="media_type" value="{{ __('Tipo de contenido') }}" />
-            <x-pages.forms.select-form wire:model="media_type" id="media_type" value_placeholder="- Tipo -">
+            <x-pages.forms.select2-form wire:model="media_type" id="media_type" value_placeholder="- Tipo -">
               @foreach ($type_content as $key => $value)
                   <option value="{{ $key }}">{{ $value }}</option>
               @endforeach
-            </x-pages.forms.select-form>
+            </x-pages.forms.select2-form>
             <x-pages.forms.input-error for="media_type" /> 
           </div>
           
@@ -153,15 +153,15 @@
 
         <div class="col-span-12">
             <x-pages.forms.label-form for="personal_description" value="{{ __('Descripcion personal') }}" />
-            <x-pages.forms.textarea-form id="personal_description" name="personal_description" rows="15" placeholder="{{ __('Descripcion personal') }}"
-                wire:model.live="personal_description" />
+            <x-pages.forms.quill-textarea-form id_quill="editor_personal_description" name="personal_description" rows="15" placeholder="{{ __('Descripcion personal') }}"
+                model="personal_description" model_data="{{ $personal_description }}" />
+            
             <x-pages.forms.input-error for="personal_description" />
         </div>
 
         <x-pages.forms.validation-errors class="mb-4 col-span-12" />
 
 
-        
         <x-pages.buttons.primary-btn 
         class="col-span-4"
         title="Guardar" 

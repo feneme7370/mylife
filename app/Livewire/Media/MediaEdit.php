@@ -166,6 +166,7 @@ class MediaEdit extends Component
         }
     }
 
+
     public function updated($propertyName)
     {
         $this->updateStatus();

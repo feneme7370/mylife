@@ -24,45 +24,60 @@
 
         <h5 class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">{{ $book->title }}</h5>
         
-        <p class="mb-4 text-base sm:text-base text-gray-800">{{ \Carbon\Carbon::parse($book->release_date)->year }} - 
-            
+        <p class="mt-1 mb-3 text-base sm:text-lg text-gray-800"><span class="text-gray-950 font-bold">{{ \Carbon\Carbon::parse($book->release_date)->year }}</span>
             @foreach ($book->book_authors as $item)
-                <a href="{{ route('book_library', ['a' => $item->uuid]) }}">{{ $item->name }}</a>
+            - <a class="italic hover:underline" href="{{ route('book_library', ['a' => $item->uuid]) }}">{{ $item->name }}</a>
             @endforeach
-
-        </p>
+    </p>
 
 
         <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{{ $book->synopsis }}</p>
 
-        <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950"> Datos</p>
+        <p class="mt-4 sm:mt-0 mb-2 text-xl sm:text-2xl font-bold text-gray-950"> Datos</p>
 
-        @foreach ($book->book_collections as $item)
-            <a href="{{ route('book_library', ['c' => $item->uuid]) }}">Collecion: {{ $item->name }}{{ '['.$book->number_collection.']' }}</a>
-        @endforeach
+        @if (!$book->book_collections->isEmpty())
+        <p class="mt-1 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Coleccion:</span></p>
+        <div class="mb-2">
+            @foreach ($book->book_collections as $item)
+                <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('book_library', ['c' => $item->uuid]) }}">{{ $item->name }}</a>
+            @endforeach
+        </div>
+        @endif
 
-        {{-- @if ($book->number_collection)
-            <p class="mb-2 text-sm sm:text-base text-gray-800">Collecion: <a href="{{ route('book_library', ['c' => $book->book_collection_id]) }}">{{ $book->book_collection->name }}</a> {{ '['.$book->number_collection.']' }}</p>
-        @endif --}}
-
+        @if (!$book->book_genres->isEmpty())
+        <p class="mt-1 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Generos:</span></p>
         <div class="mb-2">
             @foreach ($book->book_genres as $item)
             <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('book_library', ['g' => $item->uuid]) }}">{{ $item->name }}</a>
             @endforeach
         </div>
+        @endif
 
+        @if (!$book->book_tags->isEmpty())
+        <p class="mt-1 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Etiquetas:</span></p>
         <div class="mb-2">
             @foreach ($book->book_tags as $item)
             <a class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg" href="{{ route('book_library', ['t' => $item->uuid]) }}">{{ $item->name }}</a>
             @endforeach
         </div>
+        @endif
 
+        @if ($book->number_collection)
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Volumen:</span> {{$book->number_collection}}</p>
+        @endif
+        @if ($book->pages)
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Paginas:</span> {{ $book->pages }}</p>
+        @endif
+        @if ($book->rating)
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Valoracion:</span> {{ $valoration_stars[$book->rating] ?? 'Desconocido' }}</p>
+        @endif
+        @if ($book->status)
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Estado:</span> {{ $status_book[$book->status] ?? 'Desconocido' }}</p>
-
+        @endif
+        @if ($book->personal_description)
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">Descripcion personal</p>
-        <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{{ $book->personal_description }}</p>
+        <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{!! $book->personal_description !!}</p>
+        @endif
 
         </div>
         

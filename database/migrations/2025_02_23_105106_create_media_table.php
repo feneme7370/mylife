@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
 
-            $table->longText('synopsis')->nullable();
+            $table->text('synopsis')->nullable();
             $table->date('release_date')->nullable();
 
             $table->integer('number_collection')->nullable();
             $table->integer('duration')->nullable();
             $table->integer('rating')->nullable();
-            $table->text('personal_description')->nullable();
+            $table->longText('personal_description')->nullable();
             
             $table->integer('media_type')->nullable(); // 1 pelicula - 2 serie
             
@@ -32,11 +32,10 @@ return new class extends Migration
             $table->date('end_date')->nullable();
 
             $table->string('cover_image')->nullable();
-            $table->string('cover_image_url')->nullable();
+            $table->text('cover_image_url')->nullable();
             
             $table->string('uuid')->unique();
-
-            $table->string('status')->nullable(); // 1 sin ver - 2 visto - 3 viendo
+            $table->integer('status')->nullable(); // 1 sin ver - 2 visto - 3 viendo
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 

@@ -83,6 +83,14 @@
                     Olvidaste tu clave?
                   </a>
                 </p>
+                <p class="mt-4">
+                  <a
+                    class="text-sm font-medium text-primary-600  hover:underline"
+                    href="{{route('register')}}"
+                  >
+                    Registrarse
+                  </a>
+                </p>
                 {{-- <p class="mt-1">
                   <a
                     class="text-sm font-medium text-primary-600 hover:underline"

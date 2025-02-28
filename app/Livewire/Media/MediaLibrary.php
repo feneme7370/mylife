@@ -82,7 +82,7 @@ class MediaLibrary extends Component
         })
         ->when($this->genre_selected, function ($query) {
             $query->whereHas('media_genres', function ($q) {
-                $q->where('genres.uuid', $this->genre_selected);
+                $q->where('media_genres.uuid', $this->genre_selected);
             });
         })
         ->when($this->actor_selected, function ($query) {

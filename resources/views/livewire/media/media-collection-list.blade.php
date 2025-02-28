@@ -38,19 +38,35 @@
         @foreach ($collections as $item)
 
 
-        <li class="py-3 sm:py-4">
-            <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                    <p class="text-sm font-medium text-gray-900 truncate ">
-                        <a class="hover:underline" href="{{ route('media_library', ['c' => $item->uuid]) }}">{{ $item->name }}</a>
-                    </p>
-                </div>
+        <li class="py-3 sm:py-4 w-full">
+            <div class="flex items-center justify-between gap-2">
+                    <img class="h-10 sm:h-16 rounded-lg object-cover" src="{{ $item->cover_image_url ?? 'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'}}" alt="Portada">
+                    <div class="">
+                        <p class="text-sm font-medium text-gray-900 truncate ">
+                            <a class="hover:underline" href="{{ route('media_library', ['c' => $item->uuid]) }}">{{ $item->name }}</a>
+                        </p>
+                    </div>
 
-                <x-pages.buttons.edit-text wire:click="editActionModal('{{$item->uuid}}')" wire:loading.attr="disabled" />
-                <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')"
-                wire:loading.attr="disabled" />
+                    <div class="flex gap-1">
+                        @foreach ($item->medias as $item_media)
+                        <a href="{{ route('media_library', ['q' => $item_media->title]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">
+                            {{ $item_media->title }}
+                        </a>
+                        @endforeach
+                    </div>
+
+                    <div class="flex-1"></div>
+                    <div>
+                        <x-pages.buttons.edit-text wire:click="editActionModal('{{$item->uuid}}')" wire:loading.attr="disabled" />
+                        <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')" wire:loading.attr="disabled" />
+                    </div>
             </div>
-        </li>
+            <div class="mt-2">
+                <p class="text-xs font-light text-gray-700 line-clamp-2 max-w-3xl">
+                    {{ $item->description }}
+                </p>
+            </div>
+    </li>
         @endforeach
         
     </ul>
