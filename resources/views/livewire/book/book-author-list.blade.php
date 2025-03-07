@@ -51,7 +51,7 @@
                                 </p>
                             </div>
 
-                            <div class="flex gap-1">
+                            <div class="hidden sm:flex gap-1">
                                 @foreach ($item->books as $item_book)
                                 <a href="{{ route('book_library', ['q' => $item_book->title]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">
                                     {{ $item_book->title }}

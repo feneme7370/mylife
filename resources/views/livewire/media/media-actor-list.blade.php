@@ -38,8 +38,8 @@
         @foreach ($actors as $item)
 
 
-        <li class="py-3 sm:py-4 w-full">
-            <div class="flex items-center justify-between gap-2">
+        <li class="py-3 sm:py-4 w-full overflow-hidden">
+            <div class="flex items-center justify-between gap-2 overflow-x-auto">
                     <img class="h-10 sm:h-16 rounded-lg object-cover" src="{{ $item->cover_image_url ?? 'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'}}" alt="Portada">
                     <div class="">
                         <p class="text-sm font-medium text-gray-900 truncate ">
@@ -53,7 +53,7 @@
                         </p>
                     </div>
 
-                    <div class="flex gap-1">
+                    <div class="hidden sm:flex gap-1">
                         @foreach ($item->medias as $item_media)
                         <a href="{{ route('media_library', ['q' => $item_media->title]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">
                             {{ $item_media->title }}

@@ -21,8 +21,8 @@
             </div>
         </div>
     
-        <div class="flex items-center justify-center sm:justify-start gap-1 sm:gap-3 flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white p-3">
-            <div>
+        <div class="grid gap-1 pb-4 bg-white p-3">
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3">
                 <select id="collection_selected" wire:model.live="collection_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
                     <option selected value="">Colecciones</option>
                     @foreach($book_collections as $item)
@@ -30,7 +30,7 @@
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3">
                 <select id="author_selected" wire:model.live="author_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
                     <option selected value="">Autores</option>
                     @foreach($book_authors as $item)
@@ -38,7 +38,7 @@
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3">
                 <select id="tag_selected" wire:model.live="tag_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
                     <option selected value="">Etiquetas</option>
                     @foreach($book_tags as $item)
@@ -46,7 +46,7 @@
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div class="col-span-12 sm:col-span-6 xl:col-span-3">
                 <select id="genre_selected" wire:model.live="genre_selected" class="bg-purple-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
                     <option selected value="">Genero</option>
                     @foreach($book_genres as $genre_item)
@@ -55,7 +55,7 @@
                 </select>
             </div>
             
-            <div class="flex gap-1 justify-between items-center">
+            <div class="flex gap-1 justify-start items-center col-span-12">
                 <div class="flex items-center">
                     <input id="default-radio-1" wire:model.live='status_read' type="radio" value="" name="default-radio" class="w-4 h-4 text-gray-600 bg-purple-100 border-purple-300 focus:ring-purple-500   ">
                     <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 ">Todos</label>
@@ -83,7 +83,7 @@
             <!-- Aquí repetir el card anterior para cada libro -->
             
             @foreach ($books as $item)
-            <a href="{{ route('book_view', ['uuid' => $item->uuid]) }}">
+            <a class="mx-auto" href="{{ route('book_view', ['uuid' => $item->uuid]) }}">
             <div class="relative w-32 h-48 sm:w-40 sm:h-60 rounded-lg overflow-hidden shadow-lg group">
                 <img src="{{ $item->cover_image_url }}" alt="Portada del libro" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">

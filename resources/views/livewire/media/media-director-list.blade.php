@@ -53,7 +53,7 @@
                         </p>
                     </div>
 
-                    <div class="flex gap-1">
+                    <div class="hidden sm:flex gap-1">
                         @foreach ($item->medias as $item_media)
                         <a href="{{ route('media_library', ['q' => $item_media->title]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">
                             {{ $item_media->title }}
