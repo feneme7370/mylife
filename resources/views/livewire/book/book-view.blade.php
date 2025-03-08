@@ -22,7 +22,10 @@
 
         <img src="{{ $book->cover_image_url }}" class="w-full sm:w-auto sm:h-96 mx-auto mb-1 sm:mb-5" alt="">
 
-        <h5 class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">{{ $book->title }}</h5>
+        <div class="flex justify-between items-center gap-1">
+            <h5 class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">{{ $book->title }}</h5>
+            <a href="{{ route('book_edit', ['type' => $book->book_type, 'uuid' => $book->uuid]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
+        </div>
         
         <p class="mt-1 mb-3 text-base sm:text-lg text-gray-800"><span class="text-gray-950 font-bold">{{ \Carbon\Carbon::parse($book->release_date)->year }}</span>
             @foreach ($book->book_authors as $item)

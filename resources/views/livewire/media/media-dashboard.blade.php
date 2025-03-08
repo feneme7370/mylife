@@ -5,14 +5,14 @@
         <x-pages.breadcrums.breadcrum 
         title_1="Inicio"
         link_1="{{ route('dashboard') }}"
-        title_2="Media"
+        title_2="{{ App\Models\Media::title() }}"
         link_2="{{ route('media_dashboard') }}"
         />
 
         <x-pages.menus.title-and-btn>
 
         @slot('title')
-            <x-pages.titles.title-pages title="Peliculas y Series"/>
+            <x-pages.titles.title-pages title="{{ App\Models\Media::title() }}"/>
         @endslot
 
         @slot('button')
@@ -43,10 +43,10 @@
                     <h2 class="mb-2 text-lg font-semibold text-gray-900 ">Listado</h2>
                     <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside ">
                         <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('media_list') }}"><span class="hover:underline">Tabla</span></a>
+                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('media_list') }}"><span class="hover:underline">Lista</span></a>
                         </li>
                         <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('media_library') }}"><span class="hover:underline">Videoteca</span></a>
+                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('media_library') }}"><span class="hover:underline">{{ App\Models\Media::title() }}</span></a>
                         </li>
                     </ul>
                 </div>

@@ -46,9 +46,10 @@
         <div class="sm:m-3 p-4 bg-gray-100 border border-gray-200 rounded-lg shadow-sm sm:p-8 ">
     
             <div class="py-2">
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_dashboard') }}">Lista de Libros</a></p>
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('media_dashboard') }}">Lista de Peliculas y Series</a></p>
-                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('extra_dashboard') }}">Extras</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_dashboard') }}">{{ App\Models\Book::title() }}</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('media_dashboard') }}">{{ App\Models\Media::title() }}</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('recipe_dashboard') }}">{{ App\Models\Recipe::title() }}</a></p>
+                <p><a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('extra_dashboard') }}">{{ App\Models\ExtraPhrase::title() }}</a></p>
 
             </div>
 

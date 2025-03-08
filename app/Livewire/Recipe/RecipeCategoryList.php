@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Livewire\Media;
+namespace App\Livewire\Recipe;
 
-use App\Models\MediaActor;
+use App\Models\RecipeCategory;
 use Livewire\Component;
 
-class MediaActorList extends Component
+class RecipeCategoryList extends Component
 {
     ///////////////////////////// MODULO PAGINACION /////////////////////////////
     // paginacion
     use \Livewire\WithPagination;
-    public function updatingSearch() {$this->resetPage(pageName: 'p_media_actor');}
-    public function updatingPerPage() {$this->resetPage(pageName: 'p_media_actor');}
+    public function updatingSearch() {$this->resetPage(pageName: 'p_recipe_category');}
+    public function updatingPerPage() {$this->resetPage(pageName: 'p_recipe_category');}
 
     // propiedades de busqueda
     public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 50;
@@ -27,13 +27,11 @@ class MediaActorList extends Component
     // propiedades para el modal
     public $showEditModal = false, $showCreateModal = false, $showDeleteModal = false;
 
-    public $media_actor;
+    public $recipe_category;
     public
     $name,
     $slug,
-    $birthdate,
     $description,
-    $country,
 
     $cover_image_url,
     
@@ -44,24 +42,20 @@ class MediaActorList extends Component
     // reglas de validacion
     public function rules(){
         return [
-            'name' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('media_actors', 'name')->ignore($this->media_actor->id ?? 0)],
-            'slug' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('media_actors', 'slug')->ignore($this->media_actor->id ?? 0)],
-            'birthdate' => ['nullable', 'date'],
+            'name' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('recipe_categories', 'name')->ignore($this->recipe_category->id ?? 0)],
+            'slug' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('recipe_categories', 'slug')->ignore($this->recipe_category->id ?? 0)],
             'description' => ['nullable', 'string'],
-            'country' => ['nullable', 'string', 'max:255'],
             'cover_image_url' => ['nullable', 'string', 'max:255'],
             'uuid' => ['required', 'string', 'max:255'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
-
+    
     // renombrar variables a castellano
     protected $validationAttributes = [
         'name' => 'nombre',
         'slug' => 'nombre url',
-        'birthdate' => 'fecha de nacimiento',
         'description' => 'descripcion',
-        'country' => 'pais',
         'cover_image_url' => 'imagen web',
         'uuid' => 'uuid',
 
@@ -72,15 +66,13 @@ class MediaActorList extends Component
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
-        $this->reset(['name', 'slug', 'birthdate', 'description', 'country', 'cover_image_url', 'uuid', 'user_id']);
+        $this->reset(['name', 'slug', 'description', 'cover_image_url', 'uuid', 'user_id']);
     }
     // cargar datos a editar
     public function preloadEditModal($item){
         $this->name = $item['name'];
         $this->slug = $item['slug'];
-        $this->birthdate = $item['birthdate'];
         $this->description = $item['description'];
-        $this->country = $item['country'];
         $this->cover_image_url = $item['cover_image_url'];
         $this->uuid = $item['uuid'];
         $this->user_id = $item['user_id'];
@@ -101,9 +93,9 @@ class MediaActorList extends Component
         $this->resetProperties();
         $this->resetErrorBag();
         
-        $this->media_actor = MediaActor::where('uuid', $uuid)->first();
+        $this->recipe_category = RecipeCategory::where('uuid', $uuid)->first();
 
-        $this->preloadEditModal($this->media_actor);
+        $this->preloadEditModal($this->recipe_category);
 
         $this->showEditModal = true;
     }
@@ -113,28 +105,28 @@ class MediaActorList extends Component
         $this->resetProperties();
         $this->resetErrorBag();
 
-        $this->media_actor = MediaActor::where('uuid', $uuid)->first();
+        $this->recipe_category = RecipeCategory::where('uuid', $uuid)->first();
 
         $this->showDeleteModal = true;
     }
-
+    
     // borrar archivo
-    public function deleteActor(){
+    public function deleteCategory(){
 
-        if($this->media_actor->medias->isEmpty()){
-            $this->media_actor->delete();
+        if($this->recipe_category->recipes->isEmpty()){
+            $this->recipe_category->delete();
     
             $this->resetProperties();
             $this->resetErrorBag();
         }else{
-            session()->flash('status', 'Contiene peliculas o series asociadas.');
+            session()->flash('status', 'Contiene recetas asociadas.');
         }
         $this->showDeleteModal = false;
 
     }
 
     // editar
-    public function saveActorEdit(){
+    public function saveCategoryEdit(){
         // datos automaticos
         $this->slug = \Illuminate\Support\Str::slug($this->name);
 
@@ -142,9 +134,9 @@ class MediaActorList extends Component
         $validatedData = $this->validate();
 
         // editar datos
-        $this->media_actor->update($validatedData);
+        $this->recipe_category->update($validatedData);
 
-        $this->reset(['media_actor']);
+        $this->reset(['recipe_category']);
         $this->resetProperties();
         $this->showEditModal = false;
 
@@ -152,7 +144,7 @@ class MediaActorList extends Component
     }
 
     // guardar
-    public function saveActorCreate(){
+    public function saveCategoryCreate(){
         // datos automaticos
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
@@ -161,7 +153,7 @@ class MediaActorList extends Component
         // validar form
         $validatedData = $this->validate();
         
-        $media = MediaActor::create($validatedData);
+        $recipe = RecipeCategory::create($validatedData);
 
         $this->resetProperties();
         $this->showCreateModal = false;
@@ -171,12 +163,12 @@ class MediaActorList extends Component
     ///////////////////////////// RENDER /////////////////////////////
     public function render()
     {
-        $actors = MediaActor::where('user_id', \Illuminate\Support\Facades\Auth::user()->id)
+        $categories = RecipeCategory::where('user_id', \Illuminate\Support\Facades\Auth::user()->id)
                 ->orderBy( $this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
-                ->paginate($this->perPage, pageName: 'p_media_actor');
+                ->paginate($this->perPage, pageName: 'p_recipe_category');
 
-        return view('livewire.media.media-actor-list', compact(
-            'actors',
+        return view('livewire.recipe.recipe-category-list', compact(
+            'categories',
         ));
     }
 }

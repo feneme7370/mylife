@@ -39,16 +39,19 @@
 
 
         <li class="py-3 sm:py-4">
-            <div class="flex items-center">
+            <div class="flex flex-col items-left">
                 <div class="flex-1 min-w-0 ms-4">
-                    <p class="text-sm font-medium text-gray-900 truncate ">
-                        <a class="hover:underline" href="">{{ $item->description }}</a>
+                    <p class="text-sm italic text-gray-900">
+                        <a class="" href="">{{ $item->description }}</a>
                     </p>
+                    <p class="text-xs italic text-gray-600 mt-3">-- {{ $item->name }}</p>
                 </div>
 
-                <x-pages.buttons.edit-text wire:click="editActionModal('{{$item->uuid}}')" wire:loading.attr="disabled" />
-                <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')"
-                wire:loading.attr="disabled" />
+                <div class="flex gap-5 justify-end mt-2">
+                    <x-pages.buttons.edit-text wire:click="editActionModal('{{$item->uuid}}')" wire:loading.attr="disabled" />
+                    <x-pages.buttons.delete-text wire:click="deleteActionModal('{{$item->uuid}}')"
+                    wire:loading.attr="disabled" />
+                </div>
             </div>
         </li>
         @endforeach

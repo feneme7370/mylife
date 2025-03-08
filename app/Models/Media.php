@@ -72,7 +72,7 @@ class Media extends Model
 
     public static function valorationStars()
     {
-        return [1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+        return [0 => 'Sin Valoracion', 1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
     }
     public static function typeContent()
     {
@@ -81,5 +81,9 @@ class Media extends Model
     public static function statusMedia()
     {
         return [1 => 'Quiero ver', 2 => 'Visto', 3 => 'Viendo'];
+    }
+    public static function title()
+    {
+        return 'Cine y TV';
     }
 }

@@ -18,7 +18,7 @@ class MediaList extends Component
     public function updatingCollectionSelected() {$this->resetPage(pageName: 'p_media');}
 
     // propiedades de busqueda
-    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 10, $status_view = "", $collection_selected, $media_type_selected;
+    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 50, $status_view = "", $collection_selected, $media_type_selected;
 
     public $media;
 

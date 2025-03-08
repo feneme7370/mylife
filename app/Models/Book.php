@@ -63,7 +63,7 @@ class Book extends Model
 
     public static function valorationStars()
     {
-        return [1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+        return [0 => 'Sin Valoracion', 1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
     }
     public static function typeContent()
     {
@@ -72,5 +72,9 @@ class Book extends Model
     public static function statusBook()
     {
         return [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
+    }
+    public static function title()
+    {
+        return 'Biblioteca';
     }
 }

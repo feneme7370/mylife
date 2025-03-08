@@ -24,7 +24,13 @@ use App\Livewire\Media\MediaLibrary;
 use App\Livewire\Media\MediaList;
 use App\Livewire\Media\MediaTagList;
 use App\Livewire\Media\MediaView;
-
+use App\Livewire\Recipe\RecipeCategoryList;
+use App\Livewire\Recipe\RecipeCreate;
+use App\Livewire\Recipe\RecipeDashboard;
+use App\Livewire\Recipe\RecipeEdit;
+use App\Livewire\Recipe\RecipeList;
+use App\Livewire\Recipe\RecipeTagList;
+use App\Livewire\Recipe\RecipeView;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -68,6 +74,17 @@ Route::middleware([
     Route::get('/media_director_list', MediaDirectorList::class)->name('media_director_list');
     Route::get('/media_collection_list', MediaCollectionList::class)->name('media_collection_list');
     Route::get('/media_tag_list', MediaTagList::class)->name('media_tag_list');
+
+    // media
+    Route::get('/recipe_dashboard', RecipeDashboard::class)->name('recipe_dashboard');
+    Route::get('/recipe_create', RecipeCreate::class)->name('recipe_create');
+    Route::get('/recipe_edit/{uuid}', RecipeEdit::class)->name('recipe_edit');
+    // Route::get('/recipe_library', MediaLibrary::class)->name('recipe_library');
+    Route::get('/recipe_list', RecipeList::class)->name('recipe_list');
+    Route::get('/recipe_view/{uuid}', RecipeView::class)->name('recipe_view');
+
+    Route::get('/recipe_category_list', RecipeCategoryList::class)->name('recipe_category_list');
+    Route::get('/recipe_tag_list', RecipeTagList::class)->name('recipe_tag_list');
 
     // extras
     Route::get('/extra_dashboard', ExtraDashboard::class)->name('extra_dashboard');

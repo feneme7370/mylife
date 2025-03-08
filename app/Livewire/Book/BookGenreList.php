@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Auth;
 class BookGenreList extends Component
 {
     ///////////////////////////// MODULO PAGINACION /////////////////////////////
-
     // paginacion
     use \Livewire\WithPagination;
     public function updatingSearch() {$this->resetPage(pageName: 'p_book_genre');}
     public function updatingPerPage() {$this->resetPage(pageName: 'p_book_genre');}
+
     // propiedades de busqueda
     public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 50;
 
@@ -25,9 +25,7 @@ class BookGenreList extends Component
     }
     ///////////////////////////// MODULO VARIABLES /////////////////////////////
     // propiedades para el modal
-    public $showEditModal = false;
-    public $showCreateModal = false;
-    public $showDeleteModal = false;
+    public $showEditModal = false, $showCreateModal = false, $showDeleteModal = false;
 
     public $book_genre;
     public
@@ -41,19 +39,17 @@ class BookGenreList extends Component
     $user_id;
 
     ///////////////////////////// MODULO VALIDACION /////////////////////////////
-
     // reglas de validacion
     public function rules(){
         return [
-            'name' => ['required', 'string', \Illuminate\Validation\Rule::unique('book_genres', 'name')->ignore($this->book_genre->id ?? 0)],
-            'slug' => ['required', 'string', \Illuminate\Validation\Rule::unique('book_genres', 'slug')->ignore($this->book_genre->id ?? 0)],
+            'name' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('book_genres', 'name')->ignore($this->book_genre->id ?? 0)],
+            'slug' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('book_genres', 'slug')->ignore($this->book_genre->id ?? 0)],
             'description' => ['nullable', 'string'],
-            'cover_image_url' => ['nullable', 'string'],
-            'uuid' => ['required', 'string'],
+            'cover_image_url' => ['nullable', 'string', 'max:255'],
+            'uuid' => ['required', 'string', 'max:255'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
-    
 
     // renombrar variables a castellano
     protected $validationAttributes = [
@@ -65,6 +61,7 @@ class BookGenreList extends Component
         'user_id' => 'usuario',
     ];
 
+    ///////////////////////////// FUNCIONES BASICAS /////////////////////////////
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
@@ -80,6 +77,7 @@ class BookGenreList extends Component
         $this->user_id = $item['user_id'];
     }
 
+    ///////////////////////////// FUNCIONES INTERACTIVAS /////////////////////////////
     // mostrar modal para confirmar crear
     public function createActionModal() {
         $this->resetProperties();
@@ -110,6 +108,7 @@ class BookGenreList extends Component
         $this->showDeleteModal = true;
     }
 
+    // borrar archivo
     public function deleteGenre(){
         
         if ($this->book_genre->books->isEmpty()) {
@@ -118,19 +117,21 @@ class BookGenreList extends Component
             $this->resetProperties();
             $this->resetErrorBag();
         } else {
-            session()->flash('status', 'Contiene elementos en el genero.');
+            session()->flash('status', 'Contiene libros asociados.');
         }
 
         $this->showDeleteModal = false;
 
     }
 
-    // guardar
+    // editar
     public function saveGenreEdit(){
+        // datos automaticos
         $this->slug = \Illuminate\Support\Str::slug($this->name);
 
         // validar datos
         $validatedData = $this->validate();
+
         // editar datos
         $this->book_genre->update($validatedData);
 
@@ -141,7 +142,9 @@ class BookGenreList extends Component
         $this->dispatch('message', 'Actualizado con exito');
     }
 
+    // guardar
     public function saveGenreCreate(){
+        // datos automaticos
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
         $this->uuid = \Illuminate\Support\Str::random(24);
@@ -156,6 +159,7 @@ class BookGenreList extends Component
         $this->dispatch('message', 'Creado con exito');
     }
 
+    ///////////////////////////// RENDER /////////////////////////////
     public function render()
     {
         $genres = BookGenre::where('user_id', Auth::user()->id)

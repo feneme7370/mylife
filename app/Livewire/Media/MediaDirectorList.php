@@ -8,11 +8,11 @@ use Livewire\Component;
 class MediaDirectorList extends Component
 {
     ///////////////////////////// MODULO PAGINACION /////////////////////////////
-
     // paginacion
     use \Livewire\WithPagination;
     public function updatingSearch() {$this->resetPage(pageName: 'p_media_director');}
     public function updatingPerPage() {$this->resetPage(pageName: 'p_media_director');}
+
     // propiedades de busqueda
     public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 50;
 
@@ -22,11 +22,10 @@ class MediaDirectorList extends Component
         'search' => [ 'as' => 'q' ],
         ];
     }
+
     ///////////////////////////// MODULO VARIABLES /////////////////////////////
     // propiedades para el modal
-    public $showEditModal = false;
-    public $showCreateModal = false;
-    public $showDeleteModal = false;
+    public $showEditModal = false, $showCreateModal = false, $showDeleteModal = false;
 
     public $media_director;
     public
@@ -42,21 +41,19 @@ class MediaDirectorList extends Component
     $user_id;
 
     ///////////////////////////// MODULO VALIDACION /////////////////////////////
-
     // reglas de validacion
     public function rules(){
         return [
-            'name' => ['required', 'string', \Illuminate\Validation\Rule::unique('media_directors', 'name')->ignore($this->media_director->id ?? 0)],
-            'slug' => ['required', 'string', \Illuminate\Validation\Rule::unique('media_directors', 'slug')->ignore($this->media_director->id ?? 0)],
+            'name' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('media_directors', 'name')->ignore($this->media_director->id ?? 0)],
+            'slug' => ['required', 'string', 'max:255', \Illuminate\Validation\Rule::unique('media_directors', 'slug')->ignore($this->media_director->id ?? 0)],
             'birthdate' => ['nullable', 'date'],
             'description' => ['nullable', 'string'],
-            'country' => ['nullable', 'string'],
-            'cover_image_url' => ['nullable', 'string'],
-            'uuid' => ['required', 'string'],
+            'country' => ['nullable', 'string', 'max:255'],
+            'cover_image_url' => ['nullable', 'string', 'max:255'],
+            'uuid' => ['required', 'string', 'max:255'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
-    
 
     // renombrar variables a castellano
     protected $validationAttributes = [
@@ -71,6 +68,7 @@ class MediaDirectorList extends Component
         'user_id' => 'usuario',
     ];
 
+    ///////////////////////////// FUNCIONES BASICAS /////////////////////////////
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
@@ -88,6 +86,7 @@ class MediaDirectorList extends Component
         $this->user_id = $item['user_id'];
     }
 
+    ///////////////////////////// FUNCIONES INTERACTIVAS /////////////////////////////
     // mostrar modal para confirmar crear
     public function createActionModal() {
         $this->resetProperties();
@@ -119,6 +118,7 @@ class MediaDirectorList extends Component
         $this->showDeleteModal = true;
     }
 
+    // borrar archivo
     public function deleteDirector(){
 
         if($this->media_director->medias->isEmpty()){
@@ -133,13 +133,14 @@ class MediaDirectorList extends Component
 
     }
 
-    // guardar
+    // editar
     public function saveDirectorEdit(){
+        // datos automaticos
         $this->slug = \Illuminate\Support\Str::slug($this->name);
-        
 
         // validar datos
         $validatedData = $this->validate();
+
         // editar datos
         $this->media_director->update($validatedData);
 
@@ -150,7 +151,9 @@ class MediaDirectorList extends Component
         $this->dispatch('message', 'Actualizado con exito');
     }
 
+    // guardar
     public function saveDirectorCreate(){
+        // datos automaticos
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
         $this->uuid = \Illuminate\Support\Str::random(24);
@@ -165,6 +168,7 @@ class MediaDirectorList extends Component
         $this->dispatch('message', 'Creado con exito');
     }
 
+    ///////////////////////////// RENDER /////////////////////////////
     public function render()
     {
         $directors = MediaDirector::where('user_id', \Illuminate\Support\Facades\Auth::user()->id)

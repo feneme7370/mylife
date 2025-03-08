@@ -56,28 +56,28 @@ class MediaEdit extends Component
     // reglas de validacion
     public function rules(){
         return [
-            'title' => ['required'],
-            'slug' => ['required'],
+            'title' => ['required', 'max:255'],
+            'slug' => ['required', 'max:255'],
             
             'synopsis' => ['nullable'],
-            'release_date' => ['nullable'],
-            'start_date' => ['nullable'],
-            'end_date' => ['nullable'],
+            'release_date' => ['nullable', 'date'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date'],
     
             
-            'number_collection' => ['nullable', 'numeric'],
+            'number_collection' => ['nullable', 'numeric', 'min:1'],
             'media_type' => ['nullable', 'numeric', 'min:1', 'max:2'],
     
-            'duration'  => ['nullable', 'numeric'],
-            'rating' => ['nullable', 'numeric', 'min:1', 'max:5'],
+            'duration'  => ['nullable', 'numeric', 'min:1'],
+            'rating' => ['nullable', 'numeric', 'min:0', 'max:5'],
             'personal_description' => ['nullable', 'string'],
     
-            'cover_image'  => ['nullable', 'string'],
-            'cover_image_url'  => ['nullable', 'string'],
+            'cover_image'  => ['nullable', 'string', 'max:255'],
+            'cover_image_url'  => ['nullable', 'string', 'max:255'],
     
-            'status' => ['nullable', 'numeric'],
+            'status' => ['nullable', 'numeric', 'max:10'],
             
-            'uuid' => ['required'],
+            'uuid' => ['required', 'max:255'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
@@ -191,6 +191,8 @@ class MediaEdit extends Component
         $this->slug = \Illuminate\Support\Str::slug($this->title);
         
         $this->media_type = $this->type;
+        $this->rating = $this->rating == '' ? 0 : $this->rating;
+        $this->number_collection = $this->number_collection == '' ? 1 : $this->number_collection;
 
         // validar form
         $validatedData = $this->validate();

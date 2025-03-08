@@ -20,7 +20,7 @@ class BookList extends Component
     public function updatingCollectionSelected() {$this->resetPage(pageName: 'p_book');}
 
     // propiedades de busqueda
-    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 10, $status_read = "", $collection_selected, $media_type_selected;
+    public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 50, $status_read = "", $collection_selected, $media_type_selected;
 
     public $book;
 
@@ -103,8 +103,10 @@ class BookList extends Component
         ->when($this->status_read, function( $query) {
             return $query->where('status', $this->status_read);
         })
-        ->when($this->collection_selected, function( $query) {
-            return $query->where('book_collection_id', $this->collection_selected);
+        ->when($this->collection_selected, function ($query) {
+            $query->whereHas('book_collections', function ($q) {
+                $q->where('book_collections.uuid', $this->collection_selected);
+            });
         })
         ->orderBy( $this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
         ->paginate($this->perPage, pageName: 'p_book');

@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Auth;
 class BookTagList extends Component
 {
     ///////////////////////////// MODULO PAGINACION /////////////////////////////
-
     // paginacion
     use WithPagination;
     public function updatingSearch() {$this->resetPage(pageName: 'p_book_tag');}
     public function updatingPerPage() {$this->resetPage(pageName: 'p_book_tag');}
+
     // propiedades de busqueda
     public $search = '', $sortBy = 'id', $sortAsc = false, $perPage = 50;
 
@@ -27,9 +27,7 @@ class BookTagList extends Component
     }
     ///////////////////////////// MODULO VARIABLES /////////////////////////////
     // propiedades para el modal
-    public $showEditModal = false;
-    public $showCreateModal = false;
-    public $showDeleteModal = false;
+    public $showEditModal = false, $showCreateModal = false, $showDeleteModal = false;
 
     public $book_tag;
     public
@@ -43,19 +41,17 @@ class BookTagList extends Component
     $user_id;
 
     ///////////////////////////// MODULO VALIDACION /////////////////////////////
-
     // reglas de validacion
     public function rules(){
         return [
-            'name' => ['required', 'string', Rule::unique('book_tags', 'name')->ignore($this->book_tag->id ?? 0)],
-            'slug' => ['required', 'string', Rule::unique('book_tags', 'slug')->ignore($this->book_tag->id ?? 0)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('book_tags', 'name')->ignore($this->book_tag->id ?? 0)],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('book_tags', 'slug')->ignore($this->book_tag->id ?? 0)],
             'description' => ['nullable', 'string'],
-            'cover_image_url' => ['nullable', 'string'],
-            'uuid' => ['required', 'string'],
+            'cover_image_url' => ['nullable', 'string', 'max:255'],
+            'uuid' => ['required', 'string', 'max:255'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
-    
 
     // renombrar variables a castellano
     protected $validationAttributes = [
@@ -67,6 +63,7 @@ class BookTagList extends Component
         'user_id' => 'usuario',
     ];
 
+    ///////////////////////////// FUNCIONES BASICAS /////////////////////////////
     // resetear variables
     public function resetProperties() {
         $this->resetErrorBag();
@@ -82,6 +79,7 @@ class BookTagList extends Component
         $this->user_id = $item['user_id'];
     }
 
+    ///////////////////////////// FUNCIONES INTERACTIVAS /////////////////////////////
     // mostrar modal para confirmar crear
     public function createActionModal() {
         $this->resetProperties();
@@ -112,6 +110,7 @@ class BookTagList extends Component
         $this->showDeleteModal = true;
     }
 
+    // borrar archivo
     public function deleteTag(){
         
         if ($this->book_tag->books->isEmpty()) {
@@ -120,15 +119,16 @@ class BookTagList extends Component
             $this->resetProperties();
             $this->resetErrorBag();
         } else {
-            session()->flash('status', 'Contiene elementos en la colección.');
+            session()->flash('status', 'Contiene libros asociados.');
         }
 
         $this->showDeleteModal = false;
 
     }
 
-    // guardar
+    // editar
     public function saveTagEdit(){
+        // datos automaticos
         $this->slug = \Illuminate\Support\Str::slug($this->name);
 
         // validar datos
@@ -143,7 +143,9 @@ class BookTagList extends Component
         $this->dispatch('message', 'Actualizado con exito');
     }
 
+    // guardar
     public function saveTagCreate(){
+        // datos automaticos
         $this->user_id = \Illuminate\Support\Facades\Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->name);
         $this->uuid = \Illuminate\Support\Str::random(24);
@@ -158,6 +160,7 @@ class BookTagList extends Component
         $this->dispatch('message', 'Creado con exito');
     }
 
+    ///////////////////////////// RENDER /////////////////////////////
     public function render()
     {
         $tags = BookTag::where('user_id', Auth::user()->id)

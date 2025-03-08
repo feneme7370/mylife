@@ -1,18 +1,18 @@
 
 <div>
-
+    
     {{-- breadcrum, title y button --}}
         <x-pages.breadcrums.breadcrum 
         title_1="Inicio"
         link_1="{{ route('dashboard') }}"
-        title_2="{{ App\Models\Book::title() }}"
-        link_2="{{ route('book_dashboard') }}"
+        title_2="{{ App\Models\Recipe::title() }}"
+        link_2="{{ route('recipe_dashboard') }}"
         />
 
         <x-pages.menus.title-and-btn>
 
         @slot('title')
-            <x-pages.titles.title-pages title="{{ App\Models\Book::title() }}"/>
+            <x-pages.titles.title-pages title="{{ App\Models\Recipe::title() }}"/>
         @endslot
 
         @slot('button')
@@ -43,10 +43,7 @@
                     <h2 class="mb-2 text-lg font-semibold text-gray-900 ">Listado</h2>
                     <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside ">
                         <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_list') }}"><span class="hover:underline">Lista</span></a>
-                        </li>
-                        <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_library') }}"><span class="hover:underline">{{ App\Models\Book::title() }}</span></a>
+                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('recipe_list') }}"><span class="hover:underline">Lista</span></a>
                         </li>
                     </ul>
                 </div>
@@ -55,21 +52,16 @@
                     <h2 class="mb-2 text-lg font-semibold text-gray-900 ">Datos adicionales</h2>
                     <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside ">
                         <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_author_list') }}"><span class="hover:underline">Autores</span></a>
+                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('recipe_category_list') }}"><span class="hover:underline">Categorias</span></a>
                         </li>
                         <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_collection_list') }}"><span class="hover:underline">Colecciones</span></a>
-                        </li>
-                        <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_tag_list') }}"><span class="hover:underline">Etiquetas</span></a>
-                        </li>
-                        <li>
-                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('book_genre_list') }}"><span class="hover:underline">Generos</span></a>
+                            <a class="mb-4 text-sm md:text-base font-bold text-gray-800" href="{{ route('recipe_tag_list') }}"><span class="hover:underline">Etiquetas</span></a>
                         </li>
                     </ul>
                 </div>
 
             </div>
+
 
         </div>
             

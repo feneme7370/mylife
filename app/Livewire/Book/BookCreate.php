@@ -48,26 +48,26 @@ class BookCreate extends Component
     // reglas de validacion
     public function rules(){
         return [
-            'title' => ['required'],
-            'slug' => ['required'],
+            'title' => ['required', 'max:255'],
+            'slug' => ['required', 'max:255'],
             'synopsis' => ['nullable'],
-            'release_date' => ['nullable'],
-            'start_date' => ['nullable'],
-            'end_date' => ['nullable'],
-            'media_type' => ['nullable', 'numeric'],
+            'release_date' => ['nullable', 'date'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date'],
+            'media_type' => ['nullable', 'numeric', 'min:1'],
     
-            'number_collection' => ['nullable', 'numeric'],
+            'number_collection' => ['nullable', 'numeric', 'min:1'],
     
-            'pages'  => ['nullable', 'numeric'],
-            'rating' => ['nullable', 'numeric', 'min:1', 'max:5'],
+            'pages'  => ['nullable', 'numeric', 'min:1'],
+            'rating' => ['nullable', 'numeric', 'min:0', 'max:10'],
             'personal_description' => ['nullable', 'string'],
     
-            'cover_image'  => ['nullable', 'string'],
-            'cover_image_url'  => ['nullable', 'string'],
+            'cover_image'  => ['nullable', 'string', 'max:255'],
+            'cover_image_url'  => ['nullable', 'string', 'max:255'],
     
-            'status' => ['nullable', 'numeric'],
+            'status' => ['nullable', 'numeric', 'max:10'],
             
-            'uuid' => ['required'],
+            'uuid' => ['required', 'max:255'],
             'user_id' => ['required', 'numeric', 'min:0'],
         ];
     }
@@ -120,6 +120,8 @@ class BookCreate extends Component
         $this->user_id = Auth::user()->id;
         $this->slug = \Illuminate\Support\Str::slug($this->title);
         $this->uuid = \Illuminate\Support\Str::random(24);
+        $this->rating = $this->rating == '' ? 0 : $this->rating;
+        $this->number_collection = $this->number_collection == '' ? 1 : $this->number_collection;
         
         // validar form
         $validatedData = $this->validate();

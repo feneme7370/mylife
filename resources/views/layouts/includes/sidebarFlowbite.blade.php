@@ -19,7 +19,7 @@
                 <a href="{{ route('dashboard') }}" class="flex ms-2 md:me-24">
                     {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
                     --}}
-                    <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1335891621i/6596839.jpg" class="h-8 me-3"
+                    <img src="https://www.kiwihopp.com/wp-content/uploads/2020/04/libros-sobre-nueva-zelanda-descargar.jpg" class="h-8 me-3"
                         alt="FlowBite Logo" />
                     <span
                         class="self-center text-gray-100 text-xl font-semibold sm:text-2xl whitespace-nowrap">MyLife</span>
@@ -36,7 +36,7 @@
                             aria-expanded="false" data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
                             <img class="w-8 h-8 rounded-full"
-                                src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1335891621i/6596839.jpg" alt="user photo">
+                                src="https://www.kiwihopp.com/wp-content/uploads/2020/04/libros-sobre-nueva-zelanda-descargar.jpg" alt="user photo">
                         </button>
                     </div>
 
@@ -96,13 +96,18 @@
             </x-sistem.navlinks.navlink-sidebar-flowbite>
 
             <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('book_dashboard') }}"
-                :active="request()->routeIs('book_dashboard')" title="Libros">
+                :active="request()->routeIs('book_dashboard')" title="{{ App\Models\Book::title() }}">
                 <x-sistem.icons.for-icons-app icon="book" />
             </x-sistem.navlinks.navlink-sidebar-flowbite>
 
             <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('media_dashboard') }}"
-                :active="request()->routeIs('media_dashboard')" title="Peliculas y Series">
+                :active="request()->routeIs('media_dashboard')" title="{{ App\Models\Media::title() }}">
                 <x-sistem.icons.for-icons-app icon="media" />
+            </x-sistem.navlinks.navlink-sidebar-flowbite>
+
+            <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('recipe_dashboard') }}"
+                :active="request()->routeIs('recipe_dashboard')" title="{{ App\Models\Recipe::title() }}">
+                <x-sistem.icons.for-icons-app icon="recipe" />
             </x-sistem.navlinks.navlink-sidebar-flowbite>
 
             <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('extra_dashboard') }}"
