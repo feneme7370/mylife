@@ -64,4 +64,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function book_reading()
+    {
+        return $this->HasMany(BookReading::class);
+    }
+    public function media_watcheds()
+    {
+        return $this->HasMany(MediaWatched::class);
+    }
 }

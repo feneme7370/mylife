@@ -20,7 +20,9 @@ class MediaView extends Component
         $type_content = Media::typeContent();
         $status_media = Media::statusMedia();
         $valoration_stars = Media::valorationStars();
-        
+        $format = Media::format();
+        $emission_status = Media::emission_status();
+
         $duration_hs = CarbonInterval::minutes($this->media->duration)->cascade();
 
         return view('livewire.media.media-view', compact(
@@ -28,6 +30,8 @@ class MediaView extends Component
             'valoration_stars',
             'type_content',
             'duration_hs',
+            'format',
+            'emission_status',
         ));
     }
 }

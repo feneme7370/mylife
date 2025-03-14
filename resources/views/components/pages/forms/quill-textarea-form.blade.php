@@ -20,15 +20,15 @@
             modules: {
                 toolbar: [
                     ["clean"], // Eliminar formato
-                    [{ header: [false, 1, 2, 3] }], // Tamaño de encabezado
+                    // [{ header: [false, 1, 2, 3] }], // Tamaño de encabezado
                     [{ size: ["small", false, "large", "huge"] }], // Tamaños de texto
                     ["bold", "italic", "underline", "strike"], // Formatos de texto
-                    [{ color: [] }, { background: [] }], // Color de texto y fondo
-                    [{ list: "ordered" }, { list: "bullet" }], // Listas
-                    [{ script: "sub" }, { script: "super" }], // Subíndice y superíndice
-                    [{ indent: "-1" }, { indent: "+1" }], // Sangría
-                    [{ direction: "rtl" }], // Dirección del texto
-                    [{ font: [] }], // Tipo de fuente
+                    // [{ color: [] }, { background: [] }], // Color de texto y fondo
+                    // [{ list: "ordered" }, { list: "bullet" }], // Listas
+                    // [{ script: "sub" }, { script: "super" }], // Subíndice y superíndice
+                    // [{ indent: "-1" }, { indent: "+1" }], // Sangría
+                    // [{ direction: "rtl" }], // Dirección del texto
+                    // [{ font: [] }], // Tipo de fuente
                     [{ align: [] }], // Alineación del texto
                     // ["link", "image", "video"], // Enlaces, imágenes y videos
                     ["link"], // Enlaces, imágenes y videos

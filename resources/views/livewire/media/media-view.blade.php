@@ -23,7 +23,10 @@
         <img src="{{ $media->cover_image_url }}" class="w-full sm:w-auto sm:h-96 mx-auto mb-1 sm:mb-5" alt="">
 
         <div class="flex justify-between items-center gap-1">
-            <h5 class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">{{ $media->title }}</h5>
+            <div class="mt-4 sm:mt-0 mb-4">
+                <h5 class="text-xl sm:text-2xl font-bold text-gray-950">{{ $media->title }}</h5>
+                <p class="mb-2 text-xs sm:text-base text-gray-800 font-light italic">{{ $media->original_title }}</p>
+            </div>
             <a href="{{ route('media_edit', ['type' => $media->media_type, 'uuid' => $media->uuid]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
         </div>
         
@@ -91,6 +94,35 @@
             <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Descripcion:</span> {{ $season_item->description }}</p>
         </div>
         @endforeach
+
+        @if ($media->format)
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Formato:</span> {{ $format[$media->format] ?? 'Desconocido' }}</p>
+        @endif
+        @if ($media->emission_status)
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Emision:</span> {{ $emission_status[$media->emission_status] ?? 'Desconocido' }}</p>
+        @endif
+        
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Favorito:</span> {{ $media->is_favorite ? 'Si' : 'No' }}</p>
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Lista de deseo:</span> {{ $media->is_wish ? 'Si' : 'No' }}</p>
+        
+        @if ($media->media_watcheds->count() > 0)
+        <p class="mb-2 text-xs sm:text-base text-gray-800 italic">Visto {{ $media->media_watcheds->count() == 1 ? $media->media_watcheds->count().' vez' : $media->media_watcheds->count().' veces' }}</p>
+            @foreach ($media->media_watcheds as $item)
+                @if ((\Carbon\Carbon::parse($item->start_date)->diffInDays($item->end_date)) == 0)
+                    <div class="px-3 border-l-4 border-purple-800">
+                        <p class="mb-2 text-xs sm:text-base text-gray-800">{{ $item->end_date }}</p>
+                    </div>
+                @else
+
+                    <div class="px-3 border-l-4 border-purple-800">
+                        <p class="mb-2 text-xs sm:text-base text-gray-800">{{ $item->start_date }} - {{ $item->end_date }} en {{ \Carbon\Carbon::parse($item->start_date)->diffInDays($item->end_date) }} dias</p>
+                    </div>
+                @endif
+
+
+
+            @endforeach
+        @endif
 
         @if ($media->personal_description)
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">Descripcion personal</p>

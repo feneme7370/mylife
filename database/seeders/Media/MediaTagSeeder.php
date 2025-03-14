@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Media;
 
 use App\Models\MediaTag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;

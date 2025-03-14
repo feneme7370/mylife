@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
 
+            $table->string('original_title')->nullable();
+            $table->string('emission_status')->nullable();
+            $table->string('format')->nullable(); // 1 Libro - 2 Digital - 3 Audiolibro 
+            $table->string('is_favorite')->nullable(); // 0 false - 1 true
+            $table->string('is_wish')->nullable(); // 0 false - 1 true
+
             $table->text('synopsis')->nullable();
             $table->date('release_date')->nullable();
 

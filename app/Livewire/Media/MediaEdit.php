@@ -6,10 +6,11 @@ use App\Models\Media;
 use Livewire\Component;
 use App\Models\MediaTag;
 use App\Models\MediaActor;
+use App\Models\MediaGenre;
 use App\Models\MediaSeason;
+use App\Models\MediaWatched;
 use App\Models\MediaDirector;
 use App\Models\MediaCollection;
-use App\Models\MediaGenre;
 use Illuminate\Support\Facades\Auth;
 
 class MediaEdit extends Component
@@ -20,6 +21,13 @@ class MediaEdit extends Component
 
     $title,
     $slug,
+
+    $original_title,
+    $emission_status,
+    $format,
+    $is_favorite,
+    $is_wish,
+
     $synopsis ,
     $release_date,
     $start_date,
@@ -58,6 +66,12 @@ class MediaEdit extends Component
         return [
             'title' => ['required', 'max:255'],
             'slug' => ['required', 'max:255'],
+
+            'original_title' => ['required', 'max:255'],
+            'emission_status' => ['nullable', 'numeric', 'min:1'],
+            'format' => ['nullable', 'numeric', 'min:1'],
+            'is_favorite' => ['nullable', 'numeric', 'min:0', 'max:1'],
+            'is_wish' => ['nullable', 'numeric', 'min:0', 'max:1'],
             
             'synopsis' => ['nullable'],
             'release_date' => ['nullable', 'date'],
@@ -86,6 +100,12 @@ class MediaEdit extends Component
     protected $validationAttributes = [
         'title' => 'titulo',
         'slug' => 'slug',
+
+        'original_title' => 'titulo original',
+        'emission_status' => 'estado de emision',
+        'format' => 'formato',
+        'is_favorite' => 'lista de favorito',
+        'is_wish' => 'lista de deseo',
         
         'synopsis' => 'sinopsis',
         'release_date' => 'fecha de publicacion',
@@ -123,12 +143,33 @@ class MediaEdit extends Component
         $this->seasons = array_values($this->seasons); // Reindexar array
     }
 
+    public $media_watcheds = [];
+    public function addMediaWatched()
+    {
+        $this->media_watcheds[] = ['id' => null, 'start_date_table' => '', 'end_date_table' => ''];
+    }
+    public function removeMediaWatched($index)
+    {
+        if (!empty($this->media_watcheds[$index]['id'])) {
+            MediaWatched::find($this->media_watcheds[$index]['id'])->delete();
+        }
+
+        unset($this->media_watcheds[$index]);
+        $this->media_watcheds = array_values($this->media_watcheds); // Reindexar array
+    }
+
     public function mount($uuid){
 
         $media = Media::where('uuid', $uuid)->first();
         $this->media = $media;
 
         $this->title = $media['title'];
+
+        $this->original_title = $media['original_title'] ;
+        $this->emission_status = $media['emission_status'] ;
+        $this->format = $media['format'] ;
+        $this->is_favorite = $media['is_favorite'] ? true : false;
+        $this->is_wish = $media['is_wish'] ? true : false;
         
         $this->synopsis = $media['synopsis'] ;
         $this->release_date = $media['release_date'];
@@ -164,26 +205,19 @@ class MediaEdit extends Component
                 ];
             })->toArray();
         }
+
+        $this->media_watcheds = $media->media_watcheds->map(function ($media_watched) {
+            return [
+                'id' => $media_watched->id,
+                'media_id' => $media_watched->media_id,
+                'user_id' => $media_watched->user_id,
+                'start_date_table' => $media_watched->start_date,
+                'end_date_table' => $media_watched->end_date,
+            ];
+        })->toArray();
     }
 
-
-    public function updated($propertyName)
-    {
-        $this->updateStatus();
-    }
-
-    public function updateStatus()
-    {
-        if (empty($this->start_date) && empty($this->end_date)) {
-            $this->status = 1;
-        } elseif (!empty($this->start_date) && empty($this->end_date)) {
-            $this->status = 3;
-        } elseif (!empty($this->start_date) && !empty($this->end_date)) {
-            $this->status = 2;
-        } elseif (empty($this->start_date) && !empty($this->end_date)) {
-            $this->status = 2;
-        }
-    }     
+  
 
 
     public function saveMedia(){
@@ -193,6 +227,9 @@ class MediaEdit extends Component
         $this->media_type = $this->type;
         $this->rating = $this->rating == '' ? 0 : $this->rating;
         $this->number_collection = $this->number_collection == '' ? 1 : $this->number_collection;
+
+        $this->is_favorite = $this->is_favorite == true ? 1 : 0;
+        $this->is_wish = $this->is_wish == true ? 1 : 0;
 
         // validar form
         $validatedData = $this->validate();
@@ -224,6 +261,24 @@ class MediaEdit extends Component
             
         }
 
+        if ($this->media_watcheds) {
+            foreach ($this->media_watcheds as $media_watched) {
+                if ($media_watched['id']) {
+                    MediaWatched::find($media_watched['id'])->update([
+                        'start_date' => $media_watched['start_date_table'],
+                        'end_date' => $media_watched['end_date_table'],
+                    ]);
+                } else {
+                    MediaWatched::create([
+                        'media_id' => $this->media->id,
+                        'user_id' => Auth::user()->id,
+                        'start_date' => $media_watched['start_date_table'],
+                        'end_date' => $media_watched['end_date_table'],
+                    ]);
+                }
+            }
+        }
+
         return redirect()->route('media_list')->with('message', 'Editado exitosamente');
     }
     public function render()
@@ -237,6 +292,8 @@ class MediaEdit extends Component
         $type_content = Media::typeContent();
         $status_media = Media::statusMedia();
         $valoration_stars = Media::valorationStars();
+        $formats = Media::format();
+        $emissions_status = Media::emission_status();
 
         return view('livewire.media.media-edit', compact(
             'media_actors',
@@ -247,6 +304,8 @@ class MediaEdit extends Component
             'status_media',
             'valoration_stars',
             'type_content',
+            'formats',
+            'emissions_status',
         ));
     }
 }

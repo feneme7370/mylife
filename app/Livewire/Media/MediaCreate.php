@@ -6,18 +6,149 @@ use App\Models\Media;
 use Livewire\Component;
 use App\Models\MediaTag;
 use App\Models\MediaActor;
+use App\Models\MediaGenre;
+use App\Models\BookReading;
+use App\Models\MediaSeason;
+use App\Models\MediaWatched;
 use App\Models\MediaDirector;
 use App\Models\MediaCollection;
-use App\Models\MediaGenre;
-use App\Models\MediaSeason;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class MediaCreate extends Component
 {
+    ///////////////////////////// MODULO ADD DIRECTOR /////////////////////////////
+
+    public $showCreateModalDirector = false;
+    public $name_director, $user_id_director, $slug_director, $uuid_director;
+    // mostrar modal para confirmar crear
+    public function createActionModalDirector()
+    {
+        $this->resetErrorBag();
+        $this->showCreateModalDirector = true;
+    }
+
+    // guardar
+    public function saveDirectorCreate()
+    {
+        // datos automaticos
+        $this->name_director = $this->name_director;
+        $this->slug_director = \Illuminate\Support\Str::slug($this->name_director);
+        $this->uuid_director = \Illuminate\Support\Str::random(24);
+        $this->user_id_director = \Illuminate\Support\Facades\Auth::user()->id;
+
+        // validar datos
+        $validatedData = $this->validate([
+            'name_director' => ['required', 'string', 'max:255', Rule::unique('media_directors', 'name')->ignore($this->media_director->id ?? 0)],
+            'slug_director' => ['required', 'string', 'max:255', Rule::unique('media_directors', 'slug')->ignore($this->media_director->id ?? 0)],
+            'uuid_director' => ['required', 'string', 'max:255'],
+            'user_id_director' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        // guardar datos
+        $media = MediaDirector::create([
+            'name' => $this->name_director,
+            'slug' => $this->slug_director,
+            'uuid' => $this->uuid_director,
+            'user_id' => $this->user_id_director,
+        ]);
+
+        $this->reset('name_director', 'slug_director', 'uuid_director', 'user_id_director');
+        $this->showCreateModalDirector = false;
+        $this->dispatch('message', 'Creado con exito');
+    }
+    ///////////////////////////// MODULO ADD ACTOR /////////////////////////////
+
+    public $showCreateModalActor = false;
+    public $name_actor, $user_id_actor, $slug_actor, $uuid_actor;
+    // mostrar modal para confirmar crear
+    public function createActionModalActor()
+    {
+        $this->resetErrorBag();
+        $this->showCreateModalActor = true;
+    }
+
+    // guardar
+    public function saveActorCreate()
+    {
+        // datos automaticos
+        $this->name_actor = $this->name_actor;
+        $this->slug_actor = \Illuminate\Support\Str::slug($this->name_actor);
+        $this->uuid_actor = \Illuminate\Support\Str::random(24);
+        $this->user_id_actor = \Illuminate\Support\Facades\Auth::user()->id;
+
+        // validar datos
+        $validatedData = $this->validate([
+            'name_actor' => ['required', 'string', 'max:255', Rule::unique('media_actors', 'name')->ignore($this->media_actor->id ?? 0)],
+            'slug_actor' => ['required', 'string', 'max:255', Rule::unique('media_actors', 'slug')->ignore($this->media_actor->id ?? 0)],
+            'uuid_actor' => ['required', 'string', 'max:255'],
+            'user_id_actor' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        // guardar datos
+        $media = MediaActor::create([
+            'name' => $this->name_actor,
+            'slug' => $this->slug_actor,
+            'uuid' => $this->uuid_actor,
+            'user_id' => $this->user_id_actor,
+        ]);
+
+        $this->reset('name_actor', 'slug_actor', 'uuid_actor', 'user_id_actor');
+        $this->showCreateModalActor = false;
+        $this->dispatch('message', 'Creado con exito');
+    }
+
+    ///////////////////////////// MODULO ADD COLLECTION /////////////////////////////
+
+    public $showCreateModalCollection = false;
+    public $name_collection, $user_id_collection, $slug_collection, $uuid_collection;
+    // mostrar modal para confirmar crear
+    public function createActionModalCollection()
+    {
+        $this->resetErrorBag();
+        $this->showCreateModalCollection = true;
+    }
+
+    // guardar
+    public function saveCollectionCreate()
+    {
+        // datos automaticos
+        $this->name_collection = $this->name_collection;
+        $this->slug_collection = \Illuminate\Support\Str::slug($this->name_collection);
+        $this->uuid_collection = \Illuminate\Support\Str::random(24);
+        $this->user_id_collection = \Illuminate\Support\Facades\Auth::user()->id;
+
+        // validar datos
+        $validatedData = $this->validate([
+            'name_collection' => ['required', 'string', 'max:255', Rule::unique('media_collections', 'name')->ignore($this->media_collection->id ?? 0)],
+            'slug_collection' => ['required', 'string', 'max:255', Rule::unique('media_collections', 'slug')->ignore($this->media_collection->id ?? 0)],
+            'uuid_collection' => ['required', 'string', 'max:255'],
+            'user_id_collection' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        // guardar datos
+        $media = MediaCollection::create([
+            'name' => $this->name_collection,
+            'slug' => $this->slug_collection,
+            'uuid' => $this->uuid_collection,
+            'user_id' => $this->user_id_collection,
+        ]);
+
+        $this->reset('name_collection', 'slug_collection', 'uuid_collection', 'user_id_collection');
+        $this->showCreateModalCollection = false;
+        $this->dispatch('message', 'Creado con exito');
+    }
+    
     ///////////////////////////// MODULO VARIABLES /////////////////////////////
     public
     $title,
     $slug,
+
+    $original_title,
+    $emission_status,
+    $format,
+    $is_favorite,
+    $is_wish,
     
     $synopsis ,
     $release_date,
@@ -56,6 +187,12 @@ class MediaCreate extends Component
         return [
             'title' => ['required', 'max:255'],
             'slug' => ['required', 'max:255'],
+
+            'original_title' => ['required', 'max:255'],
+            'emission_status' => ['nullable', 'numeric', 'min:1'],
+            'format' => ['nullable', 'numeric', 'min:1'],
+            'is_favorite' => ['nullable', 'numeric', 'min:0', 'max:1'],
+            'is_wish' => ['nullable', 'numeric', 'min:0', 'max:1'],
             
             'synopsis' => ['nullable'],
             'release_date' => ['nullable', 'date'],
@@ -84,6 +221,12 @@ class MediaCreate extends Component
     protected $validationAttributes = [
         'title' => 'titulo',
         'slug' => 'slug',
+
+        'original_title' => 'titulo original',
+        'emission_status' => 'estado de emision',
+        'format' => 'formato',
+        'is_favorite' => 'lista de favorito',
+        'is_wish' => 'lista de deseo',
         
         'synopsis' => 'sinopsis',
         'release_date' => 'fecha de publicacion',
@@ -117,23 +260,17 @@ class MediaCreate extends Component
         $this->seasons = array_values($this->seasons); // Reindexar array
     }
 
-    public function updated($propertyName)
+    public $media_watcheds = [];
+    public function addMediaWatched()
     {
-        $this->updateStatus();
+        $this->media_watcheds[] = ['start_date_table' => '', 'end_date_table' => ''];
     }
-
-    public function updateStatus()
+    public function removeMediaWatched($index)
     {
-        if (empty($this->start_date) && empty($this->end_date)) {
-            $this->status = 1;
-        } elseif (!empty($this->start_date) && empty($this->end_date)) {
-            $this->status = 3;
-        } elseif (!empty($this->start_date) && !empty($this->end_date)) {
-            $this->status = 2;
-        } elseif (empty($this->start_date) && !empty($this->end_date)) {
-            $this->status = 2;
-        }
-    }       
+        unset($this->media_watcheds[$index]);
+        $this->media_watcheds = array_values($this->media_watcheds); // Reindexar array
+    }
+   
 
     public function saveMedia(){
         $this->user_id = Auth::user()->id;
@@ -143,6 +280,9 @@ class MediaCreate extends Component
         $this->media_type = $this->type;
         $this->rating = $this->rating == '' ? 0 : $this->rating;
         $this->number_collection = $this->number_collection == '' ? 1 : $this->number_collection;
+
+        $this->is_favorite = $this->is_favorite == true ? 1 : 0;
+        $this->is_wish = $this->is_wish == true ? 1 : 0;
 
         // validar form
         $validatedData = $this->validate();
@@ -165,6 +305,17 @@ class MediaCreate extends Component
             }
         }
 
+        if ($this->media_watcheds) {
+            foreach ($this->media_watcheds as $media_watched) {
+                MediaWatched::create([
+                    'media_id' => $media->id,
+                    'user_id' => Auth::user()->id,
+                    'start_date' => $media_watched['start_date_table'],
+                    'end_date' => $media_watched['end_date_table'],
+                ]);
+            }
+        }
+
 
         return redirect()->route('media_list')->with('message', 'Creado exitosamente');
     }
@@ -180,6 +331,8 @@ class MediaCreate extends Component
         $type_content = Media::typeContent();
         $status_media = Media::statusMedia();
         $valoration_stars = Media::valorationStars();
+        $formats = Media::format();
+        $emissions_status = Media::emission_status();
 
         return view('livewire.media.media-create',compact(
             'media_actors',
@@ -190,6 +343,8 @@ class MediaCreate extends Component
             'status_media',
             'valoration_stars',
             'type_content',
+            'formats',
+            'emissions_status',
         ));
     }
 }

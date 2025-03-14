@@ -22,10 +22,14 @@
 
         <img src="{{ $book->cover_image_url }}" class="w-full sm:w-auto sm:h-96 mx-auto mb-1 sm:mb-5" alt="">
 
-        <div class="flex justify-between items-center gap-1">
-            <h5 class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">{{ $book->title }}</h5>
+        <div class="flex justify-between items-start gap-1">
+            <div class="mt-4 sm:mt-0 mb-4">
+                <h5 class="text-xl sm:text-2xl font-bold text-gray-950">{{ $book->title }}</h5>
+                <p class="mb-2 text-xs sm:text-base text-gray-800 font-light italic">{{ $book->original_title }}</p>
+            </div>
             <a href="{{ route('book_edit', ['type' => $book->book_type, 'uuid' => $book->uuid]) }}" class="font-medium text-gray-600  hover:underline"><x-pages.buttons.edit-text/></a>
         </div>
+        
         
         <p class="mt-1 mb-3 text-base sm:text-lg text-gray-800"><span class="text-gray-950 font-bold">{{ \Carbon\Carbon::parse($book->release_date)->year }}</span>
             @foreach ($book->book_authors as $item)
@@ -77,6 +81,25 @@
         @if ($book->status)
         <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Estado:</span> {{ $status_book[$book->status] ?? 'Desconocido' }}</p>
         @endif
+        @if ($book->format)
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Formato:</span> {{ $format[$book->format] ?? 'Desconocido' }}</p>
+        @endif
+        @if ($book->emission_status)
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Emision:</span> {{ $emission_status[$book->emission_status] ?? 'Desconocido' }}</p>
+        @endif
+        
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Favorito:</span> {{ $book->is_favorite ? 'Si' : 'No' }}</p>
+        <p class="mb-2 text-sm sm:text-base text-gray-800"><span class="text-gray-950 font-bold">Lista de deseo:</span> {{ $book->is_wish ? 'Si' : 'No' }}</p>
+        
+        @if ($book->book_readings->count() > 0)
+        <p class="mb-2 text-xs sm:text-base text-gray-800 italic">Leido {{ $book->book_readings->count() == 1 ? $book->book_readings->count().' vez' : $book->book_readings->count().' veces' }}</p>
+            @foreach ($book->book_readings as $item)
+                <div class="px-3 border-l-4 border-purple-800">
+                    <p class="mb-2 text-xs sm:text-base text-gray-800">{{ $item->start_date }} - {{ $item->end_date }} en {{ \Carbon\Carbon::parse($item->start_date)->diffInDays($item->end_date) }} dias</p>
+                </div>
+            @endforeach
+        @endif
+
         @if ($book->personal_description)
         <p class="mt-4 sm:mt-0 mb-4 text-xl sm:text-2xl font-bold text-gray-950">Descripcion personal</p>
         <p class="mb-4 text-sm sm:text-base text-gray-800 whitespace-pre-wrap">{!! $book->personal_description !!}</p>

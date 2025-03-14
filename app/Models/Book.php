@@ -13,6 +13,14 @@ class Book extends Model
     protected $fillable = [
         'title',
         'slug',
+
+        'original_title',
+        'emission_status',
+        'format',
+        'is_favorite',
+        'is_wish',
+
+
         'synopsis',
         'release_date',
         'start_date',
@@ -59,6 +67,10 @@ class Book extends Model
         return $this->belongsToMany(BookGenre::class, 'book_book_genre')
                     ->withTimestamps();
     }
+    public function book_readings()
+    {
+        return $this->HasMany(BookReading::class);
+    }
 
 
     public static function valorationStars()
@@ -71,7 +83,15 @@ class Book extends Model
     }
     public static function statusBook()
     {
-        return [1 => 'Quiero leer', 2 => 'Leído', 3 => 'Leyendo'];
+        return [1 => 'Quiero leer', 2 => 'Leido', 3 => 'Leyendo', 4 => 'Releido', 5 => 'Abandonado'];
+    }
+    public static function format()
+    {
+        return [1 => 'Libro', 2 => 'Digital', 3 => 'Audiolibro'];
+    }
+    public static function emission_status()
+    {
+        return [1 => 'Finalizada', 2 => 'En emision', 3 => 'Cancelada'];
     }
     public static function title()
     {

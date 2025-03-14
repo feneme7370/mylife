@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Book;
 
 use App\Models\BookTag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;

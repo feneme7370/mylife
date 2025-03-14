@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
 
+            $table->string('original_title')->nullable();
+            $table->integer('emission_status')->nullable(); // 1 finalizada - 2 en emision - 3 cancelada
+            $table->string('format')->nullable(); // 1 TV - 2 Cine
+            $table->string('is_favorite')->nullable(); // 0 false - 1 true
+            $table->string('is_wish')->nullable(); // 0 false - 1 true
+
             $table->text('synopsis')->nullable();
             $table->date('release_date')->nullable();
 
@@ -35,8 +41,8 @@ return new class extends Migration
             $table->text('cover_image_url')->nullable();
             
             $table->string('uuid')->unique();
-            $table->integer('status')->nullable(); // 1 sin ver - 2 visto - 3 viendo
-
+            $table->integer('status')->nullable(); // 1 => 'Quiero ver', 2 => 'Visto', 3 => 'Viendo', 4 => 'Re-vista', 5 => 'Abandonada'
+            
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();

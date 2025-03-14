@@ -10,6 +10,13 @@ class Media extends Model
     protected $fillable = [
         'title',
         'slug',
+
+        'original_title',
+        'emission_status',
+        'format',
+        'is_favorite',
+        'is_wish',
+
         'synopsis',
         'release_date',
 
@@ -67,6 +74,11 @@ class Media extends Model
         return $this->hasMany(MediaSeason::class);
     }
 
+    public function media_watcheds()
+    {
+        return $this->HasMany(MediaWatched::class);
+    }
+
 
 
 
@@ -80,7 +92,15 @@ class Media extends Model
     }
     public static function statusMedia()
     {
-        return [1 => 'Quiero ver', 2 => 'Visto', 3 => 'Viendo'];
+        return [1 => 'Quiero ver', 2 => 'Visto', 3 => 'Viendo', 4 => 'Re-vista', 5 => 'Abandonada'];
+    }
+    public static function format()
+    {
+        return [1 => 'TV', 2 => 'Cine'];
+    }
+    public static function emission_status()
+    {
+        return [1 => 'Finalizada', 2 => 'En emision', 3 => 'Cancelada'];
     }
     public static function title()
     {

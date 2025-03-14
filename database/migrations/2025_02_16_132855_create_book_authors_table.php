@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('slug');
 
             $table->date('birthdate')->nullable();
-            $table->longText('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('country')->nullable();
 
-            $table->string('cover_image_url')->nullable();
+            $table->text('cover_image_url')->nullable();
             
             $table->string('uuid')->unique();
 

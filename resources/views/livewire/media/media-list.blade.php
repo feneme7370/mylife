@@ -88,6 +88,11 @@
                             <span class="text-sm md:font-normal text-gray-500">{{ $item->media_type == null ? '' : $type_content[$item->media_type] }} ({{ \Carbon\Carbon::parse($item->release_date)->year }})</span>
                             <span class="text-sm md:font-normal text-gray-500">{{ $valoration_stars[$item->rating] ?? 'Sin valorar' }}</span>
                         </div>
+                        <div class="flex gap-1">
+                            @foreach ($item->media_actors as $item_actor)
+                            <a class="text-xs hover:underline text-gray-500" href="{{ route('media_library', ['a' => $item_actor->uuid]) }}">{{ $item_actor->name }}</a>
+                            @endforeach
+                        </div>
                         @if (!$item->seasons->isEmpty())
                         <div class="flex items-start gap-1 mt-1">
                             <span class="text-sm md:font-normal text-gray-500 italic">Temp.: {{ $item->seasons->count() }}</span>

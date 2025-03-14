@@ -19,11 +19,15 @@ class BookView extends Component
         $type_content = Book::typeContent();
         $status_book = Book::statusBook();
         $valoration_stars = Book::valorationStars();
+        $format = Book::format();
+        $emission_status = Book::emission_status();
 
 
         return view('livewire.book.book-view', compact(
             'status_book',
             'valoration_stars',
+            'format',
+            'emission_status',
         ));
     }
 }

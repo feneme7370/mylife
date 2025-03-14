@@ -51,13 +51,9 @@
                                 </p>
                             </div>
 
-                            <div class="hidden sm:flex gap-1">
-                                @foreach ($item->books as $item_book)
-                                <a href="{{ route('book_library', ['q' => $item_book->title]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">
-                                    {{ $item_book->title }}
-                                </a>
-                                @endforeach
-                            </div>
+                            <a href="{{ route('book_library', ['a' => $item->uuid]) }}" class="bg-purple-900 text-purple-50 text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg">
+                                {{ $item->books->count() }}
+                            </a>
 
                             <div class="flex-1"></div>
                             <div>
