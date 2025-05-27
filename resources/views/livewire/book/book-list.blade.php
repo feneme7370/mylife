@@ -88,6 +88,9 @@
             </div>
         </div>
     </div>
+
+    <x-pages.spinners.loading-spinner class="my-1" wire:loading.delay />
+
     <div class="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
         <div class="w-full grid gap-1 grid-col-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             @foreach ($books as $item)
@@ -148,7 +151,7 @@
 
                     <div class="flex justify-between">
                         <div class=" flex items-center justify-center gap-1">
-                            <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span>
+                            {{-- <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span> --}}
                             <span class="text-sm italic">{{ $status_book[$item->status] ?? 'Desconocido' }}</span>
                         </div>
                         <div class="flex items-center justify-center gap-1">

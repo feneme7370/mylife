@@ -56,6 +56,6 @@ class Recipe extends Model
     }
     public static function title()
     {
-        return 'Receta';
+        return 'Receta 🍽️';
     }
 }

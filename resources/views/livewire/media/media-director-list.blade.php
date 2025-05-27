@@ -1,7 +1,7 @@
 <div class="w-full">
 
     {{-- breadcrum, title y button --}}
-    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Peliculas y Series"
+    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="{{ App\Models\Media::title() }}"
     link_2="{{ route('media_dashboard') }}" title_3="Directores" link_3="{{ route('media_director_list') }}" />
 
 <x-pages.menus.title-and-btn>

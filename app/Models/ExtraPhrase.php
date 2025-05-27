@@ -21,6 +21,6 @@ class ExtraPhrase extends Model
     }
     public static function title()
     {
-        return 'Extras';
+        return 'Extras 🔑';
     }
 }

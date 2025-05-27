@@ -1,7 +1,7 @@
 <div class="w-full">
 
     {{-- breadcrum, title y button --}}
-    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Libros"
+    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="{{ App\Models\Book::title() }}"
         link_2="{{ route('book_dashboard') }}" title_3="Editar Libro" link_3="{{ route('book_list') }}" />
 
     <x-pages.menus.title-and-btn>
@@ -41,7 +41,7 @@
             <x-pages.forms.input-error for="synopsis" />
         </div>
 
-        <div class="col-span-12 sm:col-span-6">
+        {{-- <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_book_authors" value="{{ __('Autores') }}" />
             <x-pages.forms.select2-form multiple wire:model="selected_book_authors" id="selected_book_authors">
                 @foreach ($book_authors as $item)
@@ -49,9 +49,19 @@
                 @endforeach
             </x-pages.forms.select2-form>
             <x-pages.forms.input-error for="selected_book_authors" />
-        </div>
+        </div> --}}
 
         <div class="col-span-12 sm:col-span-6">
+            <x-pages.forms.select-multiple
+                model="BookAuthor" 
+                relation="book_authors" 
+                wire:model="selected_book_authors" 
+                label="Autores"
+                :items="$book_authors"
+            />
+        </div>
+
+        {{-- <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_book_collections" value="{{ __('Coleccion') }}" />
             <x-pages.forms.select2-form multiple wire:model="selected_book_collections" id="selected_book_collections">
                 @foreach ($book_collections as $item)
@@ -59,6 +69,16 @@
                 @endforeach
             </x-pages.forms.select2-form>
             <x-pages.forms.input-error for="book_collection_id" />
+        </div> --}}
+
+        <div class="col-span-12 sm:col-span-6">
+            <x-pages.forms.select-multiple
+                model="BookCollections" 
+                relation="book_collections" 
+                wire:model="selected_book_collections" 
+                label="Colecciones"
+                :items="$book_collections"
+            />
         </div>
 
         <div class="sm:col-span-3 col-span-6">
@@ -121,7 +141,7 @@
             <x-pages.forms.input-error for="status" />
         </div>
         
-        <div class="sm:col-span-3 col-span-6">
+        {{-- <div class="sm:col-span-3 col-span-6">
             <x-pages.forms.label-form for="start_date" value="{{ __('Comenzado') }}" />
             <x-pages.forms.input-form id="start_date" type="date" placeholder="{{ __('Comenzado') }}"
                 wire:model.live="start_date" />
@@ -133,7 +153,7 @@
             <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Finalizado') }}"
                 wire:model.live="end_date" />
             <x-pages.forms.input-error for="end_date" />
-        </div>
+        </div> --}}
 
         <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="media_type" value="{{ __('Tipo de contenido') }}" />
@@ -177,42 +197,52 @@
             <div class="grid bg-gray-100 rounded-lg my-1 py-1">
                 <x-pages.forms.label-form class="col-span-12" value="{{ __('Leido el') }}" />
 
-                <x-pages.forms.input-form id="book_readings.{{ $index }}.start_date_table" type="date" placeholder="{{ __('Comenzado') }}"
-                    wire:model="book_readings.{{ $index }}.start_date_table" />
-                <x-pages.forms.input-form id="book_readings.{{ $index }}.end_date_table" type="date" placeholder="{{ __('Finalizado') }}"
-                    wire:model="book_readings.{{ $index }}.end_date_table" />
+                <div class="col-span-5">
+                    <x-pages.forms.input-form id="book_readings.{{ $index }}.start_date_table" type="date"
+                        placeholder="{{ __('Comenzado') }}" wire:model="book_readings.{{ $index }}.start_date_table" />
+                </div>
+                <div class="col-span-5">
+                    <x-pages.forms.input-form id="book_readings.{{ $index }}.end_date_table" type="date"
+                        placeholder="{{ __('Finalizado') }}" wire:model="book_readings.{{ $index }}.end_date_table" />
+                </div>
 
-                <span class="col-span-9"></span>
-                <x-pages.buttons.normal-btn class="col-span-3" title="Borrar"
-                    wire:click="removeBookReading({{ $index }})">
-                </x-pages.buttons.normal-btn>
+                <div class="flex items-center col-span-2">
+                    <x-pages.buttons.normal-btn title="Borrar"
+                        wire:click="removeBookReading({{ $index }})">
+                    </x-pages.buttons.normal-btn>
+                </div>
             </div>
             @endforeach
 
         </div>
 
-        <div class="my-3 flex flex-wrap gap-1 col-span-12">
-            @foreach ($book_genres as $item)
-
-            <x-pages.forms.label-form for="{{ 'selected_book_genres['. $item->id .']' }}" value="{{ $item->name }}">
-                <x-pages.forms.checkbox-form type="checkbox" id="{{ 'selected_book_genres['. $item->id .']' }}"
-                    wire:model="selected_book_genres" value="{{ $item->id }}" />
-            </x-pages.forms.label-form>
-
-            @endforeach
-
+        <div class="col-span-12 my-1">
+            <x-pages.forms.label-form class="col-span-12 mb-3" value="{{ __('Generos') }}" />
+            <div class="mt-3 flex flex-wrap gap-1">
+                @foreach ($book_genres as $item)
+    
+                <x-pages.forms.label-form for="{{ 'selected_book_genres['. $item->id .']' }}" value="{{ $item->name }}">
+                    <x-pages.forms.checkbox-form type="checkbox" id="{{ 'selected_book_genres['. $item->id .']' }}"
+                        wire:model="selected_book_genres" value="{{ $item->id }}" />
+                </x-pages.forms.label-form>
+    
+                @endforeach
+    
+            </div>
         </div>
 
-        <div class="my-3 flex flex-wrap gap-1 col-span-12">
-            @foreach ($book_tags as $item)
-
-            <x-pages.forms.label-form for="{{ 'selected_book_tags['. $item->id .']' }}" value="{{ $item->name }}">
-                <x-pages.forms.checkbox-form type="checkbox" id="{{ 'selected_book_tags['. $item->id .']' }}"
-                    wire:model="selected_book_tags" value="{{ $item->id }}" />
-            </x-pages.forms.label-form>
-
-            @endforeach
-
+        <div class="col-span-12 my-1">
+            <x-pages.forms.label-form class="col-span-12 mb-3" value="{{ __('Etiquetas') }}" />
+            <div class="mt-3 flex flex-wrap gap-1">
+                @foreach ($book_tags as $item)
+    
+                <x-pages.forms.label-form for="{{ 'selected_book_tags['. $item->id .']' }}" value="{{ $item->name }}">
+                    <x-pages.forms.checkbox-form type="checkbox" id="{{ 'selected_book_tags['. $item->id .']' }}"
+                        wire:model="selected_book_tags" value="{{ $item->id }}" />
+                </x-pages.forms.label-form>
+    
+                @endforeach
+            </div>
         </div>
 
         <div class="col-span-12">

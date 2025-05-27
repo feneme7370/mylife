@@ -100,6 +100,7 @@
         </div>
     </div>
 
+    <x-pages.spinners.loading-spinner class="my-1" wire:loading.delay />
 
     <div class="relative w-full overflow-x-auto shadow-md sm:rounded-lg px-1 py-3">
 

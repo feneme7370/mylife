@@ -1,7 +1,7 @@
 <div class="w-full">
 
         {{-- breadcrum, title y button --}}
-        <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Libros"
+        <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="{{ App\Models\Book::title() }}"
         link_2="{{ route('book_dashboard') }}" title_3="Colecciones" link_3="{{ route('book_collection_list') }}" />
 
     <x-pages.menus.title-and-btn>
@@ -32,7 +32,7 @@
                 <x-pages.buttons.create-text class="text-sm font-medium text-gray-700 hover:text-gray-500 hover:underline " wire:click="createActionModal" wire:loading.attr="disabled" />
             </div>
        </div>
-    
+       
        <div class="flow-root">
             <ul role="list" class="divide-y divide-purple-200 ">
                 @foreach ($collections as $item)

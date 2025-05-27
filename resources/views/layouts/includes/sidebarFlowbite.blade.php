@@ -111,7 +111,7 @@
             </x-sistem.navlinks.navlink-sidebar-flowbite>
 
             <x-sistem.navlinks.navlink-sidebar-flowbite href="{{ route('extra_dashboard') }}"
-                :active="request()->routeIs('extra_dashboard')" title="Extras">
+                :active="request()->routeIs('extra_dashboard')" title="{{ App\Models\ExtraPhrase::title() }}">
                 <x-sistem.icons.for-icons-app icon="extra" />
             </x-sistem.navlinks.navlink-sidebar-flowbite>
 

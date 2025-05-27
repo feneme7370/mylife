@@ -75,26 +75,55 @@ class Book extends Model
 
     public static function valorationStars()
     {
-        return [0 => 'Sin Valoracion', 1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+        return [
+            0 => 'Sin Valoracion', 
+            1 => '⭐', 
+            2 => '⭐⭐', 
+            3 => '⭐⭐⭐', 
+            4 => '⭐⭐⭐⭐', 
+            5 => '⭐⭐⭐⭐⭐'
+        ];
     }
     public static function typeContent()
     {
-        return [1 => 'Libro', 2 => 'Manga'];
+        return [
+            1 => '📖 Libro', 
+            2 => '📚 Manga'
+        ];
     }
+    
     public static function statusBook()
     {
-        return [1 => 'Quiero leer', 2 => 'Leido', 3 => 'Leyendo', 4 => 'Releido', 5 => 'Abandonado'];
+        return [
+            1 => '📌 Quiero leer', 
+            2 => '✅ Leído', 
+            3 => '📖 Leyendo', 
+            4 => '🔁 Releído', 
+            5 => '🚫 Abandonado'
+        ];
     }
+    
     public static function format()
     {
-        return [1 => 'Libro', 2 => 'Digital', 3 => 'Audiolibro'];
+        return [
+            1 => '📖 Libro', 
+            2 => '💻 Digital', 
+            3 => '🎧 Audiolibro'
+        ];
     }
+    
     public static function emission_status()
     {
-        return [1 => 'Finalizada', 2 => 'En emision', 3 => 'Cancelada'];
+        return [
+            1 => '🏁 Finalizada', 
+            2 => '📡 En emisión', 
+            3 => '❌ Cancelada'
+        ];
     }
+    
     public static function title()
     {
-        return 'Biblioteca';
+        return 'Biblioteca 📚';
     }
+    
 }

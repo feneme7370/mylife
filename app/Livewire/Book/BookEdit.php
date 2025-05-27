@@ -30,8 +30,8 @@ class BookEdit extends Component
 
     $synopsis ,
     $release_date,
-    $start_date,
-    $end_date,
+    // $start_date,
+    // $end_date,
 
     $media_type,
     $number_collection,
@@ -70,8 +70,8 @@ class BookEdit extends Component
 
             'synopsis' => ['nullable'],
             'release_date' => ['nullable', 'date'],
-            'start_date' => ['nullable', 'date'],
-            'end_date' => ['nullable', 'date'],
+            // 'start_date' => ['nullable', 'date'],
+            // 'end_date' => ['nullable', 'date'],
             'media_type' => ['nullable', 'numeric', 'min:1'],
     
             'number_collection' => ['nullable', 'numeric', 'min:1'],
@@ -103,8 +103,8 @@ class BookEdit extends Component
 
         'synopsis' => 'sinopsis',
         'release_date' => 'fecha de publicacion',
-        'start_date' => 'fecha de comienzo',
-        'end_date' => 'fecha de finalizacion',
+        // 'start_date' => 'fecha de comienzo',
+        // 'end_date' => 'fecha de finalizacion',
         'media_type' => 'tipo de contenido',
 
         'number_collection' => 'numero de collecion',
@@ -123,6 +123,8 @@ class BookEdit extends Component
     ];
     
     public $book_readings = [];
+
+    #On[Edit]
     public function addBookReading()
     {
         $this->book_readings[] = ['id' => null, 'start_date_table' => '', 'end_date_table' => ''];
@@ -152,8 +154,8 @@ class BookEdit extends Component
 
         $this->synopsis = $book['synopsis'] ;
         $this->release_date = $book['release_date'];
-        $this->start_date = $book['start_date'];
-        $this->end_date = $book['end_date'];
+        // $this->start_date = $book['start_date'];
+        // $this->end_date = $book['end_date'];
 
         $this->media_type = $book['media_type'];
         $this->number_collection = $book['number_collection'];

@@ -1,7 +1,7 @@
 <div class="w-full">
 
     {{-- breadcrum, title y button --}}
-    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Peliculas y Series"
+    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="{{ App\Models\Media::title() }}"
         link_2="{{ route('media_dashboard') }}" title_3="Editar {{ $type_content[$type] }}"
         link_3="{{ route('media_list') }}" />
 
@@ -42,34 +42,33 @@
         </div>
 
         <div class="col-span-12 sm:col-span-6">
-            <x-pages.forms.label-form for="selected_media_actors" value="{{ __('Actores') }}" />
-            <x-pages.forms.select2-form multiple wire:model="selected_media_actors" id="selected_media_actors">
-                @foreach ($media_actors as $item)
-                <option value="{{$item->id}}">{{$item->name}}</option>
-                @endforeach
-            </x-pages.forms.select2-form>
-            <x-pages.forms.input-error for="selected_media_actors" />
+            <x-pages.forms.select-multiple
+                model="MediaActors" 
+                relation="media_actors" 
+                wire:model="selected_media_actors" 
+                label="Actores"
+                :items="$media_actors"
+            />
         </div>
 
         <div class="col-span-12 sm:col-span-6">
-            <x-pages.forms.label-form for="selected_media_directors" value="{{ __('Directores') }}" />
-            <x-pages.forms.select2-form multiple wire:model="selected_media_directors" id="selected_media_directors">
-                @foreach ($media_directors as $item)
-                <option value="{{$item->id}}">{{$item->name}}</option>
-                @endforeach
-            </x-pages.forms.select2-form>
-            <x-pages.forms.input-error for="selected_media_directors" />
+            <x-pages.forms.select-multiple
+                model="MediaDirectors" 
+                relation="media_directors" 
+                wire:model="selected_media_directors" 
+                label="Director"
+                :items="$media_directors"
+            />
         </div>
 
         <div class="col-span-12 sm:col-span-6">
-            <x-pages.forms.label-form for="selected_media_collections" value="{{ __('Coleccion') }}" />
-            <x-pages.forms.select2-form multiple wire:model="selected_media_collections"
-                id="selected_media_collections">
-                @foreach ($media_collections as $item)
-                <option value="{{$item->id}}">{{$item->name}}</option>
-                @endforeach
-            </x-pages.forms.select2-form>
-            <x-pages.forms.input-error for="media_collection_id" />
+            <x-pages.forms.select-multiple
+                model="MediaCollection" 
+                relation="media_collections" 
+                wire:model="selected_media_collections" 
+                label="Coleccion"
+                :items="$media_collections"
+            />
         </div>
 
         <div class="col-span-6 sm:col-span-3">
@@ -132,7 +131,7 @@
         @if ($type == 1)
 
         <div class="sm:col-span-3 col-span-6">
-            <x-pages.forms.label-form for="duration" value="{{ __('Duracion') }}" />
+            <x-pages.forms.label-form for="duration" value="{{ __('Duracion en minutos') }}" />
             <x-pages.forms.input-form id="duration" type="text" placeholder="{{ __('Duracion') }}"
                 wire:model="duration" />
             <x-pages.forms.input-error for="duration" />
@@ -141,14 +140,10 @@
 
 
 
-        @if ($type == 1)
+        {{-- @if ($type == 1)
         <div class="sm:col-span-6 col-span-12">
             <x-pages.forms.label-form for="end_date" value="{{ __('Visto') }}" />
             <x-pages.forms.input-form id="end_date" type="date" placeholder="{{ __('Visto') }}" wire:model="end_date" />
-            {{-- <div class="col-span-12 sm:col-span-6 flex items-center justify-start">
-                <span class="flex w-3 h-3 me-3 bg-purple-500 rounded-full"></span>
-                <span>{{ $status ? $status_media[$status] : 'Estado' }}</span>
-            </div> --}}
             <x-pages.forms.input-error for="end_date" />
         </div>
         @endif
@@ -166,7 +161,7 @@
                 wire:model.live="end_date" />
             <x-pages.forms.input-error for="end_date" />
         </div>
-        @endif
+        @endif --}}
 
         <div class="col-span-12">
             <div class="col-span-12 sm:col-span-6">
@@ -197,18 +192,22 @@
             </x-pages.buttons.primary-btn>
 
             @foreach($media_watcheds as $index => $media_watched)
-            <div class="grid bg-gray-100 rounded-lg my-1 py-1">
+            <div class="grid bg-gray-100 rounded-lg my-1 py-1 gap-1">
                 <x-pages.forms.label-form class="col-span-12" value="{{ __('Visto el') }}" />
 
-                <x-pages.forms.input-form id="media_watcheds.{{ $index }}.start_date_table" type="date" placeholder="{{ __('Comenzado') }}"
-                    wire:model="media_watcheds.{{ $index }}.start_date_table" />
-                <x-pages.forms.input-form id="media_watcheds.{{ $index }}.end_date_table" type="date" placeholder="{{ __('Finalizado') }}"
-                    wire:model="media_watcheds.{{ $index }}.end_date_table" />
-
-                <span class="col-span-9"></span>
-                <x-pages.buttons.normal-btn class="col-span-3" title="Borrar"
-                    wire:click="removeMediaWatched({{ $index }})">
-                </x-pages.buttons.normal-btn>
+                <div class="col-span-5">
+                    <x-pages.forms.input-form id="media_watcheds.{{ $index }}.start_date_table" type="date" placeholder="{{ __('Comenzado') }}"
+                        wire:model="media_watcheds.{{ $index }}.start_date_table" />
+                </div>
+                <div class="col-span-5">
+                    <x-pages.forms.input-form id="media_watcheds.{{ $index }}.end_date_table" type="date" placeholder="{{ __('Finalizado') }}"
+                        wire:model="media_watcheds.{{ $index }}.end_date_table" />
+                </div>
+                <div class="flex items-center col-span-2">
+                    <x-pages.buttons.normal-btn title="Borrar"
+                        wire:click="removeMediaWatched({{ $index }})">
+                    </x-pages.buttons.normal-btn>
+                </div>
             </div>
             @endforeach
 

@@ -54,6 +54,9 @@
 
     </div>
 </div>
+
+<x-pages.spinners.loading-spinner class="my-1" wire:loading.delay />
+
 <div class="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
     <div class="w-full grid gap-1 grid-col-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         @foreach ($recipes as $item)

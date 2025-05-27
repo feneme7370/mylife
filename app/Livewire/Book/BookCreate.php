@@ -112,8 +112,8 @@ class BookCreate extends Component
 
     $synopsis ,
     $release_date,
-    $start_date,
-    $end_date,
+    // $start_date,
+    // $end_date,
 
     $media_type,
     $number_collection,
@@ -152,8 +152,8 @@ class BookCreate extends Component
 
             'synopsis' => ['nullable'],
             'release_date' => ['nullable', 'date'],
-            'start_date' => ['nullable', 'date'],
-            'end_date' => ['nullable', 'date'],
+            // 'start_date' => ['nullable', 'date'],
+            // 'end_date' => ['nullable', 'date'],
             'media_type' => ['nullable', 'numeric', 'min:1'],
     
             'number_collection' => ['nullable', 'numeric', 'min:1'],
@@ -185,8 +185,8 @@ class BookCreate extends Component
 
         'synopsis' => 'sinopsis',
         'release_date' => 'fecha de publicacion',
-        'start_date' => 'fecha de comienzo',
-        'end_date' => 'fecha de finalizacion',
+        // 'start_date' => 'fecha de comienzo',
+        // 'end_date' => 'fecha de finalizacion',
         'media_type' => 'tipo de contenido',
 
         'number_collection' => 'numero de collecion',

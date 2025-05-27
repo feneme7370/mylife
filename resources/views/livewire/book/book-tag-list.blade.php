@@ -1,7 +1,7 @@
 <div class="w-full">
 
     {{-- breadcrum, title y button --}}
-    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="Libros"
+    <x-pages.breadcrums.breadcrum title_1="Inicio" link_1="{{ route('dashboard') }}" title_2="{{ App\Models\Book::title() }}"
         link_2="{{ route('book_dashboard') }}" title_3="Etiquetas" link_3="{{ route('book_tag_list') }}" />
 
     <x-pages.menus.title-and-btn>

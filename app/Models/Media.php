@@ -84,26 +84,54 @@ class Media extends Model
 
     public static function valorationStars()
     {
-        return [0 => 'Sin Valoracion', 1 => '⭐', 2 => '⭐⭐', 3 => '⭐⭐⭐', 4 => '⭐⭐⭐⭐', 5 => '⭐⭐⭐⭐⭐'];
+        return [
+            0 => 'Sin Valoracion', 
+            1 => '⭐', 
+            2 => '⭐⭐', 
+            3 => '⭐⭐⭐', 
+            4 => '⭐⭐⭐⭐', 
+            5 => '⭐⭐⭐⭐⭐'
+        ];
     }
     public static function typeContent()
     {
-        return [1 => 'Pelicula', 2 => 'Serie'];
+        return [
+            1 => '🎬 Película', 
+            2 => '📺 Serie'
+        ];
     }
+    
     public static function statusMedia()
     {
-        return [1 => 'Quiero ver', 2 => 'Visto', 3 => 'Viendo', 4 => 'Re-vista', 5 => 'Abandonada'];
+        return [
+            1 => '🎯 Quiero ver', 
+            2 => '✅ Visto', 
+            3 => '📽️ Viendo', 
+            4 => '🔁 Re-vista', 
+            5 => '🚫 Abandonada'
+        ];
     }
+    
     public static function format()
     {
-        return [1 => 'TV', 2 => 'Cine'];
+        return [
+            1 => '📡 TV', 
+            2 => '🎭 Cine'
+        ];
     }
+    
     public static function emission_status()
     {
-        return [1 => 'Finalizada', 2 => 'En emision', 3 => 'Cancelada'];
+        return [
+            1 => '🏁 Finalizada', 
+            2 => '📡 En emisión', 
+            3 => '❌ Cancelada'
+        ];
     }
+    
     public static function title()
     {
-        return 'Cine y TV';
+        return 'Cine y TV 🎥';
     }
+    
 }

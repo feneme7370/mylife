@@ -35,7 +35,7 @@
             <x-pages.forms.input-error for="synopsis" />
         </div>
 
-        <div class="col-span-12 sm:col-span-6">
+        {{-- <div class="col-span-12 sm:col-span-6">
             <x-pages.forms.label-form for="selected_recipe_categories" value="{{ __('Categorias') }}" />
             <x-pages.forms.select2-form multiple wire:model="selected_recipe_categories" id="selected_recipe_categories">
               @foreach ($recipe_categories as $item)
@@ -43,6 +43,16 @@
               @endforeach
             </x-pages.forms.select2-form>
             <x-pages.forms.input-error for="selected_recipe_categories" />
+        </div> --}}
+
+        <div class="col-span-12 sm:col-span-6">
+            <x-pages.forms.select-multiple
+                model="RecipeCategory" 
+                relation="recipe_categories" 
+                wire:model="selected_recipe_categories" 
+                label="Categorias"
+                :items="$recipe_categories"
+            />
         </div>
           
         <div class="col-span-12 sm:col-span-6">
